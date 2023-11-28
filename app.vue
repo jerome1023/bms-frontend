@@ -1,7 +1,11 @@
 <template>
   <div>
-    <NuxtLayout>
+    <NuxtLayout :name="layout">
       <NuxtPage/>
     </NuxtLayout>
   </div>
 </template>
+
+<script setup lang="ts">
+const layout = 'auth'
+</script>
