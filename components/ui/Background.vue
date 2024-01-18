@@ -1,5 +1,5 @@
 <template>
-        <div class="absolute top-0 left-0 w-full h-full z-[-1] bg-cover bg-center h-full" :style="{ backgroundImage: `url('${bgImage}')` }">
+        <div class="absolute top-0 left-0 w-full h-full z-[-1] bg-cover bg-center" :style="{ backgroundImage: `url('${bgImage}')` }">
         </div>
 </template>
   

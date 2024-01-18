@@ -4,7 +4,7 @@
             <Form @submit="register" v-slot="{ values }">
                 <div class="flex flex-col items-center mb-7">
                     <h1 class="text-2xl sm:text-4xl">Create an account</h1>
-                    <h3 class="sm:text-lg">Already have an account? <a href="#" class="underline text-blue-100">Login</a>
+                    <h3 class="sm:text-lg">Already have an account? <a href="/login" class="underline text-blue-100">Login</a>
                     </h3>
                 </div>
                 <div class="sm:grid grid-cols-6 gap-3">
@@ -38,7 +38,7 @@
                 <div class="mt-5">
                     <button class="btn w-full">Register</button>
                 </div>
-                <!-- <pre>{{ values }}</pre> -->
+                <pre>{{ values }}</pre>
             </Form>
         </div>
     </div>
