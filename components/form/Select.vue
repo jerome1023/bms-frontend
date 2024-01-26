@@ -1,12 +1,12 @@
 <template>
-    <Field v-slot="{ field }" v-model="selected" :name="name">
-        <Listbox v-bind="field" as="div">
+    <Field v-slot="{ field, value }" v-model="selected" :name="name">
+        <Listbox v-bind="field" as="div" v-slot="{open}">
             <div class="relative">
                 <ListboxButton
                     class="relative w-full cursor-default rounded-md bg-transparent py-2 pl-3 pr-10 text-left shadow-sm ring-1 ring-inset ring-base-green sm:text-sm sm:leading-6 flex justify-between">
-                    <span class="block truncate text-base">{{ selected.text }}</span>
+                    <span :class="['block truncate text-base', {'text-base-gray-light': value}]">{{ selected.text }}</span>
                     <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                        <ChevronDownIcon class="h-5 w-5" />
+                        <ChevronDownIcon :class="['h-5 w-5', {'rotate-180 transform': open }]" />
                     </span>
                 </ListboxButton>
                 <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100"

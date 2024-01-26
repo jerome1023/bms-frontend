@@ -23,6 +23,7 @@
     "@headlessui/vue": "^1.7.16",
     "@heroicons/vue": "^2.0.18",
     "@vee-validate/nuxt": "^4.12.2",
-    "@vee-validate/zod": "^4.12.2"
+    "@vee-validate/zod": "^4.12.2",
+    "vee-validate": "^4.12.4"
   }
 }
