@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { Form } from 'vee-validate'
+// import { Form } from 'vee-validate'
 import { RegisterS } from '~/server/schema';
 
 const register = () => {

@@ -6,7 +6,7 @@
                     class="relative w-full cursor-default rounded-md bg-transparent py-2 pl-3 pr-10 text-left shadow-sm ring-1 ring-inset ring-base-green sm:text-sm sm:leading-6 flex justify-between">
                     <span :class="['block truncate text-base', {'text-base-gray-light': value}]">{{ selected.text }}</span>
                     <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                        <ChevronDownIcon :class="['h-5 w-5', {'rotate-180 transform': open }]" />
+                        <FontAwesomeIcon :icon="faChevronDown" :class="['h-4 w-4 transform transition-transform', {'-rotate-180' : open }]" />
                     </span>
                 </ListboxButton>
                 <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100"
@@ -19,7 +19,7 @@
                                 }}</span>
                                 <span v-if="selected"
                                     :class="[active ? 'text-white' : 'text-base-green', 'absolute inset-y-0 left-0 flex items-center pl-1.5']">
-                                    <CheckIcon class="h-5 w-5" aria-hidden="true" />
+                                    <FontAwesomeIcon :icon="faCheck" class="h-4 w-4" />
                                 </span>
                             </li>
                         </ListboxOption>
@@ -34,7 +34,8 @@
 import { Field } from 'vee-validate/'
 import { ref } from 'vue'
 import { Listbox, ListboxButton, ListboxOptions, ListboxOption, } from '@headlessui/vue'
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/vue/20/solid'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faChevronDown, faCheck } from '@fortawesome/free-solid-svg-icons'
 import type { TOptions } from '~/types';
 
 const props = defineProps<{

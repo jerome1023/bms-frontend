@@ -4,7 +4,7 @@
             {{ label }}
         </label>
         <div class="mt-1 mb-2">
-            <FormText v-if="type === 'text'" :label="label" :name="name" />
+            <FormText v-if="type === 'text'" :label="label" :name="name" :placeholder="placeholder"/>
             <FormPassword v-if="type === 'password'" :label="label" :name="name" :placeholder="placeholder"/>
             <FormSelect v-if="type === 'select'" :label="label" :name="name" :options="options" />
 

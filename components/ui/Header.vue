@@ -57,7 +57,8 @@ const toggleSidebar = () => {
 }
 
 const signout = () => {
-    localStorage.removeItem('login')
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
     navigateTo('/login')
 }
 
