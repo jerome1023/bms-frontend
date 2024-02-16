@@ -2,11 +2,11 @@
     <aside class="aside-container absolute md:relative h-screen bg-base-green min-w-[260px] overflow-auto z-50">
         <FontAwesomeIcon @click="toggleSidebar" :icon="faXmark"
             class="h-5 w-5 md:hidden absolute text-white top-3 right-2" />
-        <div class="h-16 flex items-center p-2 gap-2 mb-3">
+        <div class="sticky top-0 z-50 bg-base-green h-16 flex items-center p-2 gap-2 mb-3">
             <img :src="barangay.logo" class="h-9 w-9 rounded-full" />
             <p class="flex-1 text-white font-medium text-lg">{{ barangay.name }}</p>
         </div>
-        <div v-for="(item, index) in aside" :key="index" class="ml-2">
+        <div v-for="(item, index) in aside" :key="index" :class="['ml-2', {'hidden' : !item.access.includes(role)}]">
             <a @click="navigateTo(item.path)" v-if="index != 2 && index != 3"
                 :class="['py-3 mb-1 pl-2 flex items-center gap-2 bg-green cursor-pointer', currentRoute === item.path ? 'bg-white text-base-green rounded-l-full' : 'text-white']">
                 <FontAwesomeIcon :icon="item.icon" class="h-4 w-4" />
@@ -69,16 +69,19 @@ const aside = [
     {
         name: 'Dashboard',
         path: '/dashboard',
-        icon: faGauge
+        icon: faGauge,
+        access: ['admin']
     },
     {
         name: 'Barangay Official',
         path: '/barangay-official',
-        icon: faUserTie
+        icon: faUserTie,
+        access: ['admin']
     },
     {
         name: 'Resident',
         icon: faAddressCard,
+        access: ['admin'],
         section: [{
             name: 'List',
             path: '/resident/list',
@@ -93,6 +96,7 @@ const aside = [
     {
         name: 'Request',
         icon: faFileInvoice,
+        access: ['admin','user'],
         section: [{
             name: 'Pending',
             path: '/request/pending',
@@ -113,22 +117,26 @@ const aside = [
     {
         name: 'Transaction',
         path: '/transaction',
-        icon: faClockRotateLeft
+        icon: faClockRotateLeft,
+        access: ['admin', 'user'],
     },
     {
         name: 'Announcement',
         path: '/announcement',
-        icon: faBullhorn
+        icon: faBullhorn,
+        access: ['admin','user']
     },
     {
         name: 'Blotter',
         path: '/blotter',
-        icon: faCircleExclamation
+        icon: faCircleExclamation,
+        access: ['admin'],
     },
     {
         name: 'Archive',
         path: '/archive',
-        icon: faBoxArchive
+        icon: faBoxArchive,
+        access: ['admin'],
     }
 ]
 
@@ -144,10 +152,11 @@ watch(() => router.currentRoute.value.path,
     () => {
         currentRoute.value = router.currentRoute.value.path
     })
-
+const role = ref('admin')
 onMounted(() => {
     currentRoute.value = router.currentRoute.value.path
     document.body.addEventListener('click', closeAsideOnClickOutside);
+
 })
 
 </script>

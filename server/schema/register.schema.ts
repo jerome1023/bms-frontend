@@ -13,5 +13,6 @@ export const RegisterS = toTypedSchema(
         email: zod.string().min(1, { message: "Required" }),
         password: zod.string().min(1, { message: "Required" }),
         confirm_password: zod.string().min(1, { message: "Required" }),
+        role: zod.string().min(1, { message: "Required" }),
     })
 )

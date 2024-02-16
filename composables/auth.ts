@@ -1,10 +1,9 @@
-export const useLogin = async(value: any) => {
-    const path = '/api/login'
+export const useAuth = async(value: any, endpoint: string) => {
+    const path = `/api/${endpoint}`
     const data = await useApiFetch(path, {
         method: 'POST',
         body: {
-            'email': value.email,
-            'password': value.password
+            ...value
         }
     })
 

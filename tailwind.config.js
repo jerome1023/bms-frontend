@@ -71,9 +71,9 @@ export default{
           icon: '#F87103'
         },
         success: {
-          bg: '#F0FDF4',
+          bg: '#34D399',
           text: '#166534',
-          icon: '#4ADE80'
+          icon: '#059669'
         },
         warning: {
           bg: '#fefce8',

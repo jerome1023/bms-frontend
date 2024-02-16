@@ -1,17 +1,17 @@
 <template>
-    <header v-if="mounted" class="bg-white w-full flex justify-between px-3 md:px-5 shadow-md h-14 md:h-16">
+    <header class="bg-white w-full flex justify-between px-3 md:px-5 shadow-md h-14 md:h-16">
         <div class="flex items-center gap-3">
             <FontAwesomeIcon @click="toggleSidebar" :icon="faBars" class="bar-selector h-4 w-4 text-base-gray" />
             <p class="font-semibold text-sm md:text-xl">{{ title }}</p>
         </div>
         <Menu as="div" class="flex  items-center" v-slot="{ open }">
             <MenuButton class="relative flex items-center rounded-full text-sm focus:outline-none gap-2">
-                <div>
-                    <p class="hidden md:block font-semibold text-md">{{ user.name }}</p>
-                    <p v-if="user.role != 'user'" class="hidden md:block text-sm text-right text-base-gray-light">{{
-                        user.role }}</p>
+                <div class="text-right">
+                    <p class="hidden md:block font-semibold text-md">{{ `${userData.firstname} ${userData.lastname}` }}</p>
+                    <p v-if="userData.role != 'user'" class="hidden md:block text-sm text-base-gray-light">{{
+                        userData.role?.name }}</p>
                 </div>
-                <img class="h-9 w-9 rounded-full" :src="user.image" alt="" />
+                <img class="h-9 w-9 rounded-full" :src="userData.image" alt="" />
                 <FontAwesomeIcon :icon="faChevronDown"
                     :class="['hidden lg:block h-3 w-3 transform transition-transform text-base-gray', { '-rotate-180': open }]" />
             </MenuButton>
@@ -46,9 +46,9 @@ import {
 } from "@headlessui/vue";
 import image from '~/assets/image/profile/no picture male.jpg'
 import { toggleAside } from '~/composables/globalRef'
+import { user } from '~/composables/globalUserRef'
 
-const mounted = computed(() => Object.keys(user.value).length > 0)
-const user = ref<any>({})
+const userData: any = user
 const title = ref()
 const router = useRouter()
 
@@ -67,12 +67,9 @@ const menuItems = [
     { name: "Sign out", icon: faArrowRightFromBracket, function: signout }
 ];
 
-onMounted(() => {
-    const userData = localStorage.getItem('user');
-    if (userData) {
-        user.value = JSON.parse(userData);
-        user.value.image = image
-    }
+onMounted(async () => {
+    await getUser();
+    userData.value.image = image
     title.value = findTitleByRoute();
 })
 

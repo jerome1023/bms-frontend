@@ -1,5 +1,5 @@
 <template>
-    <div class="flex">
+    <div v-show="mounted" class="flex">
         <UiAside v-show="toggleAside"/>
         <div class="w-full">
             <UiHeader />
@@ -11,4 +11,7 @@
 </template>
 <script setup lang="ts">
 import { toggleAside } from '~/composables/globalRef'
+import { user } from '~/composables/globalUserRef'
+
+const mounted = computed(() => Object.keys(user.value).length > 0)
 </script>

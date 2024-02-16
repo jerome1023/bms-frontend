@@ -5,7 +5,7 @@
                 <div class="flex flex-col items-center mb-7">
                     <h1 class="text-2xl lg:text-3xl">Welcome</h1>
                 </div>
-                <Alert v-if="log_status.error" type="danger" title='Invalid Email or Password'
+                <Alert v-if="status.alert" type="danger" title='Invalid Email or Password'
                     parent-class="col-span-full" />
                 <div>
                     <FormGroup label="Email" type="text" name="email" placeholder="sample@email.com" span="col-span-2" />
@@ -14,15 +14,7 @@
                 </div>
                 <div class="mt-5">
                     <button class="btn w-full relative flex justify-center">
-                        <svg v-if="log_status.loading"
-                            class="animate-spin h-5 w-5 mr-1 text-white absolute self-center left-2"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
-                            </circle>
-                            <path class="opacity-75" fill="currentColor"
-                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                            </path>
-                        </svg>
+                        <Spinner :loading="status.loading"/>
                         Login
                     </button>
                 </div>
@@ -35,6 +27,7 @@
 </template>
 
 <script setup lang="ts">
+import { useAuth } from '~/composables/auth';
 import { LoginS } from '~/server/schema';
 // nextTick(() => {
 //   if (process.client) {
@@ -42,27 +35,27 @@ import { LoginS } from '~/server/schema';
 //   }
 // });\
 
-const log_status = ref({
-    error: false,
+const status = ref({
+    alert: false,
     loading: false
 })
 
 const login = async (value: any) => {
-    log_status.value.loading = true
+    status.value.loading = true
     try {
-        const response = await useLogin(value) as any;
-        const { token, firstname, lastname, role, status_code, message } = response
+        const response = await useAuth(value, 'login') as any;
+        const { token, status_code, id } = response
         if (status_code === 200) {
-            localStorage.setItem('token', response.token);
-            localStorage.setItem('user', JSON.stringify({ firstname, lastname, role }))
+            localStorage.setItem('token', token);
+            localStorage.setItem('id', id)
             navigateTo('/dashboard')
         }
         else {
-            log_status.value.error = true
+            status.value.alert = true
         }
     } catch (error: any) {
         useNuxtApp().$toast.error(error.message);
     }
-    log_status.value.loading = false
+    status.value.loading = false
 }
 </script>
