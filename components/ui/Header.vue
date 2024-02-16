@@ -8,7 +8,7 @@
             <MenuButton class="relative flex items-center rounded-full text-sm focus:outline-none gap-2">
                 <div class="text-right">
                     <p class="hidden md:block font-semibold text-md">{{ `${userData.firstname} ${userData.lastname}` }}</p>
-                    <p v-if="userData.role != 'user'" class="hidden md:block text-sm text-base-gray-light">{{
+                    <p v-if="userData.role?.name != 'User'" class="hidden md:block text-sm text-base-gray-light">{{
                         userData.role?.name }}</p>
                 </div>
                 <img class="h-9 w-9 rounded-full" :src="userData.image" alt="" />
@@ -38,45 +38,39 @@
 <script setup lang="ts">
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faArrowRightFromBracket, faBars, faUserPen, faChevronDown } from '@fortawesome/free-solid-svg-icons'
-import {
-    Menu,
-    MenuItem,
-    MenuButton,
-    MenuItems,
-} from "@headlessui/vue";
-import image from '~/assets/image/profile/no picture male.jpg'
+import { Menu, MenuItem, MenuButton, MenuItems } from "@headlessui/vue";
 import { toggleAside } from '~/composables/globalRef'
-import { user } from '~/composables/globalUserRef'
+import { useUserStore } from '~/stores/user'
+import image from '~/assets/image/profile/no picture male.jpg'
 
-const userData: any = user
-const title = ref()
+const userStore = useUserStore();
 const router = useRouter()
+const title = ref()
+const userData: any = ref({})
 
 const toggleSidebar = () => {
     toggleAside.value = !toggleAside.value
 }
 
-const signout = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
-    navigateTo('/login')
-}
-
 const menuItems = [
     { path: "/edit-profile", name: "Edit Profile", icon: faUserPen },
-    { name: "Sign out", icon: faArrowRightFromBracket, function: signout }
+    { name: "Sign out", icon: faArrowRightFromBracket, function: ()=>userStore.logout() }
 ];
 
-onMounted(async () => {
-    await getUser();
+const userDetails = async() => {
+    await userStore.getUserDetails();
+    userData.value = userStore.user
     userData.value.image = image
     title.value = findTitleByRoute();
+}
+
+onMounted(async () => {
+    userDetails();
 })
 
 watch(
     () => router.currentRoute.value.path,
     () => {
-        title.value = findTitleByRoute();
-
+        userDetails();
     })
 </script>

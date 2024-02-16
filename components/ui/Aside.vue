@@ -54,11 +54,13 @@ import {
     faXmark
 } from '@fortawesome/free-solid-svg-icons'
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
-import logo from '~/assets/image/logo.jpg'
 import { closeAsideOnClickOutside, toggleAside } from '~/composables/globalRef'
+import { useUserStore } from '~/stores/user'
+import logo from '~/assets/image/logo.jpg'
 
-const router = useRouter()
-const currentRoute = ref()
+const router = useRouter();
+const userStore = useUserStore();
+const currentRoute = ref();
 
 const barangay = {
     logo: logo,
@@ -70,18 +72,18 @@ const aside = [
         name: 'Dashboard',
         path: '/dashboard',
         icon: faGauge,
-        access: ['admin']
+        access: ['administrator']
     },
     {
         name: 'Barangay Official',
         path: '/barangay-official',
         icon: faUserTie,
-        access: ['admin']
+        access: ['administrator']
     },
     {
         name: 'Resident',
         icon: faAddressCard,
-        access: ['admin'],
+        access: ['administrator'],
         section: [{
             name: 'List',
             path: '/resident/list',
@@ -96,7 +98,7 @@ const aside = [
     {
         name: 'Request',
         icon: faFileInvoice,
-        access: ['admin','user'],
+        access: ['administrator','user'],
         section: [{
             name: 'Pending',
             path: '/request/pending',
@@ -118,25 +120,25 @@ const aside = [
         name: 'Transaction',
         path: '/transaction',
         icon: faClockRotateLeft,
-        access: ['admin', 'user'],
+        access: ['administrator', 'user'],
     },
     {
         name: 'Announcement',
         path: '/announcement',
         icon: faBullhorn,
-        access: ['admin','user']
+        access: ['administrator','user']
     },
     {
         name: 'Blotter',
         path: '/blotter',
         icon: faCircleExclamation,
-        access: ['admin'],
+        access: ['administrator'],
     },
     {
         name: 'Archive',
         path: '/archive',
         icon: faBoxArchive,
-        access: ['admin'],
+        access: ['administrator'],
     }
 ]
 
@@ -148,15 +150,23 @@ const currentRouteMatchesOneOfPaths = (item: any) => {
     return item.section.some((section: any) => currentRoute.value === section.path);
 }
 
+const role = ref()
+
+const userDetails = async() => {
+    await userStore.getUserDetails();
+    role.value = userStore.user.role?.name.toLowerCase()
+}
+
 watch(() => router.currentRoute.value.path,
     () => {
         currentRoute.value = router.currentRoute.value.path
+        userDetails();
     })
-const role = ref('admin')
+
 onMounted(() => {
     currentRoute.value = router.currentRoute.value.path
     document.body.addEventListener('click', closeAsideOnClickOutside);
-
+    userDetails();
 })
 
 </script>

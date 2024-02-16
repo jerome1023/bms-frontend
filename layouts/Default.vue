@@ -11,7 +11,8 @@
 </template>
 <script setup lang="ts">
 import { toggleAside } from '~/composables/globalRef'
-import { user } from '~/composables/globalUserRef'
+import { useUserStore } from '~/stores/user'
 
-const mounted = computed(() => Object.keys(user.value).length > 0)
+const userStore = useUserStore();
+const mounted = computed(() => Object.keys(userStore.user).length > 0)
 </script>

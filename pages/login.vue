@@ -29,12 +29,9 @@
 <script setup lang="ts">
 import { useAuth } from '~/composables/auth';
 import { LoginS } from '~/server/schema';
-// nextTick(() => {
-//   if (process.client) {
-//     useNuxtApp().$toast('notify after nextTick');
-//   }
-// });\
+import { useUserStore } from '~/stores/user'
 
+const userStore = useUserStore()
 const status = ref({
     alert: false,
     loading: false
@@ -48,7 +45,9 @@ const login = async (value: any) => {
         if (status_code === 200) {
             localStorage.setItem('token', token);
             localStorage.setItem('id', id)
-            navigateTo('/dashboard')
+            await userStore.getUserDetails();
+            userStore.user.role.name === 'Administrator' ? navigateTo('/dashboard') : navigateTo('/announcement')
+
         }
         else {
             status.value.alert = true

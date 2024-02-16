@@ -13,8 +13,12 @@ export default defineNuxtConfig({
     }
   ],
   modules:[
-    '@vee-validate/nuxt'
+    '@vee-validate/nuxt',
+    '@pinia/nuxt'
   ],
+  pinia: {
+    storesDirs: ['./stores/**', './custom-folder/stores/**'],
+  },
   css: ['~/assets/scss/global.scss'],
   postcss: {
     plugins: {
