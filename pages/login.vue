@@ -44,8 +44,8 @@ const login = async (value: any) => {
     status.value.loading = true
     try {
         const response = await useAuth(value, 'login') as any;
-        const { token, status_code, id } = response
-        if (status_code === 200) {
+        const { token, status, id } = response
+        if (status === 200) {
             localStorage.setItem('token', token);
             localStorage.setItem('id', id)
             navigateTo('/dashboard')

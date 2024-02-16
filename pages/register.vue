@@ -57,12 +57,11 @@ const status = ref({
 
 const register = async(value: any, {resetForm}:any) => {
     const { confirm_password, gender, ...formData } = value
-    console.log({gender: gender.value, ...formData})
     status.value.loading = true
     try {
         const response = await useAuth({gender: gender.value, ...formData}, 'register') as any;
-        const { message, errors, status_code } = response
-        if (status_code === 201) {
+        const { message, errors, status } = response
+        if (status === 201) {
             status.value.alert.isShow = true;
             status.value.alert.type = 'success';
             status.value.alert.message = 'Successfully Registered';
