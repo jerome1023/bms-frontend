@@ -7,9 +7,9 @@
         <Menu as="div" class="flex  items-center" v-slot="{ open }">
             <MenuButton class="relative flex items-center rounded-full text-sm focus:outline-none gap-2">
                 <div class="text-right">
-                    <p class="hidden md:block font-semibold text-md">{{ `${userData.firstname} ${userData.lastname}` }}</p>
-                    <p v-if="userData.role?.name != 'User'" class="hidden md:block text-sm text-base-gray-light">{{
-                        userData.role?.name }}</p>
+                    <p class="hidden md:block font-semibold text-md">{{ `${userStore.user.firstname} ${userStore.user.lastname}` }}</p>
+                    <p v-if="userStore.user.role?.name != 'User'" class="hidden md:block text-sm text-base-gray-light">{{
+                        userStore.user.role?.name }}</p>
                 </div>
                 <img class="h-9 w-9 rounded-full" :src="userData.image" alt="" />
                 <FontAwesomeIcon :icon="faChevronDown"
@@ -57,9 +57,7 @@ const menuItems = [
     { name: "Sign out", icon: faArrowRightFromBracket, function: ()=>userStore.logout() }
 ];
 
-const userDetails = async() => {
-    await userStore.getUserDetails();
-    userData.value = userStore.user
+const userDetails = () => {
     userData.value.image = image
     title.value = findTitleByRoute();
 }

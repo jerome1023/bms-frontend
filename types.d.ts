@@ -5,6 +5,13 @@ export type TOptions = {
 
 export type TAlert = {
     error: boolean
-    type: 'info' |'success' | 'danger' | 'warning'
+    type: 'info' | 'success' | 'danger' | 'warning'
     message: string
-  }
+}
+
+export type TTableContent = {
+    title: string;
+    head: string[];
+    action: string[];
+    body: { [key: string]: any }[]
+}

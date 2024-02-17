@@ -6,7 +6,8 @@
             <img :src="barangay.logo" class="h-9 w-9 rounded-full" />
             <p class="flex-1 text-white font-medium text-lg">{{ barangay.name }}</p>
         </div>
-        <div v-for="(item, index) in aside" :key="index" :class="['ml-2', {'hidden' : !item.access.includes(role)}]">
+        <div v-for="(item, index) in aside" :key="index"
+            :class="['ml-2', { 'hidden': !item.access.includes(userStore.user.role?.name.toLowerCase()) }]">
             <a @click="navigateTo(item.path)" v-if="index != 2 && index != 3"
                 :class="['py-3 mb-1 pl-2 flex items-center gap-2 bg-green cursor-pointer', currentRoute === item.path ? 'bg-white text-base-green rounded-l-full' : 'text-white']">
                 <FontAwesomeIcon :icon="item.icon" class="h-4 w-4" />
@@ -98,7 +99,7 @@ const aside = [
     {
         name: 'Request',
         icon: faFileInvoice,
-        access: ['administrator','user'],
+        access: ['administrator', 'user'],
         section: [{
             name: 'Pending',
             path: '/request/pending',
@@ -126,7 +127,7 @@ const aside = [
         name: 'Announcement',
         path: '/announcement',
         icon: faBullhorn,
-        access: ['administrator','user']
+        access: ['administrator', 'user']
     },
     {
         name: 'Blotter',
@@ -150,23 +151,13 @@ const currentRouteMatchesOneOfPaths = (item: any) => {
     return item.section.some((section: any) => currentRoute.value === section.path);
 }
 
-const role = ref()
-
-const userDetails = async() => {
-    await userStore.getUserDetails();
-    role.value = userStore.user.role?.name.toLowerCase()
-}
-
 watch(() => router.currentRoute.value.path,
     () => {
         currentRoute.value = router.currentRoute.value.path
-        userDetails();
     })
 
 onMounted(() => {
     currentRoute.value = router.currentRoute.value.path
     document.body.addEventListener('click', closeAsideOnClickOutside);
-    userDetails();
 })
-
 </script>

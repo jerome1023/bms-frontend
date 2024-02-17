@@ -1,12 +1,18 @@
-import { useUserStore } from "~/stores/user"
+import { useUserStore } from "~/stores/user";
 
 export default defineNuxtRouteMiddleware(async (route, redirect) => {
-  if (process.client) {
-    const userStore = useUserStore();
-    await userStore.getUserDetails();
+  // const { route, redirect } = context;
 
-    if (!userStore.user.first_name && route.path !== '/login') {
-      return navigateTo('/login');
-    }
+  if (process.client) {
+    // const userStore = useUserStore();
+    // await userStore.getUserDetails();
+
+    // if (!userStore.user?.id && route.path !== '/login') {
+    //   return navigateTo('/login');
+    // }
+
+    // else if (userStore.user?.id && route.path === '/login') {
+    //   return navigateTo('/dashboard');
+    // }
   }
 });

@@ -47,7 +47,6 @@ const login = async (value: any) => {
             localStorage.setItem('id', id)
             await userStore.getUserDetails();
             userStore.user.role.name === 'Administrator' ? navigateTo('/dashboard') : navigateTo('/announcement')
-
         }
         else {
             status.value.alert = true
