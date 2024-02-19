@@ -1,5 +1,6 @@
 <template>
   <div>
+    <NuxtLoadingIndicator estimatedProgress="100" :height="5" />
     <NuxtLayout :name="layout" v-if="isLoading">
       <NuxtPage/>
     </NuxtLayout>

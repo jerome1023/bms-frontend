@@ -8,11 +8,11 @@
         </div>
         <div v-for="(item, index) in aside" :key="index"
             :class="['ml-2', { 'hidden': !item.access.includes(userStore.user.role?.name.toLowerCase()) }]">
-            <a @click="navigateTo(item.path)" v-if="index != 2 && index != 3"
+            <NuxtLink :to="item.path" v-if="index != 2 && index != 3"
                 :class="['py-3 mb-1 pl-2 flex items-center gap-2 bg-green cursor-pointer', currentRoute === item.path ? 'bg-white text-base-green rounded-l-full' : 'text-white']">
                 <FontAwesomeIcon :icon="item.icon" class="h-4 w-4" />
                 <p>{{ item.name }}</p>
-            </a>
+            </NuxtLink>
             <Disclosure v-else as="div" v-slot="{ open }" class="text-white">
                 <DisclosureButton
                     :class="['flex items-center w-full py-2.5 px-2 text-base leading-7', !open && currentRouteMatchesOneOfPaths(item) ? 'bg-white text-base-green rounded-l-full' : '']">
@@ -23,11 +23,11 @@
                 </DisclosureButton>
                 <DisclosurePanel>
                     <div v-for="section in item.section" :key="section.name" class="border-l-2 ml-3.5">
-                        <DisclosureButton as="a" @click="navigateTo(section.path)"
+                        <NuxtLink :to="section.path"
                             :class="['py-2 ml-1 pl-3 flex items-center gap-2 text-sm font-semibold leading-7 cursor-pointer', open && currentRoute === section.path ? 'bg-white text-base-green rounded-l-full' : 'text-white']">
                             <FontAwesomeIcon :icon="section.icon" class="h-4 w-4" />
                             {{ section.name }}
-                        </DisclosureButton>
+                        </NuxtLink>
                     </div>
                 </DisclosurePanel>
             </Disclosure>
