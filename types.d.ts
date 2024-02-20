@@ -12,6 +12,5 @@ export type TAlert = {
 export type TTableContent = {
     title: string;
     head: string[];
-    action: string[];
     body: { [key: string]: any }[]
 }

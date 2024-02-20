@@ -1,18 +1,36 @@
-import { useUserStore } from "~/stores/user";
-
-export default defineNuxtRouteMiddleware(async (route, redirect) => {
-  // const { route, redirect } = context;
-
+export default defineNuxtRouteMiddleware(async (to, from) => {
   if (process.client) {
-    // const userStore = useUserStore();
-    // await userStore.getUserDetails();
+      const userStore = useUserStore()
+      await userStore.getUserDetails()
 
-    // if (!userStore.user?.id && route.path !== '/login') {
-    //   return navigateTo('/login');
-    // }
+      const authExceptions = [
+          '/login', 
+          '/register', 
+          '/invalid-page'
+      ]
 
-    // else if (userStore.user?.id && route.path === '/login') {
-    //   return navigateTo('/dashboard');
-    // }
+      if (!authExceptions.includes(to.path)) {
+          if (!userStore.user.id) {
+              return navigateTo('/login')
+          }
+      }
+
+      // const privacyStatusExceptions = [
+      //     '/login', 
+      //     '/register', 
+      //     '/forgot-password',
+      //     '/reset-password',
+      //     '/privacy-policy',
+      //     '/terms-and-condition',
+      //     '/user-activate',
+      //     '/dashboard',            
+      //     '/invalid-page'
+      // ]
+
+      // if (!privacyStatusExceptions.includes(to.path)) {
+      //     if (authStore.hasAgreedDataPrivacy === false) {
+      //         return navigateTo('/dashboard')
+      //     }
+      // }
   }
-});
+})

@@ -7,7 +7,8 @@
         <Menu as="div" class="flex  items-center" v-slot="{ open }">
             <MenuButton class="relative flex items-center rounded-full text-sm focus:outline-none gap-2">
                 <div class="text-right">
-                    <p class="hidden md:block font-semibold text-md">{{ `${userStore.user.firstname} ${userStore.user.lastname}` }}</p>
+                    <p class="hidden md:block font-semibold text-md">{{ `${userStore.user.firstname}
+                                            ${userStore.user.lastname}` }}</p>
                     <p v-if="userStore.user.role?.name != 'User'" class="hidden md:block text-sm text-base-gray-light">{{
                         userStore.user.role?.name }}</p>
                 </div>
@@ -54,7 +55,7 @@ const toggleSidebar = () => {
 
 const menuItems = [
     { path: "/edit-profile", name: "Edit Profile", icon: faUserPen },
-    { name: "Sign out", icon: faArrowRightFromBracket, function: ()=>userStore.logout() }
+    { name: "Sign out", icon: faArrowRightFromBracket, function: () => userStore.logout() }
 ];
 
 const userDetails = () => {
