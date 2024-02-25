@@ -10,7 +10,12 @@ export type TAlert = {
 }
 
 export type TTableContent = {
-    title: string;
+    title?: string;
     head: string[];
     body: { [key: string]: any }[]
+}
+
+export type TForm = {
+        component: ComponentPublicInstance | any
+        schema: object
 }

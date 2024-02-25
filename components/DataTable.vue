@@ -1,6 +1,6 @@
 <template>
     <div class="md:px-2">
-        <button @click="event?.()" class="btn btn-sm flex items-center gap-1">
+        <button v-if="content.title" @click="event?.()" class="btn btn-sm flex items-center gap-1">
             <FontAwesomeIcon :icon="faPlus" class=" md:h-4 md:w-4" /> Add<span class="hidden md:block"> {{ content.title
             }}</span>
         </button>
@@ -99,9 +99,9 @@ const actionColorIcon = <any>{
 const handleClickEvent = (action: string, id?: any) => {
     // handleTableEvent(action, id)
     // navigateTo(tableEvent(action, id))
-    // if (action === 'edit' || action === 'view') {
-    //     props.event?.();
-    // }
+    if (action === 'edit' || action === 'view') {
+        props.event?.();
+    }
 }
 
 const searchQuery = ref('');

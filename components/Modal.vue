@@ -1,6 +1,6 @@
 <template>
-  <TransitionRoot as="template" :show="open">
-    <Dialog as="div" class="relative z-10">
+  <TransitionRoot as="template" :show="useModal.open" @close="toggleModal">
+    <Dialog as="div" class="relative z-50">
       <div class="fixed inset-0 bg-black/40" aria-hidden="true" />
       <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0" enter-to="opacity-100"
         leave="ease-in duration-200" leave-from="opacity-100" leave-to="opacity-0">
@@ -16,7 +16,7 @@
             leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
             <DialogPanel
               class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all my-8 w-full md:max-w-[650px] p-6">
-              <FontAwesomeIcon :icon="faXmark" />
+              <FontAwesomeIcon :icon="faXmark" @click="toggleModal" class="absolute right-3 top-3 h-5 w-5"/>
               <slot></slot>
             </DialogPanel>
           </TransitionChild>
@@ -30,9 +30,12 @@
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from "@headlessui/vue";
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
+import { useModalStore } from '~/stores/modal'
 
-const props = defineProps<{
-  open: boolean;
-}>();
+const useModal = useModalStore()
+
+const toggleModal = () => {
+  useModal.toggleModal(false)
+}
 </script>
   

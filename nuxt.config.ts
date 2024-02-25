@@ -12,12 +12,9 @@ export default defineNuxtConfig({
       path: '~/views',
     }
   ],
-  modules:['@vee-validate/nuxt', '@pinia/nuxt', "@nuxt/image"],
+  modules:['@vee-validate/nuxt', '@pinia/nuxt'],
   pinia: {
     storesDirs: ['./stores/**', './custom-folder/stores/**'],
-  },
-  router: {
-    middleware: 'auth'
   },
   css: ['~/assets/scss/global.scss'],
   postcss: {

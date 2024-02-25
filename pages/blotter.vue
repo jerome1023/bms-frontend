@@ -1,13 +1,16 @@
 <template>
     <DataTable :content="content" :event="openModal" />
-    <ModalForm :open="open" @close="open = false"/>
+    <ModalForm/>
 </template>
 
 <script setup lang="ts">
 import type { TTableContent } from '~/types';
+import { useModalStore } from '~/stores/modal'
+
+const useModal = useModalStore()
 
 const content: TTableContent = {
-    title: 'Official',
+    title: 'Blotter',
     head: ['Name', 'Position', 'Start Term', 'End Term', 'Status'],
     body: [
         {
@@ -21,9 +24,8 @@ const content: TTableContent = {
     ]
 };
 
-const open = ref(false);
-
 const openModal = () => {
-    open.value = true
+    useModal.toggleModal(true)
+
 };
 </script>

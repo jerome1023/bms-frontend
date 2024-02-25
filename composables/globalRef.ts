@@ -1,5 +1,4 @@
 const router = useRouter()
-export const isModalOpen = ref(false);
 
 export const toggleAside = ref(true);
 const updateToggleAside = () => {
@@ -27,7 +26,7 @@ export const closeAsideOnClickOutside = (event: any) => {
     }
 };
 
-const routeTitles = {
+const routeTitles:any = {
     '/dashboard': 'Dashboard',
     '/barangay-official': 'Barangay Official',
     '/resident/list': 'Resident List',

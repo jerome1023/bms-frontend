@@ -21,7 +21,7 @@
                 leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100"
                 leave-to-class="transform opacity-0 scale-95">
                 <MenuItems
-                    class="absolute right-3 lg:right-5 z-10 mt-36 w-40 origin-top-right rounded-md bg-base-gray-100 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    class="absolute right-3 lg:right-5 z-20 mt-36 w-40 origin-top-right rounded-md bg-base-gray-100 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <MenuItem v-for="(menu, index) in menuItems" :key="index" v-slot="{ active }">
                     <a :href="menu.path" :class="[
                         active ? 'bg-neutral-light-500' : '',

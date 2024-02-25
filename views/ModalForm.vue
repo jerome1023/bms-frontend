@@ -1,37 +1,17 @@
 <template>
-    <Modal :open="open">
-        Official
-        <div>test</div>
-        <div>test</div>
-        <div>test</div>
-        <div>test</div>
-        <div>test</div>
-        <div>test</div>
-        <div>test</div>
-        <div>test</div>
-        <div>test</div>
-        <div>test</div>
-        <div>test</div>
-        <div>test</div>
-        <div>test</div>
-        <div>test</div>
-        <div>test</div>
-        <div>test</div>
-        <div>test</div>
-        <div>test</div>
-        <div>test</div>
-        <div>test</div>
-        <div>test</div>
-        <div>test</div>
-        <div>test</div>
-        <div>test</div>
-        <div>test</div>
-        <div>test</div>
+    <Modal>
+        <Form>
+            <KeepAlive>
+                <component :is="form.component" />
+            </KeepAlive>
+        </Form>
     </Modal>
 </template>
 
 <script setup lang="ts">
+import type { TForm } from '~/types';
+
 defineProps<{
-    open: boolean
+    form: TForm
 }>()
 </script>

@@ -20,7 +20,7 @@
   
   <script setup lang="ts">
   defineProps<{
-    type: 'info' |'success' | 'danger' | 'warning';
+    type: string;
     title: string;
     message?: string;
     parentClass?: string;
