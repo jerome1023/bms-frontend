@@ -1,7 +1,7 @@
 const router = useRouter()
+export const isModalOpen = ref(false);
 
 export const toggleAside = ref(true);
-
 const updateToggleAside = () => {
     const isMd = window.matchMedia('(max-width: 768px)').matches;
     toggleAside.value = !isMd;
