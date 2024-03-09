@@ -1,5 +1,5 @@
 <template>
-    <Field v-slot="{ field, value }" v-model="selected" :name="name">
+  <!-- <Field v-slot="{ field, value }" v-model="selected" :name="name">
         <Listbox v-bind="field" as="div" v-slot="{open}">
             <div class="relative">
                 <ListboxButton
@@ -27,24 +27,40 @@
                 </transition>
             </div>
         </Listbox>
+    </Field> -->
+  <div class="w-full cursor-default rounded-md bg-transparent py-2 px-2 text-left shadow-sm ring-1 ring-inset ring-base-green sm:text-sm sm:leading-6 flex">
+    <Field
+      :name="name"
+      as="select"
+      class="w-full focus:outline-none"
+    >
+    <option selected value="" class="text-base-gray">{{ placeholder || label }}</option>
+      <option v-for="option in options" :value="option.value">
+        {{ option.text }}
+      </option>
     </Field>
+  </div>
 </template>
-  
+
 <script setup lang="ts">
-import { Field } from 'vee-validate/'
-import { ref } from 'vue'
-import { Listbox, ListboxButton, ListboxOptions, ListboxOption, } from '@headlessui/vue'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faChevronDown, faCheck } from '@fortawesome/free-solid-svg-icons'
-import type { TOptions } from '~/types';
+import { Field } from "vee-validate/";
+import { ref } from "vue";
+import {
+  Listbox,
+  ListboxButton,
+  ListboxOptions,
+  ListboxOption,
+} from "@headlessui/vue";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faChevronDown, faCheck } from "@fortawesome/free-solid-svg-icons";
+import type { TOptions } from "~/types";
 
 const props = defineProps<{
-    label: string
-    name: string
-    placeholder?: string
-    options?: TOptions;
-}>()
+  label: string;
+  name: string;
+  placeholder?: string;
+  options?: TOptions;
+}>();
 
-const selected = ref({ value: '', text: props.placeholder ?? props.label })
+const selected = ref({ value: "", text: props.placeholder ?? props.label });
 </script>
-  

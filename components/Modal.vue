@@ -15,8 +15,8 @@
             leave-from="opacity-100 translate-y-0 sm:scale-100"
             leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
             <DialogPanel
-              class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all my-8 w-full md:max-w-[650px] p-6">
-              <FontAwesomeIcon :icon="faXmark" @click="toggleModal" class="absolute right-3 top-3 h-5 w-5"/>
+              class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all my-8 w-full md:max-w-[700px] p-6">
+              <FontAwesomeIcon :icon="faXmark" @click="toggleModal" class="absolute right-5 top-5 h-5 w-5"/>
               <slot></slot>
             </DialogPanel>
           </TransitionChild>

@@ -1,21 +1,22 @@
 export type TOptions = {
-    text: String;
-    value: String;
-}[]
+  text: String;
+  value: String;
+}[];
 
 export type TAlert = {
-    error: boolean
-    type: 'info' | 'success' | 'danger' | 'warning'
-    message: string
-}
+  error: boolean;
+  type: "info" | "success" | "danger" | "warning";
+  message: string;
+};
 
 export type TTableContent = {
-    title?: string;
-    head: string[];
-    body: { [key: string]: any }[]
-}
+  title?: string;
+  head: string[];
+  body: { [key: string]: any }[];
+};
 
 export type TForm = {
-        component: ComponentPublicInstance | any
-        schema: object
-}
+  title: string;
+  component: ComponentPublicInstance | any;
+  schema: object;
+};

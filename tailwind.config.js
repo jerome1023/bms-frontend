@@ -11,6 +11,7 @@ export default{
     "./components/**/*.{js,vue,ts}",
     "./layouts/**/*.vue",
     "./pages/**/*.vue",
+    "./views/**/*.vue",
     "./plugins/**/*.{js,ts}",
     "./app.vue",
     "./error.vue",

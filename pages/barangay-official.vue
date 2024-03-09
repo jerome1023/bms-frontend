@@ -31,6 +31,7 @@ const openModal = () => {
 };
 
 const form:TForm = {
+    title: 'Official Information',
     component : OfficialForm,
     schema : {}
 }
