@@ -61,25 +61,26 @@ export default{
       },
       alert: {
         info: {
-          bg: '#EFF6FF',
-          text: '#1D4ED8',
-          icon: '#60A5FA'
+          bg: '#87cefa',
+          text: '#0000ff',
+          icon: '#0000ff'
         },
         danger: {
           // bg: '#FEF2F2',
           bg: '#FECACA',
           text: '#991B1B',
-          icon: '#F87103'
+          icon: '#991B1B'
         },
         success: {
-          bg: '#34D399',
-          text: '#166534',
-          icon: '#059669'
+          // bg: '#34D399',
+          bg: '#98ff98',
+          text: '#006400',
+          icon: '#006400'
         },
         warning: {
-          bg: '#fefce8',
-          text: '#854d0e',
-          icon: '#facc15'
+          bg: '#fcffa4',
+          text: '#f5c71a',
+          icon: '#f5c71a'
         }
       },
       error: {

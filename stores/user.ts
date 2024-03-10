@@ -11,7 +11,7 @@ export const useUserStore = defineStore({
             this.id = localStorage.getItem('id') || '';
             if (this.id) {
                 const response = await useGetFetch(`users/${this.id}`)
-                this.user = response.status == 200 ? response.data : this.logout()
+                this.user = response.status_code == 200 ? response.data : this.logout()
             }
         },
         logout() {

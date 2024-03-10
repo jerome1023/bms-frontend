@@ -4,7 +4,7 @@
         <FormGroup label="Firstname" type="text" name="firstname" span="col-span-2" />
         <FormGroup label="Middlename" type="text" name="middlename" span="col-span-2" />
         <FormGroup label="Gender" type="select" :options="options" name="gender" span="col-span-3" />
-        <FormGroup label="Position" type="select" :options="options" name="position" span="col-span-3" />
+        <FormGroup label="Position" type="select" :options="optionPositions" name="position" span="col-span-3" />
         <FormGroup label="Birthdate" type="text" name="birthdate" span="col-span-3" />
         <FormGroup label="Start Term" type="text" name="start_term" span="col-span-3" />
         <FormGroup label="End Term" type="text" name="end_term" span="col-span-3" />
@@ -20,6 +20,17 @@ const options = [
     {
         text: 'Female',
         value: 'female'
+    }
+]
+
+const optionPositions = [
+    {
+        text: 'Barangay Captain',
+        value: 'captain'
+    },
+    {
+        text: 'Konsehal',
+        value: 'konsehal'
     }
 ]
 </script>

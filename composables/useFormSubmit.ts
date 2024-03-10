@@ -1,4 +1,4 @@
-// import type { TFormResponse } from "~/types.d";
+import type { TFormResponse } from "~/types.d";
 
 export const useFormSubmit = async (path: string, formData: Object, method?: any) => {
     const token = localStorage.getItem('token');
@@ -9,9 +9,9 @@ export const useFormSubmit = async (path: string, formData: Object, method?: any
             'Authorization': `Bearer ${token}`
         },
         body: formData
-    });
+    })as Omit<TFormResponse, 'alert'>;
 
-    return response;
+    // return response;
 
     // if (!response || response.error) {
     //     return <TFormResponse>{
@@ -33,18 +33,18 @@ export const useFormSubmit = async (path: string, formData: Object, method?: any
     //     alertData = Object.values(response.data).flat() as string[];
     // }
 
-    // const res: TFormResponse = {
-    //     status: response.status,
-    //     status_code: response.status_code,
-    //     message: response.message,
-    //     data: response.data,
-    //     alert: {
-    //         type: response.status === 'error' ? 'danger' : 'success',
-    //         title: alertTitle,
-    //         message: response.message,
-    //         list: alertData
-    //     }
-    // };
+    const res: TFormResponse = {
+        status: response.status,
+        status_code: response.status_code,
+        message: response.message,
+        data: response.data,
+        errors: response.errors,
+        alert: {
+            type: !response.status ? 'danger' : 'success',
+            title: response.message,
+            // message: response.message,
+        }
+    };
 
-    // return res;
+    return res;
 };

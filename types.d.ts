@@ -4,15 +4,15 @@ export type TOptions = {
 }[];
 
 export type TAlert = {
-  error: boolean;
   type: "info" | "success" | "danger" | "warning";
-  message: string;
+  title: string;
+  error?: boolean;
 };
 
 export type TTableContent = {
   title?: string;
   head: string[];
-  body: { [key: string]: any }[];
+  body: [];
 };
 
 export type TForm = {
@@ -20,3 +20,16 @@ export type TForm = {
   component: ComponentPublicInstance | any;
   schema: object;
 };
+
+export type TResponse = {
+  status: string
+  status_code: number
+  message: string
+  data?: any
+}
+
+export type TFormResponse = TResponse & {
+  errors?: string
+  data: any
+  alert: TAlert
+}
