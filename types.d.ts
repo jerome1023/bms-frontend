@@ -9,27 +9,34 @@ export type TAlert = {
   error?: boolean;
 };
 
+export type TTableColumn = {
+  field: string;
+  header: string;
+};
+
 export type TTableContent = {
   title?: string;
-  head: string[];
-  body: [];
+  columns: TTableColumn[];
+  body: any[];
 };
 
 export type TForm = {
+  mode: string;
   title: string;
   component: ComponentPublicInstance | any;
   schema: object;
+  data: object
 };
 
 export type TResponse = {
-  status: string
-  status_code: number
-  message: string
-  data?: any
-}
+  status: string;
+  status_code: number;
+  message: string;
+  data?: any;
+};
 
 export type TFormResponse = TResponse & {
-  errors?: string
-  data: any
-  alert: TAlert
-}
+  errors?: string;
+  data: any;
+  alert: TAlert;
+};

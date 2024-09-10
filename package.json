@@ -30,7 +30,9 @@
     "@pinia/nuxt": "^0.5.1",
     "@vee-validate/nuxt": "^4.12.2",
     "@vee-validate/zod": "^4.12.2",
+    "nuxt-primevue": "^3.0.0",
     "pinia": "^2.1.7",
+    "primeicons": "^7.0.0",
     "vee-validate": "^4.12.4",
     "vue3-toastify": "^0.2.1"
   }

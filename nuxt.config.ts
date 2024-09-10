@@ -12,11 +12,21 @@ export default defineNuxtConfig({
       path: '~/views',
     }
   ],
-  modules:['@vee-validate/nuxt', '@pinia/nuxt'],
+  modules:['@vee-validate/nuxt', '@pinia/nuxt', 'nuxt-primevue'],
+  primevue: {
+    // cssLayerOrder: 'tailwind-base, primevue, tailwind-utilities',
+    components: {
+      include: '*'
+  }
+  },
   pinia: {
     storesDirs: ['./stores/**', './custom-folder/stores/**'],
   },
-  css: ['~/assets/scss/global.scss'],
+  css: [
+    '~/assets/scss/global.scss',
+    'primevue/resources/themes/aura-light-green/theme.css',
+    'primeicons/primeicons.css'
+  ],
   postcss: {
     plugins: {
       tailwindcss: {},

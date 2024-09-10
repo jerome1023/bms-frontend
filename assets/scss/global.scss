@@ -1,8 +1,18 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+// @tailwind base;
+// @tailwind components;
+// @tailwind utilities;
+@layer tailwind-base, primevue, tailwind-utilities;
 
-@layer components {
+@layer tailwind-base {
+    @tailwind base;
+  }
+
+  @layer tailwind-utilities {
+    @tailwind utilities;
+    @tailwind variants;
+  } 
+
+@layer tailwind-components {
     ::-webkit-scrollbar{
         display: none;
     }

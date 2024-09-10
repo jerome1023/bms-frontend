@@ -1,10 +1,12 @@
 <template>
   <Modal :alert="alert">
-    <Form @submit="submit" v-slot="{ isSubmitting }">
-      <h1 class="text-xl md:text-2xl font-semibold mb-5">{{ form.title }}</h1>
+    <Form @submit="submit" :initial-values="useModal.form.data" v-slot="{ isSubmitting }">
+      <h1 class="text-xl md:text-2xl font-semibold mb-5">
+        {{ useModal.form.title }}
+      </h1>
       <hr class="mb-5 text-base-green" />
       <KeepAlive>
-        <component :is="form.component" />
+        <component :is="useModal.form.component" />
       </KeepAlive>
       <hr class="mt-5 text-base-green" />
       <Alert
@@ -32,12 +34,30 @@
 <script setup lang="ts">
 import type { TAlert, TForm } from "~/types";
 import { useModalStore } from "~/stores/modal";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+let currentUrl = route.fullPath;
+currentUrl = currentUrl.startsWith("/") ? currentUrl.slice(1) : currentUrl;
 
 const useModal = useModalStore();
 
-defineProps<{
-  form: TForm;
-}>();
+const endpoint = ref();
+const method = ref()
+
+const checkFormMode = () => {
+  if (useModal.open) {
+    const mode = useModal.form.mode.toLowerCase();
+    if (mode === 'create') {
+      endpoint.value = currentUrl + '/create';
+    }
+    else if(mode === 'edit'){
+      const id = useModal.form.data.id;
+      method.value = 'PUT'
+      endpoint.value = `${currentUrl}/update/${id}`;
+    }
+  }
+};
 
 const alert = ref<TAlert>({
   type: "info",
@@ -45,15 +65,17 @@ const alert = ref<TAlert>({
 });
 
 const submit = async (values: any, actions: any) => {
-  await useFormSubmit("official/create", values).then((response) => {
+  checkFormMode();
+  await useFormSubmit(endpoint.value, values, method.value).then((response) => {
     alert.value = {
       type: response.alert.type,
       title: response.alert.title,
     };
     if (response.status) {
-      setInterval(() => {
+      method.value = null
+      setTimeout(() => {
         closeModal();
-      }, 2000);
+      }, 1000);
     } else {
       actions.setErrors(response.errors);
     }
@@ -68,10 +90,13 @@ watch(
   () => useModal.open,
   (newValue) => {
     if (!newValue) {
-      alert.value = {
-        type: "info",
-        title: "",
-      };
+      setTimeout(() => {
+        useModal.resetFormData();
+        alert.value = {
+          type: "info",
+          title: "",
+        };
+      }, 200);
     }
   }
 );

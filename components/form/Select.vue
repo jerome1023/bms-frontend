@@ -45,14 +45,14 @@
 <script setup lang="ts">
 import { Field } from "vee-validate/";
 import { ref } from "vue";
-import {
-  Listbox,
-  ListboxButton,
-  ListboxOptions,
-  ListboxOption,
-} from "@headlessui/vue";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faChevronDown, faCheck } from "@fortawesome/free-solid-svg-icons";
+// import {
+//   Listbox,
+//   ListboxButton,
+//   ListboxOptions,
+//   ListboxOption,
+// } from "@headlessui/vue";
+// import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+// import { faChevronDown, faCheck } from "@fortawesome/free-solid-svg-icons";
 import type { TOptions } from "~/types";
 
 const props = defineProps<{
