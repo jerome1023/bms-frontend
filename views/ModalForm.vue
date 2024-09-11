@@ -1,6 +1,10 @@
 <template>
   <Modal :alert="alert">
-    <Form @submit="submit" :initial-values="useModal.form.data" v-slot="{ isSubmitting }">
+    <Form
+      @submit="submit"
+      :initial-values="useModal.form.data"
+      v-slot="{ isSubmitting }"
+    >
       <h1 class="text-xl md:text-2xl font-semibold mb-5">
         {{ useModal.form.title }}
       </h1>
@@ -34,6 +38,7 @@
 <script setup lang="ts">
 import type { TAlert, TForm } from "~/types";
 import { useModalStore } from "~/stores/modal";
+import { useDataTableStore } from "~/stores/datatable";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
@@ -41,19 +46,19 @@ let currentUrl = route.fullPath;
 currentUrl = currentUrl.startsWith("/") ? currentUrl.slice(1) : currentUrl;
 
 const useModal = useModalStore();
+const useDataTable = useDataTableStore();
 
 const endpoint = ref();
-const method = ref()
+const method = ref();
 
 const checkFormMode = () => {
   if (useModal.open) {
     const mode = useModal.form.mode.toLowerCase();
-    if (mode === 'create') {
-      endpoint.value = currentUrl + '/create';
-    }
-    else if(mode === 'edit'){
+    if (mode === "create") {
+      endpoint.value = currentUrl + "/create";
+    } else if (mode === "edit") {
       const id = useModal.form.data.id;
-      method.value = 'PUT'
+      method.value = "PUT";
       endpoint.value = `${currentUrl}/update/${id}`;
     }
   }
@@ -66,20 +71,27 @@ const alert = ref<TAlert>({
 
 const submit = async (values: any, actions: any) => {
   checkFormMode();
-  await useFormSubmit(endpoint.value, values, method.value).then((response) => {
-    alert.value = {
-      type: response.alert.type,
-      title: response.alert.title,
-    };
-    if (response.status) {
-      method.value = null
-      setTimeout(() => {
-        closeModal();
-      }, 1000);
-    } else {
-      actions.setErrors(response.errors);
-    }
+  const response = await useFormSubmit(endpoint.value, values, method.value);
+
+  alert.value = {
+    type: response.alert.type,
+    title: response.alert.title,
+  };
+
+  if (response.status) {
+    method.value = null;
+    setTimeout(() => {
+      closeModal();
+    }, 1000);
+    //add data to stores
+    // const body = await dataList();
+
+    // console.log(currentUrl)
+    await useGetData(`${currentUrl}/list`).then((response) => {
+      useDataTable.updateBody(response)
+      // console.log(response)
   });
+  }
 };
 
 const closeModal = () => {

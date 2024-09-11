@@ -57,10 +57,13 @@ import {
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 import { closeAsideOnClickOutside, toggleAside } from '~/composables/globalRef'
 import { useUserStore } from '~/stores/user'
+import { useDataTableStore } from '~/stores/datatable'
 import logo from '~/assets/image/logo.jpg'
 
 const router = useRouter();
 const userStore = useUserStore();
+const useDataTable = useDataTableStore();
+
 const currentRoute = ref();
 
 const barangay = {
@@ -154,6 +157,7 @@ const currentRouteMatchesOneOfPaths = (item: any) => {
 watch(() => router.currentRoute.value.path,
     () => {
         currentRoute.value = router.currentRoute.value.path
+        useDataTable.reset()
     })
 
 onMounted(() => {
