@@ -65,6 +65,7 @@ onMounted(async () => {
         { field: "when", header: "When" },
         { field: "details", header: "Details" },
       ],
+      actions: ['edit', 'archive'],
       body: response ?? [],
     });
   });

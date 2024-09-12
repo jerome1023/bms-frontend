@@ -17,6 +17,7 @@ export type TTableColumn = {
 export type TTableContent = {
   title?: string;
   columns: TTableColumn[];
+  actions: string[];
   body: any[];
 };
 

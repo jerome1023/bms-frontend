@@ -79,19 +79,18 @@ const submit = async (values: any, actions: any) => {
   };
 
   if (response.status) {
-    method.value = null;
     setTimeout(() => {
       closeModal();
     }, 1000);
-    //add data to stores
-    // const body = await dataList();
 
-    // console.log(currentUrl)
+    //add data to stores
     await useGetData(`${currentUrl}/list`).then((response) => {
-      useDataTable.updateBody(response)
-      // console.log(response)
-  });
+      useDataTable.updateBody(response);
+    });
+  } else {
+    actions.setErrors(response.errors);
   }
+  method.value = null;
 };
 
 const closeModal = () => {

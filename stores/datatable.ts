@@ -7,6 +7,7 @@ export const useDataTableStore = defineStore({
     tableContent: {
       title: "",
       columns: [],
+      actions: [],
       body: [],
     } as TTableContent,
   }),
@@ -24,6 +25,7 @@ export const useDataTableStore = defineStore({
       this.tableContent = {
         title: "",
         columns: [],
+        actions: [],
         body: [],
       };
     },
