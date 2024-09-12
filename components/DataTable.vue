@@ -10,7 +10,8 @@
     dataKey="id"
     :loading="loading"
   >
-  <!-- {{ table.body }} -->
+    <template v-if="!loading" #empty> No record found. </template>
+    <!-- {{ table.body }} -->
     <!-- <Column rowReorder headerStyle="width: 3rem" :reorderableColumn="false" /> -->
     <Column
       v-for="col of useDataTable.tableContent.columns"
@@ -19,12 +20,17 @@
       :header="col.header"
       sortable
     >
-
-  </Column>
+    </Column>
     <Column>
-      <template #body="{data}">
-        <Button @click="openModal(data.id)" icon="pi pi-pencil"  size="small" severity="success" rounded outlined />
-        
+      <template #body="{ data }">
+        <Button
+          @click="openModal(data.id)"
+          icon="pi pi-pencil"
+          size="small"
+          severity="success"
+          rounded
+          outlined
+        />
       </template>
     </Column>
   </DataTable>
@@ -43,31 +49,25 @@ const route = useRoute();
 let currentUrl = route.fullPath;
 currentUrl = currentUrl.startsWith("/") ? currentUrl.slice(1) : currentUrl;
 
-
-const loading = ref(true)
+const loading = ref(true);
 
 watch(
   () => useDataTable.tableContent,
   () => {
-   
-    // if (newValue.body.length != 0) {
-      console.log('here')
-      loading.value = false; // Set loading to false when data is available
-    // }
-  }, // Executes the watch immediately to check for data initially
+    loading.value = false; // Set loading to false when data is available
+  }
 );
 
-const openModal = async (id:string) => {
+const openModal = async (id: string) => {
   await useGetData(`${currentUrl}/view/${id}`).then((response) => {
     useModal.toggleModal(true);
     useModal.mountForm({
-        mode: "Edit",
-        title: "Edit Information",
-        component: OfficialForm,
-        schema: {},
-        data: response
-      });
+      mode: "Edit",
+      title: "Edit Information",
+      component: OfficialForm,
+      schema: {},
+      data: response,
+    });
   });
 };
-
 </script>

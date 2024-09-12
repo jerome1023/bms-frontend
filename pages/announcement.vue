@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import { useUserStore } from "~/stores/user";
 import { useModalStore } from "~/stores/modal";
-import { OfficialForm } from "#components";
+import { AnnouncementForm } from "#components";
 
 const userStore = useUserStore();
 const useModal = useModalStore();
@@ -41,7 +41,7 @@ const openModal = () => {
   useModal.mountForm({
     mode: "Create",
     title: "Announcement",
-    component: OfficialForm,
+    component: AnnouncementForm,
     schema: {},
     data: {},
   });
@@ -58,11 +58,12 @@ onMounted(async () => {
     useDataTable.storeTableContent({
       title: "Announcement",
       columns: [
-        { field: "firstname", header: "Name" },
-        { field: "position", header: "Position" },
-        { field: "start_term", header: "Start Term" },
-        { field: "end_term", header: "End Term" },
-        // { field: "status", header: "Status" },
+        { field: "image", header: "Image" },
+        { field: "what", header: "What" },
+        { field: "where", header: "Where" },
+        { field: "who", header: "Who" },
+        { field: "when", header: "When" },
+        { field: "details", header: "Details" },
       ],
       body: response ?? [],
     });
