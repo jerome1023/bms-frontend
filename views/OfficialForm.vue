@@ -5,32 +5,32 @@
         <FormGroup label="Middlename" type="text" name="middlename" span="col-span-2" />
         <FormGroup label="Gender" type="select" :options="options" name="gender" span="col-span-3" />
         <FormGroup label="Position" type="select" :options="optionPositions" name="position" span="col-span-3" />
-        <FormGroup label="Birthdate" type="text" name="birthdate" span="col-span-3" />
-        <FormGroup label="Start Term" type="text" name="start_term" span="col-span-3" />
-        <FormGroup label="End Term" type="text" name="end_term" span="col-span-3" />
+        <FormGroup label="Birthdate" type="date" name="birthdate" span="col-span-3" />
+        <FormGroup label="Start Term" type="date" name="start_term" span="col-span-3" />
+        <FormGroup label="End Term" type="date" name="end_term" span="col-span-3" />
     </div>
 </template>
 
 <script setup lang="ts">
 const options = [
     {
-        text: 'Male',
-        value: 'male'
+        name: 'Male',
+        code: 'male'
     },
     {
-        text: 'Female',
-        value: 'female'
+        name: 'Female',
+        code: 'female'
     }
 ]
 
 const optionPositions = [
     {
-        text: 'Barangay Captain',
-        value: 'captain'
+        name: 'Barangay Captain',
+        code: 'captain'
     },
     {
-        text: 'Konsehal',
-        value: 'konsehal'
+        name: 'Konsehal',
+        code: 'konsehal'
     }
 ]
 </script>

@@ -37,12 +37,12 @@ import { RegisterS } from '~/server/schema';
 
 const options = [
     { 
-        text: 'Male', 
-        value: 'male' 
+        name: 'Male', 
+        code: 'male' 
     }, 
     { 
-        text: 'Female', 
-        value: 'female' 
+        name: 'Female', 
+        code: 'female' 
     }
 ]
 

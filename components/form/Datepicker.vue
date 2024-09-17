@@ -1,20 +1,24 @@
 <template>
   <Field v-slot="{ field }" :name="name">
-    <InputText
+    <Calendar
       v-bind="field"
       v-model="field.value"
-      :placeholder="label || placeholder"
-      type="text"
       class="w-full"
+      :placeholder="label || placeholder"
+      showIcon
+      iconDisplay="input"
+      :inputId="name"
+      dateFormat="yy/mm/dd"
     />
   </Field>
 </template>
-
 <script setup lang="ts">
-import { Field } from "vee-validate";
+import { Field } from "vee-validate/";
+
 defineProps<{
   label: string;
   name: string;
   placeholder?: string;
 }>();
+
 </script>

@@ -1,6 +1,6 @@
 export type TOptions = {
-  text: String;
-  value: String;
+  name: String;
+  code: String;
 }[];
 
 export type TAlert = {

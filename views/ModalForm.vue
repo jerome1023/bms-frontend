@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import type { TAlert, TForm } from "~/types";
+import type { TAlert } from "~/types";
 import { useModalStore } from "~/stores/modal";
 import { useDataTableStore } from "~/stores/datatable";
 import { useRoute } from "vue-router";

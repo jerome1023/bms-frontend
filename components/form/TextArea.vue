@@ -1,10 +1,10 @@
 <template>
   <Field v-slot="{ field }" :name="name">
-    <InputText
+    <Textarea
       v-bind="field"
       v-model="field.value"
       :placeholder="label || placeholder"
-      type="text"
+      autoResize rows="3"
       class="w-full"
     />
   </Field>
