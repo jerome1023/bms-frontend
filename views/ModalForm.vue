@@ -3,8 +3,9 @@
     <Form
       @submit="submit"
       :initial-values="useModal.form.data"
-      v-slot="{ isSubmitting }"
+      v-slot="{ isSubmitting, values }"
     >
+    <pre>{{ values }}</pre>
       <h1 class="text-xl md:text-2xl font-semibold mb-5">
         {{ useModal.form.title }}
       </h1>
@@ -45,6 +46,11 @@ const route = useRoute();
 let currentUrl = route.fullPath;
 currentUrl = currentUrl.startsWith("/") ? currentUrl.slice(1) : currentUrl;
 
+const alert = ref<TAlert>({
+  type: "info",
+  title: "",
+});
+
 const useModal = useModalStore();
 const useDataTable = useDataTableStore();
 
@@ -64,14 +70,25 @@ const checkFormMode = () => {
   }
 };
 
-const alert = ref<TAlert>({
-  type: "info",
-  title: "",
-});
+const newValuesFormat = (val:any) => {
+  if(currentUrl === 'barangay-official'){
+    val.birthdate = dateFormatter(val.birthdate);
+    val.start_term = dateFormatter(val.start_term);
+    val.end_term = dateFormatter(val.end_term);
+  }
+  else if(currentUrl === 'announcement')
+  {
+    val.when = dateTimeFormatter(val.when);
+    const { image_base64, image, ...rest } = val
+    val = { image: image_base64, ...rest }
+  }    
+  return val
+}
 
 const submit = async (values: any, actions: any) => {
+  const newValues = newValuesFormat(values)
   checkFormMode();
-  const response = await useFormSubmit(endpoint.value, values, method.value);
+  const response = await useFormSubmit(endpoint.value, newValues, method.value);
 
   alert.value = {
     type: response.alert.type,

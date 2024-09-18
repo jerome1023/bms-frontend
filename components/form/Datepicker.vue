@@ -8,7 +8,9 @@
       showIcon
       iconDisplay="input"
       :inputId="name"
-      dateFormat="yy/mm/dd"
+      dateFormat="yy-mm-dd"
+      :showTime="name==='when' ? true : false"
+      hourFormat="12"
     />
   </Field>
 </template>

@@ -34,6 +34,10 @@
         :name="name"
         :placeholder="placeholder"
       />
+      <FormUpload
+        v-if="type === 'image'"
+        :name="name"
+      />
 
       <ErrorMessage v-slot="{ message }" :name="name">
         <span class="text-sm text-alert-danger-text">{{ message }}</span>

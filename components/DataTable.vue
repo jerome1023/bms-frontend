@@ -112,7 +112,7 @@ const toast = useToast();
 
 const archive = () => {
   confirm.require({
-    message: "Do you want to delete this record?",
+    message: "Do you want to archive this record?",
     header: "Confirmation",
     icon: "pi pi-info-circle",
     position: "top",
@@ -124,7 +124,7 @@ const archive = () => {
       toast.add({
         severity: "info",
         summary: "Confirmed",
-        detail: "Record deleted successfully",
+        detail: "Record archive successfully",
         life: 3000,
       });
     },
