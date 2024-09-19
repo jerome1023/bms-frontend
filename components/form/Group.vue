@@ -1,7 +1,7 @@
 <template>
   <div :class="span">
-    <label :for="name" class="sm:text-lg font-medium">
-      {{ label }}
+    <label :for="name" class="sm:text-lg font-medium flex gap-1">
+      {{ label }} <p v-if="required" class="text-error-300">*</p>
     </label>
     <div class="mt-1 mb-2">
       <FormText
@@ -57,5 +57,6 @@ defineProps<{
   options?: TOptions;
   span: string;
   placeholder?: string;
+  required?: boolean
 }>();
 </script>

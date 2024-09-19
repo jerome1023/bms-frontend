@@ -22,21 +22,6 @@ const userStore = useUserStore();
 const useModal = useModalStore();
 const useDataTable = useDataTableStore();
 
-// const content: TTableContent = {
-//     title: 'Official',
-//     head: ['Name', 'Position', 'Start Term', 'End Term', 'Status'],
-//     body: [
-//         {
-//             name: 'Jerome',
-//             position: 'Test',
-//             start_term: '11/20/2023',
-//             end_term: '11/20/2023',
-//             status: 'Active',
-//             action: ['view', 'edit', 'archive']
-//         }
-//     ]
-// };
-
 const openModal = () => {
   useModal.mountForm({
     mode: "Create",
@@ -48,24 +33,18 @@ const openModal = () => {
   useModal.toggleModal(true);
 };
 
-// const form: TForm = {
-//   component: OfficialForm,
-//   schema: {},
-// };
-
 onMounted(async () => {
   await useGetData("announcement/list").then((response) => {
     useDataTable.storeTableContent({
       title: "Announcement",
       columns: [
-        { field: "image", header: "Image" },
         { field: "what", header: "What" },
         { field: "where", header: "Where" },
         { field: "who", header: "Who" },
         { field: "when", header: "When" },
         { field: "details", header: "Details" },
       ],
-      actions: ['edit', 'archive'],
+      actions: ["edit", "archive"],
       body: response ?? [],
     });
   });

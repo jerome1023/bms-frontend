@@ -3,9 +3,8 @@
     <Form
       @submit="submit"
       :initial-values="useModal.form.data"
-      v-slot="{ isSubmitting, values }"
+      v-slot="{ isSubmitting }"
     >
-    <pre>{{ values }}</pre>
       <h1 class="text-xl md:text-2xl font-semibold mb-5">
         {{ useModal.form.title }}
       </h1>
@@ -70,25 +69,30 @@ const checkFormMode = () => {
   }
 };
 
-const newValuesFormat = (val:any) => {
-  if(currentUrl === 'barangay-official'){
+const newValuesFormat = (val: any) => {
+  if (currentUrl === "barangay-official") {
     val.birthdate = dateFormatter(val.birthdate);
     val.start_term = dateFormatter(val.start_term);
     val.end_term = dateFormatter(val.end_term);
-  }
-  else if(currentUrl === 'announcement')
-  {
+  } else if (currentUrl === "announcement") {
     val.when = dateTimeFormatter(val.when);
-    const { image_base64, image, ...rest } = val
-    val = { image: image_base64, ...rest }
-  }    
-  return val
-}
+
+    if (useModal.form.data.image == val.image) {
+      const { image_base64, image, ...rest } = val;
+      val = { ...rest };
+    } else {
+      const { image_base64, image, ...rest } = val;
+      val = { image: image_base64, ...rest };
+    }
+  }
+  return val;
+};
 
 const submit = async (values: any, actions: any) => {
-  const newValues = newValuesFormat(values)
+  const newValues = newValuesFormat(values);
   checkFormMode();
   const response = await useFormSubmit(endpoint.value, newValues, method.value);
+  return console.log(response)
 
   alert.value = {
     type: response.alert.type,

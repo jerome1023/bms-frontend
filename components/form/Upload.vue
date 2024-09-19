@@ -3,32 +3,38 @@
     <div
       class="relative p-4 border border-dashed border-base-gray-300 flex flex-col justify-center items-center"
     >
-      <!-- <span v-if="value" class="">{{ value.name }}</span> -->
-      <span v-if="value" class="flex flex-col items-center">
+      <span v-if="base64" class="flex flex-col items-center">
         <img
           :src="base64"
           alt="Selected Image"
           class="w-32 h-32 object-cover mb-3"
         />
         <p class="mt-2">{{ value.name }}</p>
-        <FontAwesomeIcon
-        :icon="faXmark"
-        @click="removeImage(handleChange)"
-        class="absolute right-1 top-1 h-5 w-5"
-      />
+        <i
+          @click="removeFile(handleChange)"
+          class="pi pi-times-circle absolute right-2 top-2 text-error-400"
+          v-tooltip.top="'Remove File'"
+        />
       </span>
       <span v-else class="flex flex-col gap-3 justify-center text-center">
         <p>Select File Here</p>
         <p class="text-sm text-base-gray font-light">
           Files Supported: jpg, jpeg or png
         </p>
-        <Button @click="openFileInput" label="Choose File" severity="info" />
+        <Button
+          icon="pi pi-upload"
+          @click="openFileInput"
+          label="Choose File"
+          severity="info"
+          size="small"
+          class="m-auto"
+        />
       </span>
       <input
         ref="fileInput"
         class="hidden"
         type="file"
-        accept="image/*"
+        accept=".jpg,.jpeg,.png"
         @change="(e: Event) => createBase64(handleChange, e)"
       />
     </div>
@@ -39,13 +45,12 @@
 </template>
 
 <script setup lang="ts">
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { ref } from "vue";
+
 const props = defineProps<{
   name: string;
 }>();
 
-import { ref } from "vue";
 const fileInput = ref<HTMLInputElement | null>(null);
 
 const openFileInput = () => {
@@ -72,14 +77,11 @@ function createBase64(handleChange: Function, e: Event) {
   handleChange(e);
 }
 
-function removeImage(handleChange: Function) {
-  // Reset the file input and base64 values
+function removeFile(handleChange: Function) {
   if (fileInput.value) {
-    fileInput.value.value = ""; // Clears the file input field
+    fileInput.value.value = "";
   }
-  base64.value = null; // Clears the base64 data
-//   handleChange({ target: { files: null } });
+  base64.value = null;
   handleChange(null);
-   // Reset the form field value
 }
 </script>
