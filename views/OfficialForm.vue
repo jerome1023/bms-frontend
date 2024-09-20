@@ -1,6 +1,12 @@
 <template>
   <div class="sm:grid grid-cols-6 gap-x-3">
-    <FormGroup label="Lastname" type="text" name="lastname" span="col-span-2" />
+    <FormGroup
+      label="Lastname"
+      type="text"
+      name="lastname"
+      span="col-span-2"
+      required
+    />
     <FormGroup
       label="Firstname"
       type="text"

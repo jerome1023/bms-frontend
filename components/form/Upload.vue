@@ -7,7 +7,7 @@
         <img
           :src="base64"
           alt="Selected Image"
-          class="w-32 h-32 object-cover mb-3"
+          class="max-w-md max-h-40 object-scale-down mb-3"
         />
         <p class="mt-2">{{ value.name }}</p>
         <i
@@ -34,7 +34,7 @@
         ref="fileInput"
         class="hidden"
         type="file"
-        accept=".jpg,.jpeg,.png"
+        accept=".jpg,.jpeg,.png,.gif"
         @change="(e: Event) => createBase64(handleChange, e)"
       />
     </div>
