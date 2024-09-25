@@ -21,23 +21,21 @@
       sortable
     >
     </Column>
-    <Column key="action" field="action" header="Action" >
+    <Column key="action" field="action" header="Action">
       <template #body="{ data }">
         <div class="flex gap-1">
-          <template
-            v-for="action of useDataTable.tableContent.actions"
-          >
+          <template v-for="action of useDataTable.tableContent.actions">
             <Button
               v-if="action === 'edit'"
               v-tooltip.top="'Edit'"
-              @click="openModal(data.id)"
+              @click="openModal(data)"
               size="small"
               severity="success"
               outlined
             >
               <FontAwesomeIcon :icon="faPencil" />
             </Button>
-  
+
             <Button
               v-if="action === 'archive'"
               v-tooltip.top="'Archive'"
@@ -53,7 +51,7 @@
       </template>
     </Column>
   </DataTable>
-  <Toast class="w-auto"/>
+  <Toast class="w-auto" />
   <ConfirmDialog></ConfirmDialog>
 </template>
 
@@ -90,17 +88,29 @@ const editForm = () => {
   }
 };
 
-const openModal = async (id: string) => {
-  await useGetData(`${currentUrl}/view/${id}`).then((response) => {
-    useModal.toggleModal(true);
-    editForm();
-    useModal.mountForm({
-      mode: "Edit",
-      title: "Edit Information",
-      component: currentForm.value,
-      schema: {},
-      data: response,
-    });
+// const openModal = async (id: string) => {
+//   await useGetData(`${currentUrl}/view/${id}`).then((response) => {
+//     useModal.toggleModal(true);
+//     editForm();
+//     useModal.mountForm({
+//       mode: "Edit",
+//       title: "Edit Information",
+//       component: currentForm.value,
+//       schema: {},
+//       data: response,
+//     });
+//   });
+// };
+
+const openModal = async (data: any) => {
+  useModal.toggleModal(true);
+  editForm();
+  useModal.mountForm({
+    mode: "Edit",
+    title: "Edit Information",
+    component: currentForm.value,
+    schema: {},
+    data: data,
   });
 };
 
