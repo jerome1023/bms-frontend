@@ -37,7 +37,7 @@
           { field: "complainee", header: "Complainee" },
           { field: "complain", header: "Complain" },
           { field: "date", header: "Date" },
-          { field: "status", header: "status" },
+          { field: "status", header: "Status" },
         ],
         actions: ["edit", "solve", "archive"],
         body: response ?? [],

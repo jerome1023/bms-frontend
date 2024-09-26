@@ -8,21 +8,21 @@
       required
     />
     <FormGroup
-      label="Complainant Age"
+      label="Age"
       type="text"
       name="complainant_age"
       span="col-span-3"
       required
     />
     <FormGroup
-      label="Complainant Address"
+      label="Address"
       type="text"
       name="complainant_address"
       span="col-span-3"
       required
     />
     <FormGroup
-      label="Complainant Contact Number"
+      label="Contact Number"
       type="text"
       name="complainant_contact_number"
       span="col-span-3"
@@ -37,21 +37,21 @@
       required
     />
     <FormGroup
-      label="Complainee Age"
+      label="Age"
       type="text"
       name="complainee_age"
       span="col-span-3"
       required
     />
     <FormGroup
-      label="Complainee Address"
+      label="Address"
       type="text"
       name="complainee_address"
       span="col-span-3"
       required
     />
     <FormGroup
-      label="Complainee Contact Number"
+      label="Contact Number"
       type="text"
       name="complainee_contact_number"
       span="col-span-3"
@@ -72,47 +72,6 @@
       span="col-span-3"
       required
     />
-    <!-- <FormGroup
-      label="Agreement"
-      type="textarea"
-      name="agreement"
-      span="col-span-3"
-    />
-    <FormGroup
-      label="Namagitan"
-      type="text"
-      name="namagitan"
-      span="col-span-3"
-    />
-    <FormGroup
-      label="Witness"
-      type="textarea"
-      name="witness"
-      span="col-span-full"
-    /> -->
     
   </div>
 </template>
-
-<script setup lang="ts">
-import { useModalStore } from "~/stores/modal";
-const useModal = useModalStore();
-
-const { value: fieldValue } = useField("image");
-const config = useRuntimeConfig();
-const baseURL = config.public.backendURL;
-
-const open = ref(false);
-const image = ref();
-
-onMounted(() => {
-  if (fieldValue.value) {
-    image.value = baseURL + fieldValue.value;
-  }
-});
-
-const openImageUploader = () => {
-  fieldValue.value = null;
-  open.value = !open.value;
-};
-</script>

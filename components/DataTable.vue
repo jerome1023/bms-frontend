@@ -50,6 +50,12 @@
       :header="col.header"
       sortable
     >
+      <template v-if="col.field == 'status'" #body="slotProps">
+        <Tag
+          :value="slotProps.data.status"
+          :severity="getSeverity(slotProps.data)"
+        />
+      </template>
     </Column>
     <Column key="action" field="action">
       <template #body="{ data }">
@@ -67,9 +73,9 @@
             </Button>
 
             <Button
-              v-if="action === 'solve'"
+              v-if="action === 'solve' && data.status == 'Unsolve'"
               v-tooltip.top="'Solve'"
-              @click="solve()"
+              @click="solve(data.id)"
               size="small"
               severity="info"
               outlined
@@ -80,14 +86,13 @@
             <Button
               v-if="action === 'archive'"
               v-tooltip.top="'Archive'"
-              @click="archive()"
+              @click="archive(data.id)"
               size="small"
               severity="danger"
               outlined
             >
               <FontAwesomeIcon :icon="faBoxArchive" />
             </Button>
-
           </template>
         </div>
       </template>
@@ -103,9 +108,18 @@ import { FilterMatchMode } from "primevue/api";
 import { useWindowSize } from "@vueuse/core";
 import { useModalStore } from "~/stores/modal";
 import { useDataTableStore } from "~/stores/datatable";
-import { OfficialForm, AnnouncementForm, BlotterForm } from "#components";
+import {
+  OfficialForm,
+  AnnouncementForm,
+  BlotterForm,
+  SolveBlotterForm,
+} from "#components";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faBoxArchive, faPencil, faHandshake } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBoxArchive,
+  faPencil,
+  faHandshake,
+} from "@fortawesome/free-solid-svg-icons";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 
@@ -120,7 +134,9 @@ const windowSize = useWindowSize();
 const currentForm = ref();
 
 let currentUrl = route.fullPath;
-currentUrl = currentUrl.startsWith("/") ? currentUrl.slice(1) : currentUrl;
+currentUrl = currentUrl.startsWith("/")
+  ? currentUrl.slice(1).toLowerCase()
+  : currentUrl.toLowerCase();
 
 watch(
   () => useDataTable.tableContent,
@@ -148,11 +164,11 @@ const currentPageReportTemplate = computed(() => {
 });
 
 const editForm = () => {
-  if (currentUrl.toLowerCase() === "barangay-official") {
+  if (currentUrl === "barangay-official") {
     currentForm.value = OfficialForm;
-  } else if (currentUrl.toLowerCase() === "announcement") {
+  } else if (currentUrl === "announcement") {
     currentForm.value = AnnouncementForm;
-  } else if (currentUrl.toLowerCase() === "blotter") {
+  } else if (currentUrl === "blotter") {
     currentForm.value = BlotterForm;
   }
 };
@@ -183,7 +199,18 @@ const openModal = async (data: any) => {
   });
 };
 
-const archive = () => {
+const solve = (id: string) => {
+  useModal.toggleModal(true);
+  useModal.mountForm({
+    mode: "Solve",
+    title: "Solve Blotter",
+    component: SolveBlotterForm,
+    schema: {},
+    data: { id: id },
+  });
+};
+
+const archive = (id: string) => {
   confirm.require({
     message: "Do you want to archive this record?",
     header: "Confirmation",
@@ -193,17 +220,48 @@ const archive = () => {
     acceptLabel: "Delete",
     rejectClass: "p-button-secondary p-button-outlined",
     acceptClass: "p-button-danger",
-    accept: () => {
-      toast.add({
-        severity: "info",
-        summary: "Confirmed",
-        detail: "Record archive successfully",
-        life: 3000,
+    accept: async () => {
+      await useFormSubmit(
+        `${currentUrl}/archive/${id}`,
+        { archive_status: true },
+        "PUT"
+      ).then(async (response) => {
+        if (response.status) {
+          await useGetData(`${currentUrl}/list`).then((response) => {
+            useDataTable.updateBody(response);
+            toast.add({
+              severity: "info",
+              summary: "Confirmed",
+              detail: "Record archive successfully",
+              life: 3000,
+            });
+          });
+        } else {
+          toast.add({
+            severity: "error",
+            summary: "Danger",
+            detail: "Something Went Happen!",
+            life: 3000,
+          });
+        }
       });
     },
     // reject: () => {
     //     toast.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
     // }
   });
+};
+
+const getSeverity = (data: any) => {
+  switch (data.status) {
+    case "Solve":
+      return "success";
+
+    case "Unsolve":
+      return "danger";
+
+    default:
+      return null;
+  }
 };
 </script>

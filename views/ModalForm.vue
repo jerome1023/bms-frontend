@@ -57,19 +57,25 @@ const endpoint = ref();
 const method = ref();
 
 const checkFormMode = () => {
+  const mode = useModal.form.mode.toLowerCase();
+  const id = useModal.form.data.id;
+
   if (useModal.open) {
-    const mode = useModal.form.mode.toLowerCase();
     if (mode === "create") {
       endpoint.value = currentUrl + "/create";
     } else if (mode === "edit") {
-      const id = useModal.form.data.id;
       method.value = "PUT";
       endpoint.value = `${currentUrl}/update/${id}`;
+    } else if (mode === "solve") {
+      method.value = "PUT";
+      endpoint.value = `${currentUrl}/solve/${id}`;
     }
   }
 };
 
 const newValuesFormat = (val: any) => {
+  const mode = useModal.form.mode.toLowerCase();
+
   if (currentUrl === "barangay-official") {
     return {
       ...val,
@@ -91,7 +97,7 @@ const newValuesFormat = (val: any) => {
       image: updatedImage || undefined,
       when: dateTimeFormatter(val.when),
     };
-  } else if (currentUrl === "blotter") {
+  } else if (currentUrl === "blotter" && mode != "solve") {
     return {
       ...val,
       date: dateFormatter(val.date),
