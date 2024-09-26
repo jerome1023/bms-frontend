@@ -58,7 +58,7 @@
             <Button
               v-if="action === 'edit'"
               v-tooltip.top="'Edit'"
-              @click="openModal(data.id)"
+              @click="openModal(data)"
               size="small"
               severity="success"
               outlined
@@ -157,17 +157,29 @@ const editForm = () => {
   }
 };
 
-const openModal = async (id: string) => {
-  await useGetData(`${currentUrl}/view/${id}`).then((response) => {
-    useModal.toggleModal(true);
-    editForm();
-    useModal.mountForm({
-      mode: "Edit",
-      title: "Edit Information",
-      component: currentForm.value,
-      schema: {},
-      data: response,
-    });
+// const openModal = async (id: string) => {
+//   await useGetData(`${currentUrl}/view/${id}`).then((response) => {
+//     useModal.toggleModal(true);
+//     editForm();
+//     useModal.mountForm({
+//       mode: "Edit",
+//       title: "Edit Information",
+//       component: currentForm.value,
+//       schema: {},
+//       data: response,
+//     });
+//   });
+// };
+
+const openModal = async (data: any) => {
+  useModal.toggleModal(true);
+  editForm();
+  useModal.mountForm({
+    mode: "Edit",
+    title: "Edit Information",
+    component: currentForm.value,
+    schema: {},
+    data: data,
   });
 };
 
