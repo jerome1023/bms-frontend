@@ -1,39 +1,47 @@
 <template>
-    <DataTable :content="content" :event="openModal" />
-    <ModalForm :form="form"/>
+  <Button
+      icon="pi pi-plus"
+      severity="info"
+      size="small"
+      @click="openModal"
+      label="Add"
+    />
+    <DataTable />
+    <ModalForm />
 </template>
 
 <script setup lang="ts">
-import type { TForm, TTableContent } from '~/types';
-import { useUserStore } from '~/stores/user'
-import { useModalStore } from '~/stores/modal'
-import { OfficialForm } from '#components';
+import { TransactionForm } from "#components";
 
-const userStore = useUserStore()
-const useModal = useModalStore()
-
-const content: TTableContent = {
-    title: userStore.user.role.name.toLowerCase() == 'administrator' ? 'Official' : '',
-    head: ['Name', 'Position', 'Start Term', 'End Term', 'Status'],
-    body: [
-        {
-            name: 'Jerome',
-            position: 'Test',
-            start_term: '11/20/2023',
-            end_term: '11/20/2023',
-            status: 'Active',
-            action: ['view', 'edit', 'archive']
-        }
-    ]
-};
+const userStore = useUserStore();
+const useModal = useModalStore();
+const useDataTable = useDataTableStore();
 
 const openModal = () => {
-    useModal.toggleModal(true)
-
+  useModal.mountForm({
+    mode: "Create",
+    title: "Transaction",
+    component: TransactionForm,
+    schema: {},
+    data: {},
+  });
+  useModal.toggleModal(true);
 };
 
-const form:TForm = {
-    component : OfficialForm,
-    schema : {}
-}
+onMounted(async () => {
+  await useGetData("transaction/list").then((response) => {
+    useDataTable.storeTableContent({
+      title: "Transaction",
+      columns: [
+        { field: "what", header: "What" },
+        { field: "where", header: "Where" },
+        { field: "who", header: "Who" },
+        { field: "when", header: "When" },
+        { field: "details", header: "Details" },
+      ],
+      actions: ["edit", "archive"],
+      body: response ?? [],
+    });
+  });
+});
 </script>

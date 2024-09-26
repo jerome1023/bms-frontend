@@ -91,6 +91,11 @@ const newValuesFormat = (val: any) => {
       image: updatedImage || undefined,
       when: dateTimeFormatter(val.when),
     };
+  } else if (currentUrl === "blotter") {
+    return {
+      ...val,
+      date: dateFormatter(val.date),
+    };
   }
 
   return val;
