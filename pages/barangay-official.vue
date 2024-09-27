@@ -34,8 +34,8 @@ onMounted(async () => {
     useDataTable.storeTableContent({
       title: "Official",
       columns: [
-        { field: "firstname", header: "Name" },
-        { field: "position", header: "Position" },
+        { field: "fullname", header: "Name" },
+        { field: "gender", header: "Gender" },
         { field: "start_term", header: "Start Term" },
         { field: "end_term", header: "End Term" },
         // { field: "status", header: "Status" },

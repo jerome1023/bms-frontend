@@ -16,8 +16,6 @@
     dataKey="id"
     :loading="loading"
   >
-    <!-- paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
-    currentPageReportTemplate="{first} to {last} of {totalRecords}" -->
     <template v-if="!loading" #header>
       <div class="flex justify-end items-center gap-2 -mx-4">
         <Button
@@ -221,22 +219,26 @@ const archive = (id: string) => {
     rejectClass: "p-button-secondary p-button-outlined",
     acceptClass: "p-button-danger",
     accept: async () => {
+      useDataTable.updateBody(useDataTable.tableContent.body.filter(item => item.id !== id));
       await useFormSubmit(
         `${currentUrl}/archive/${id}`,
         { archive_status: true },
         "PUT"
       ).then(async (response) => {
-        if (response.status) {
-          await useGetData(`${currentUrl}/list`).then((response) => {
-            useDataTable.updateBody(response);
-            toast.add({
-              severity: "info",
-              summary: "Confirmed",
-              detail: "Record archive successfully",
-              life: 3000,
-            });
-          });
-        } else {
+        // if (response.status) {
+        //   useDataTable.updateBody(useDataTable.tableContent.body.filter(item => item.id !== id));
+        //   // console.log(useDataTable.tableContent.body)
+        //   // await useGetData(`${currentUrl}/list`).then((response) => {
+        //   //   useDataTable.updateBody(response);
+        //     toast.add({
+        //       severity: "info",
+        //       summary: "Confirmed",
+        //       detail: "Record archive successfully",
+        //       life: 3000,
+        //     });
+        //   // });
+        // } 
+        if(!response.status) {
           toast.add({
             severity: "error",
             summary: "Danger",

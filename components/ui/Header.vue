@@ -21,7 +21,7 @@
                 leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100"
                 leave-to-class="transform opacity-0 scale-95">
                 <MenuItems
-                    class="absolute right-3 lg:right-5 z-20 mt-36 w-40 origin-top-right rounded-md bg-base-gray-100 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    class="absolute right-3 lg:right-5 z-20 mt-44 w-40 origin-top-right rounded-md bg-base-gray-100 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <MenuItem v-for="(menu, index) in menuItems" :key="index" v-slot="{ active }">
                     <a :href="menu.path" :class="[
                         active ? 'bg-neutral-light-500' : '',
@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faArrowRightFromBracket, faBars, faUserPen, faChevronDown } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRightFromBracket, faBars, faUserPen, faChevronDown, faCogs } from '@fortawesome/free-solid-svg-icons'
 import { Menu, MenuItem, MenuButton, MenuItems } from "@headlessui/vue";
 import { toggleAside } from '~/composables/globalRef'
 import { useUserStore } from '~/stores/user'
@@ -55,6 +55,7 @@ const toggleSidebar = () => {
 
 const menuItems = [
     { path: "/edit-profile", name: "Edit Profile", icon: faUserPen },
+    { path: "/barangay-details", name: "Management", icon: faCogs },
     { name: "Sign out", icon: faArrowRightFromBracket, function: () => userStore.logout() }
 ];
 

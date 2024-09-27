@@ -1,31 +1,46 @@
 <template>
-    <DataTable :content="content" :event="openModal" />
-    <ModalForm/>
+    <Button
+    icon="pi pi-plus"
+    severity="info"
+    size="small"
+    @click="openModal"
+    label="Add"
+  />
+  <DataTable />
+  <ModalForm />
 </template>
 
 <script setup lang="ts">
-import type { TTableContent } from '~/types';
-import { useModalStore } from '~/stores/modal'
+import { ResidentForm } from "#components";
 
-const useModal = useModalStore()
-
-const content: TTableContent = {
-    title: 'Resident',
-    head: ['Name', 'Position', 'Start Term', 'End Term', 'Status'],
-    body: [
-        {
-            name: 'Jerome',
-            position: 'Test',
-            start_term: '11/20/2023',
-            end_term: '11/20/2023',
-            status: 'Active',
-            action: ['view', 'edit', 'archive']
-        }
-    ]
-};
+const useModal = useModalStore();
+const useDataTable = useDataTableStore();
 
 const openModal = () => {
-    useModal.toggleModal(true)
-
+  useModal.mountForm({
+    mode: "Create",
+    title: "Official Information",
+    component: ResidentForm,
+    schema: {},
+    data: {},
+  });
+  useModal.toggleModal(true);
 };
+
+onMounted(async () => {
+  await useGetData("resident/list").then((response) => {
+    useDataTable.storeTableContent({
+      title: "Official",
+      columns: [
+        { field: "firstname", header: "Name" },
+        { field: "position", header: "Position" },
+        { field: "start_term", header: "Start Term" },
+        { field: "end_term", header: "End Term" },
+        // { field: "status", header: "Status" },
+      ],
+      actions: ['edit', 'archive'],
+      body: response ?? [],
+    });
+  });
+});
 </script>

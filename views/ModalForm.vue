@@ -43,7 +43,7 @@ import { useRoute } from "vue-router";
 
 const route = useRoute();
 let currentUrl = route.fullPath;
-currentUrl = currentUrl.startsWith("/") ? currentUrl.slice(1) : currentUrl;
+currentUrl = currentUrl.startsWith("/") ? currentUrl.split('/')[1] : currentUrl;
 
 const alert = ref<TAlert>({
   type: "info",
