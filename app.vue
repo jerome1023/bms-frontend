@@ -8,6 +8,8 @@
 </template>
 
 <script setup lang="ts">
+import { useBarangayDetailStore } from './stores/details';
+
 const layout = ref('auth')
 const isLoading = ref();
 onMounted(()=>{
@@ -30,7 +32,11 @@ watch(
     checkLocalStorage();
 })
 
-onMounted(() => {
-  checkLocalStorage();
+const useBarangayDetail = useBarangayDetailStore();
+onMounted(async() => {
+  useGetData("barangay_details/list").then((response) => {
+    useBarangayDetail.storeDetails(response);
+    checkLocalStorage();
+  });
 });
 </script>
