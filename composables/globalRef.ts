@@ -38,7 +38,7 @@ const routeTitles:any = {
     '/announcement': 'Announcement',
     '/blotter': 'Blotter',
     '/archive': 'Archive',
-    '/barangay-details' : 'Management'
+    '/management' : 'Management'
 };
 
 export const findTitleByRoute = () => {
