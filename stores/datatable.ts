@@ -10,6 +10,7 @@ export const useDataTableStore = defineStore({
       actions: [],
       body: [],
     } as TTableContent,
+    activeTabManagement : 0 as Number
   }),
 
   actions: {
@@ -21,6 +22,10 @@ export const useDataTableStore = defineStore({
       this.tableContent.body = data;
     },
 
+    updateActiveTab (val:number) {
+      this.activeTabManagement = val
+    },
+    
     reset() {
       this.tableContent = {
         title: "",

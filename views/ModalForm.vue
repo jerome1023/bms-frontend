@@ -41,10 +41,6 @@ import { useModalStore } from "~/stores/modal";
 import { useDataTableStore } from "~/stores/datatable";
 import { useRoute } from "vue-router";
 
-const route = useRoute();
-let currentUrl = route.fullPath;
-currentUrl = currentUrl.startsWith("/") ? currentUrl.split('/')[1] : currentUrl;
-
 const alert = ref<TAlert>({
   type: "info",
   title: "",
@@ -52,20 +48,36 @@ const alert = ref<TAlert>({
 
 const useModal = useModalStore();
 const useDataTable = useDataTableStore();
+const route = useRoute();
 
 const endpoint = ref();
 const method = ref();
 
+const getCurrentRoute = () => {
+  let currentRoute = route.fullPath;
+  return (currentRoute = currentRoute.startsWith("/")
+    ? // ? currentRoute.split("/")[1]
+      currentRoute.split("/")[1]
+    : currentRoute);
+};
+
 const checkFormMode = () => {
   const mode = useModal.form.mode.toLowerCase();
   const id = useModal.form.data.id;
+  let currentUrl = getCurrentRoute();
+  const activeTab = useDataTable.activeTabManagement;
 
   if (useModal.open) {
     if (mode === "create") {
       endpoint.value = currentUrl + "/create";
     } else if (mode === "edit") {
       method.value = "PUT";
-      endpoint.value = `${currentUrl}/update/${id}`;
+      endpoint.value =
+        currentUrl === "management" && activeTab === 1
+          ? `document/update/${id}`
+          : currentUrl === "management" && activeTab === 2
+          ? `sitio/update/${id}`
+          : `${currentUrl}/update/${id}`;
     } else if (mode === "solve") {
       method.value = "PUT";
       endpoint.value = `${currentUrl}/solve/${id}`;
@@ -75,6 +87,7 @@ const checkFormMode = () => {
 
 const newValuesFormat = (val: any) => {
   const mode = useModal.form.mode.toLowerCase();
+  let currentUrl = getCurrentRoute();
 
   if (currentUrl === "barangay-official") {
     return {
@@ -102,14 +115,22 @@ const newValuesFormat = (val: any) => {
       ...val,
       date: dateFormatter(val.date),
     };
+  } else if (currentUrl === "resident") {
+    return {
+      ...val,
+      birthdate: dateFormatter(val.birthdate),
+    };
   }
 
+  // console.log(currentUrl)
   return val;
 };
 
 const submit = async (values: any, actions: any) => {
   const newValues = newValuesFormat(values);
   checkFormMode();
+  let currentUrl = getCurrentRoute();
+  // return console.log(newValues)
   const response = await useFormSubmit(endpoint.value, newValues, method.value);
 
   alert.value = {
@@ -123,6 +144,13 @@ const submit = async (values: any, actions: any) => {
     }, 1000);
 
     //add data to stores
+    const activeTab = useDataTable.activeTabManagement;
+    if (currentUrl == "management" && activeTab == 1) {
+      currentUrl = "document";
+    } else if (currentUrl == "management" && activeTab == 2) {
+      currentUrl = "sitio";
+    }
+
     await useGetData(`${currentUrl}/list`).then((response) => {
       useDataTable.updateBody(response);
     });

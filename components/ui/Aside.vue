@@ -11,7 +11,7 @@
       class="sticky top-0 z-50 bg-base-green h-16 flex items-center p-2 gap-2 mb-3"
     >
       <img
-        :src="useBarangayDetail.data.logo ? useBarangayDetail.data.logo : logo"
+        :src="useBarangayDetail.data.logo ? baseURL + useBarangayDetail.data.logo : logo"
         class="h-9 w-9 rounded-full"
       />
       <p class="flex-1 text-white font-medium text-lg">
@@ -111,12 +111,14 @@ import { closeAsideOnClickOutside, toggleAside } from "~/composables/globalRef";
 import { useUserStore } from "~/stores/user";
 import { useDataTableStore } from "~/stores/datatable";
 import { useBarangayDetailStore } from "~/stores/details";
-import logo from "~/assets/image/logo.jpg";
+import logo from "~/assets/image/logo.png";
 
 const router = useRouter();
 const userStore = useUserStore();
 const useDataTable = useDataTableStore();
 const useBarangayDetail = useBarangayDetailStore();
+const config = useRuntimeConfig();
+const baseURL = config.public.backendURL;
 
 const currentRoute = ref();
 

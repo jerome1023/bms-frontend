@@ -108,7 +108,9 @@
 </template>
 
 <script setup lang="ts">
-const genderOptions = [
+import type { TOptions } from '~/types';
+
+const genderOptions = <TOptions>[
   {
     code: "male",
     name: "Male",
@@ -118,7 +120,7 @@ const genderOptions = [
     name: "Female",
   },
 ];
-const civilStatusOptions = [
+const civilStatusOptions = <TOptions>[
   {
     code: "single",
     name: "Single",
@@ -141,7 +143,7 @@ const civilStatusOptions = [
   },
 ];
 
-const religionOptions = [
+const religionOptions = <TOptions>[
   {
     code: "roman catholic",
     name: "Roman Catholic",
@@ -164,7 +166,7 @@ const religionOptions = [
   },
 ];
 
-const educationOptions = [
+const educationOptions = <TOptions>[
   {
     code: "none",
     name: "No schooling completed",
@@ -211,18 +213,9 @@ const educationOptions = [
   },
 ];
 
-const sitioOptions = [
-  {
-    code: "test 1",
-    name: "Test 1",
-  },
-  {
-    code: "test 2",
-    name: "Test 2",
-  },
-];
+const sitioOptions = ref<TOptions>([]);
 
-const voterOptions = [
+const voterOptions = <TOptions>[
   {
     code: true,
     name: "Voter",
@@ -232,4 +225,13 @@ const voterOptions = [
     name: "Non Voter",
   },
 ];
+
+onMounted(async()=> {
+  await useGetData("sitio/list").then((response) => {
+    sitioOptions.value = response.map((item:any)=>({
+      code: item.id,
+      name: item.name
+    }))
+  });
+})
 </script>

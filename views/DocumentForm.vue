@@ -1,6 +1,8 @@
 <template>
-    <FormGroup label="Document Name" type="text" name="name" span="col-span-2" />
-    <FormGroup label="Price" type="text" name="price" span="col-span-2" />
+    <div class="sm:grid grid-cols-6 gap-x-3">
+        <FormGroup label="Document Name" type="text" name="name" span="col-span-3" />
+        <FormGroup label="Price" type="text" name="price" span="col-span-3" />
+    </div>
 </template>
 
 <script setup lang="ts"></script>

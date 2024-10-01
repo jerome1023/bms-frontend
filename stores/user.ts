@@ -18,6 +18,8 @@ export const useUserStore = defineStore({
             localStorage.removeItem('id')
             localStorage.removeItem('token')
             this.$reset()
+            useBarangayDetailStore().reset();
+            useDataTableStore().reset()
             navigateTo('/login')
         }
     }

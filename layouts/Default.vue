@@ -3,6 +3,8 @@
     <UiAside v-show="toggleAside" />
     <div class="w-full">
       <UiHeader />
+      <Toast class="w-auto" />
+      <ConfirmDialog></ConfirmDialog>
       <main
         class="p-3 overflow-auto"
         :style="{ ...dynamicWidth, height: 'calc(100vh - 4rem)' }"

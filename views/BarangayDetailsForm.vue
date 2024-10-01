@@ -6,16 +6,89 @@
       name="name"
       span="col-span-2"
     />
-    <FormGroup label="Logo" type="image" name="logo" span="col-span-2" />
+    <div
+      v-if="!open.logo && picture.logo"
+      class="col-span-2 flex flex-col justify-center gap-3 mb-3"
+    >
+      <img
+        :src="picture.logo"
+        class="max-w-[18rem] max-h-60 md:max-w-lg md:max-h-64 m-auto object-scale-down"
+      />
+      <Button
+        @click="openImageUploader('logo')"
+        icon="pi pi-upload"
+        label="Upload New Logo"
+        severity="info"
+        size="small"
+        class="m-auto"
+      />
+    </div>
+    <FormGroup
+      label="Logo"
+      type="image"
+      name="logo"
+      span="col-span-2"
+      :class="[open.logo || !picture.logo ? 'block' : 'hidden']"
+    />
+    <div
+      v-if="!open.image && picture.image"
+      class="col-span-2 flex flex-col justify-center gap-3 mb-3"
+    >
+      <img
+        :src="picture.image"
+        class="max-w-[18rem] max-h-60 md:max-w-lg md:max-h-64 m-auto object-scale-down"
+      />
+      <Button
+        @click="openImageUploader('image')"
+        icon="pi pi-upload"
+        label="Upload New Background"
+        severity="info"
+        size="small"
+        class="m-auto"
+      />
+    </div>
     <FormGroup
       label="Background Image"
       type="image"
       name="image"
       span="col-span-2"
+      :class="[open.image || !picture.image ? 'block' : 'hidden']"
     />
   </div>
 </template>
 
 <script setup lang="ts">
+const { value: imageFieldValue } = useField("image");
+const { value: logoFieldValue } = useField("logo");
+const config = useRuntimeConfig();
+const baseURL = config.public.backendURL;
 
+const open = ref({
+  image: false,
+  logo: false,
+});
+
+const picture = ref({
+  image: "",
+  logo: "",
+});
+
+onMounted(() => {
+  if (imageFieldValue.value) {
+    picture.value.image = baseURL + imageFieldValue.value;
+  }
+  if (logoFieldValue.value) {
+    picture.value.logo = baseURL + logoFieldValue.value;
+  }
+});
+
+const openImageUploader = (type: string) => {
+  if (type == "image") {
+    imageFieldValue.value = null;
+    open.value.image = !open.value.image;
+  } else {
+    logoFieldValue.value = null;
+    open.value.logo = !open.value.logo;
+  }
+};
 </script>

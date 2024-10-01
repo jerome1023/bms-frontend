@@ -62,7 +62,9 @@
 </template>
 
 <script setup lang="ts">
-const options = [
+import type { TOptions } from '~/types';
+
+const options = <TOptions>[
   {
     name: "Male",
     code: "male",
@@ -73,7 +75,7 @@ const options = [
   },
 ];
 
-const optionPositions = [
+const optionPositions = <TOptions>[
   {
     name: "Barangay Captain",
     code: "captain",

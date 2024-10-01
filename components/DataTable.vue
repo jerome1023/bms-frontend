@@ -91,13 +91,22 @@
             >
               <FontAwesomeIcon :icon="faBoxArchive" />
             </Button>
+
+            <Button
+              v-if="action === 'delete'"
+              v-tooltip.top="'Delete'"
+              @click="remove(data.id)"
+              size="small"
+              severity="danger"
+              outlined
+            >
+              <FontAwesomeIcon :icon="faTrashCan" />
+            </Button>
           </template>
         </div>
       </template>
     </Column>
   </DataTable>
-  <Toast class="w-auto" />
-  <ConfirmDialog></ConfirmDialog>
 </template>
 
 <script setup lang="ts">
@@ -111,12 +120,16 @@ import {
   AnnouncementForm,
   BlotterForm,
   SolveBlotterForm,
+  DocumentForm,
+  SitioForm,
+  ResidentForm,
 } from "#components";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
   faBoxArchive,
   faPencil,
   faHandshake,
+  faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
@@ -168,6 +181,12 @@ const editForm = () => {
     currentForm.value = AnnouncementForm;
   } else if (currentUrl === "blotter") {
     currentForm.value = BlotterForm;
+  } else if (currentUrl === "management") {
+    const activeTab = useDataTable.activeTabManagement;
+    currentForm.value =
+      activeTab == 1 ? DocumentForm : activeTab == 2 ? SitioForm : null;
+  } else if (currentUrl === "resident/list") {
+    currentForm.value = ResidentForm;
   }
 };
 
@@ -219,7 +238,9 @@ const archive = (id: string) => {
     rejectClass: "p-button-secondary p-button-outlined",
     acceptClass: "p-button-danger",
     accept: async () => {
-      useDataTable.updateBody(useDataTable.tableContent.body.filter(item => item.id !== id));
+      useDataTable.updateBody(
+        useDataTable.tableContent.body.filter((item) => item.id !== id)
+      );
       await useFormSubmit(
         `${currentUrl}/archive/${id}`,
         { archive_status: true },
@@ -237,11 +258,19 @@ const archive = (id: string) => {
         //       life: 3000,
         //     });
         //   // });
-        // } 
-        if(!response.status) {
+        // }
+        // console.log(response)
+        if (response.status) {
+          toast.add({
+            severity: "info",
+            summary: "Success",
+            detail: "Record archive successfully",
+            life: 3000,
+          });
+        } else {
           toast.add({
             severity: "error",
-            summary: "Danger",
+            summary: "Error",
             detail: "Something Went Happen!",
             life: 3000,
           });
@@ -252,6 +281,10 @@ const archive = (id: string) => {
     //     toast.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
     // }
   });
+};
+
+const remove = (id: string) => {
+  console.log(id);
 };
 
 const getSeverity = (data: any) => {

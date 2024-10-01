@@ -6,6 +6,11 @@ export const useBarangayDetailStore = defineStore({
     data: {} as any,
   }),
   actions: {
+    mountDetails: async function(){
+      await useGetData("barangay_details/list").then((response)=>{
+        this.data = response
+      })
+    },
     storeDetails(val: any) {
       this.data = val;
     },

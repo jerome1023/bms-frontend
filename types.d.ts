@@ -1,6 +1,6 @@
 export type TOptions = {
   name: String;
-  code: String;
+  code: String | Boolean;
 }[];
 
 export type TAlert = {
