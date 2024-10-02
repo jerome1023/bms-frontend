@@ -58,7 +58,10 @@
     <Column key="action" field="action">
       <template #body="{ data }">
         <div class="flex gap-1">
-          <template v-for="action of useDataTable.tableContent.actions">
+          <template
+            v-for="(action, index) of useDataTable.tableContent.actions"
+            :key="action + index"
+          >
             <Button
               v-if="action === 'edit'"
               v-tooltip.top="'Edit'"
@@ -133,6 +136,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
+import type { TObjectLiteral } from "~/types";
 
 const useModal = useModalStore();
 const useDataTable = useDataTableStore();
@@ -142,7 +146,6 @@ const toast = useToast();
 const loading = ref(true);
 const filters = ref();
 const windowSize = useWindowSize();
-const currentForm = ref();
 
 let currentUrl = route.fullPath;
 currentUrl = currentUrl.startsWith("/")
@@ -174,43 +177,28 @@ const currentPageReportTemplate = computed(() => {
     : "Showing {first} to {last} of {totalRecords}";
 });
 
-const editForm = () => {
-  if (currentUrl === "barangay-official") {
-    currentForm.value = OfficialForm;
-  } else if (currentUrl === "announcement") {
-    currentForm.value = AnnouncementForm;
-  } else if (currentUrl === "blotter") {
-    currentForm.value = BlotterForm;
-  } else if (currentUrl === "management") {
-    const activeTab = useDataTable.activeTabManagement;
-    currentForm.value =
-      activeTab == 1 ? DocumentForm : activeTab == 2 ? SitioForm : null;
-  } else if (currentUrl === "resident/list") {
-    currentForm.value = ResidentForm;
-  }
+const getManagementForm = () => {
+  const activeTab = useDataTable.activeTabManagement;
+  return activeTab == 1 ? DocumentForm : activeTab == 2 ? SitioForm : null;
 };
 
-// const openModal = async (id: string) => {
-//   await useGetData(`${currentUrl}/view/${id}`).then((response) => {
-//     useModal.toggleModal(true);
-//     editForm();
-//     useModal.mountForm({
-//       mode: "Edit",
-//       title: "Edit Information",
-//       component: currentForm.value,
-//       schema: {},
-//       data: response,
-//     });
-//   });
-// };
+const currentForm: TObjectLiteral = {
+  "barangay-official": OfficialForm,
+  announcement: AnnouncementForm,
+  blotter: BlotterForm,
+  management: getManagementForm,
+  "resident/list": ResidentForm,
+};
 
 const openModal = async (data: any) => {
   useModal.toggleModal(true);
-  editForm();
   useModal.mountForm({
     mode: "Edit",
     title: "Edit Information",
-    component: currentForm.value,
+    component:
+      typeof currentForm[currentUrl] === "function"
+        ? currentForm[currentUrl]()
+        : currentForm[currentUrl],
     schema: {},
     data: data,
   });
@@ -227,6 +215,19 @@ const solve = (id: string) => {
   });
 };
 
+const updateList = (id: string) => {
+  useDataTable.updateBody(
+    useDataTable.tableContent.body.filter((item) => item.id !== id)
+  );
+};
+
+// const getCurrentRoute = (currentUrl: string) => {
+  const routeList: TObjectLiteral<string> = {
+    "resident/list": "resident",
+  };
+  // return routeList[currentUrl] || currentUrl;
+// };
+
 const archive = (id: string) => {
   confirm.require({
     message: "Do you want to archive this record?",
@@ -238,28 +239,12 @@ const archive = (id: string) => {
     rejectClass: "p-button-secondary p-button-outlined",
     acceptClass: "p-button-danger",
     accept: async () => {
-      useDataTable.updateBody(
-        useDataTable.tableContent.body.filter((item) => item.id !== id)
-      );
+      updateList(id)
       await useFormSubmit(
-        `${currentUrl}/archive/${id}`,
+        `${routeList[currentUrl] || currentUrl}/archive/${id}`,
         { archive_status: true },
         "PUT"
       ).then(async (response) => {
-        // if (response.status) {
-        //   useDataTable.updateBody(useDataTable.tableContent.body.filter(item => item.id !== id));
-        //   // console.log(useDataTable.tableContent.body)
-        //   // await useGetData(`${currentUrl}/list`).then((response) => {
-        //   //   useDataTable.updateBody(response);
-        //     toast.add({
-        //       severity: "info",
-        //       summary: "Confirmed",
-        //       detail: "Record archive successfully",
-        //       life: 3000,
-        //     });
-        //   // });
-        // }
-        // console.log(response)
         if (response.status) {
           toast.add({
             severity: "info",
@@ -277,9 +262,6 @@ const archive = (id: string) => {
         }
       });
     },
-    // reject: () => {
-    //     toast.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
-    // }
   });
 };
 
@@ -287,7 +269,7 @@ const remove = (id: string) => {
   console.log(id);
 };
 
-const getSeverity = (data: any) => {
+const getSeverity: any = (data: any) => {
   switch (data.status) {
     case "Solve":
       return "success";

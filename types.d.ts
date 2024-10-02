@@ -1,6 +1,6 @@
 export type TOptions = {
   name: String;
-  code: String | Boolean;
+  code: String;
 }[];
 
 export type TAlert = {
@@ -40,4 +40,8 @@ export type TFormResponse = TResponse & {
   errors?: string;
   data: any;
   alert: TAlert;
+};
+
+export type TObjectLiteral<T = any> = {
+  [key: string | number]: T;
 };

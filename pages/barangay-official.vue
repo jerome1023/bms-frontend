@@ -11,8 +11,6 @@
 </template>
 
 <script setup lang="ts">
-// import { useModalStore } from "~/stores/modal";
-// import { useDataTableStore } from "~/stores/datatable";
 import { OfficialForm } from "#components";
 
 const useModal = useModalStore();
@@ -36,9 +34,9 @@ onMounted(async () => {
       columns: [
         { field: "fullname", header: "Name" },
         { field: "gender", header: "Gender" },
+        { field: "position", header: "Position" },
         { field: "start_term", header: "Start Term" },
         { field: "end_term", header: "End Term" },
-        // { field: "status", header: "Status" },
       ],
       actions: ['edit', 'archive'],
       body: response ?? [],

@@ -112,11 +112,11 @@ import type { TOptions } from '~/types';
 
 const genderOptions = <TOptions>[
   {
-    code: "male",
+    code: "Male",
     name: "Male",
   },
   {
-    code: "female",
+    code: "Female",
     name: "Female",
   },
 ];
@@ -217,11 +217,11 @@ const sitioOptions = ref<TOptions>([]);
 
 const voterOptions = <TOptions>[
   {
-    code: true,
+    code: 'Voter',
     name: "Voter",
   },
   {
-    code: false,
+    code: "Non Voter",
     name: "Non Voter",
   },
 ];

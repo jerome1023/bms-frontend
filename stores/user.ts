@@ -14,13 +14,22 @@ export const useUserStore = defineStore({
                 this.user = response.status_code == 200 ? response.data : this.logout()
             }
         },
-        logout() {
+        logout: async function() {
+            // const token = localStorage.getItem('token');
+            // const response = await useApiFetch(`/api/${path}`, {
+            //     method: method ?? 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //         'Authorization': `Bearer ${token}`
+            //     },
+            //     body: {}
+            // })
             localStorage.removeItem('id')
             localStorage.removeItem('token')
             this.$reset()
             useBarangayDetailStore().reset();
             useDataTableStore().reset()
-            navigateTo('/login')
+            // navigateTo('/login')
         }
     }
 })

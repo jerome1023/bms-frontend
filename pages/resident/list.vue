@@ -32,11 +32,11 @@ onMounted(async () => {
     useDataTable.storeTableContent({
       title: "Official",
       columns: [
-        { field: "firstname", header: "Name" },
+        { field: "fullname", header: "Name" },
         { field: "gender", header: "Gender" },
         { field: "house_number", header: "House Number" },
         { field: "sitio_details.name", header: "Sitio" },
-        { field: "voter_status", header: "Voter" },
+        { field: "voter_status", header: "Voter Status" },
       ],
       actions: ['edit', 'archive'],
       body: response ?? [],

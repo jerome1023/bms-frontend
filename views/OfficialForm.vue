@@ -67,22 +67,22 @@ import type { TOptions } from '~/types';
 const options = <TOptions>[
   {
     name: "Male",
-    code: "male",
+    code: "Male",
   },
   {
     name: "Female",
-    code: "female",
+    code: "Female",
   },
 ];
 
 const optionPositions = <TOptions>[
   {
     name: "Barangay Captain",
-    code: "captain",
+    code: "Barangay Captain",
   },
   {
     name: "Konsehal",
-    code: "konsehal",
+    code: "Konsehal",
   },
 ];
 </script>

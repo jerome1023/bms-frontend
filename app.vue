@@ -12,7 +12,6 @@ import { useBarangayDetailStore } from "./stores/details";
 
 const layout = ref("auth");
 const isLoading = ref();
-onMounted(() => {});
 
 const checkLocalStorage = () => {
   if (process.client) {

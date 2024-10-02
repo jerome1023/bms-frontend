@@ -56,7 +56,7 @@ const toggleSidebar = () => {
 const menuItems = [
     { path: "/edit-profile", name: "Edit Profile", icon: faUserPen },
     { path: "/management", name: "Management", icon: faCogs },
-    { name: "Sign out", icon: faArrowRightFromBracket, function: () => userStore.logout() }
+    { name: "Sign out", icon: faArrowRightFromBracket, function: () => logoutUser() }
 ];
 
 const userDetails = () => {
