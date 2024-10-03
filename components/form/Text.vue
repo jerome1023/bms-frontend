@@ -3,7 +3,7 @@
     <InputText
       v-bind="field"
       v-model="field.value"
-      :placeholder="label || placeholder"
+      :placeholder="placeholder || label"
       type="text"
       class="w-full"
     />

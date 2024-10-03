@@ -118,15 +118,7 @@ import { FilterMatchMode } from "primevue/api";
 import { useWindowSize } from "@vueuse/core";
 import { useModalStore } from "~/stores/modal";
 import { useDataTableStore } from "~/stores/datatable";
-import {
-  OfficialForm,
-  AnnouncementForm,
-  BlotterForm,
-  SolveBlotterForm,
-  DocumentForm,
-  SitioForm,
-  ResidentForm,
-} from "#components";
+import { SolveBlotterForm } from "#components";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
   faBoxArchive,
@@ -177,28 +169,12 @@ const currentPageReportTemplate = computed(() => {
     : "Showing {first} to {last} of {totalRecords}";
 });
 
-const getManagementForm = () => {
-  const activeTab = useDataTable.activeTabManagement;
-  return activeTab == 1 ? DocumentForm : activeTab == 2 ? SitioForm : null;
-};
-
-const currentForm: TObjectLiteral = {
-  "barangay-official": OfficialForm,
-  announcement: AnnouncementForm,
-  blotter: BlotterForm,
-  management: getManagementForm,
-  "resident/list": ResidentForm,
-};
-
 const openModal = async (data: any) => {
   useModal.toggleModal(true);
   useModal.mountForm({
     mode: "Edit",
     title: "Edit Information",
-    component:
-      typeof currentForm[currentUrl] === "function"
-        ? currentForm[currentUrl]()
-        : currentForm[currentUrl],
+    component: useGetCurrentForm(currentUrl),
     schema: {},
     data: data,
   });
@@ -221,12 +197,9 @@ const updateList = (id: string) => {
   );
 };
 
-// const getCurrentRoute = (currentUrl: string) => {
-  const routeList: TObjectLiteral<string> = {
-    "resident/list": "resident",
-  };
-  // return routeList[currentUrl] || currentUrl;
-// };
+const routeList: TObjectLiteral<string> = {
+  "resident/list": "resident",
+};
 
 const archive = (id: string) => {
   confirm.require({
@@ -239,7 +212,7 @@ const archive = (id: string) => {
     rejectClass: "p-button-secondary p-button-outlined",
     acceptClass: "p-button-danger",
     accept: async () => {
-      updateList(id)
+      updateList(id);
       await useFormSubmit(
         `${routeList[currentUrl] || currentUrl}/archive/${id}`,
         { archive_status: true },

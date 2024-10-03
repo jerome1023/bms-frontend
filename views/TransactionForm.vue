@@ -1,81 +1,57 @@
 <template>
   <div class="sm:grid grid-cols-6 gap-x-3">
-    <div
-      v-if="useModal.form.mode === 'Edit' && !open && image"
-      class="col-span-full flex flex-col justify-center gap-3 mb-3"
-    >
-      <img
-        :src="image"
-        class="max-w-[18rem] max-h-60 md:max-w-lg md:max-h-64 m-auto object-scale-down"
-      />
-      <Button
-        @click="openImageUploader"
-        icon="pi pi-upload"
-        label="Upload New Photo"
-        severity="info"
-        size="small"
-        class="m-auto"
-      />
-    </div>
     <FormGroup
-      label="Upload Image"
-      type="image"
-      name="image"
-      span="col-span-full"
-      :class="[
-        open || useModal.form.mode === 'Create' || !image ? 'block' : 'hidden',
-      ]"
-    />
-    <FormGroup
-      label="What"
+      label="Fullname Name"
       type="text"
-      name="what"
-      span="col-span-3"
-      required
-    />
-    <FormGroup
-      label="Where"
-      type="text"
-      name="where"
-      span="col-span-3"
-      required
-    />
-    <FormGroup label="Who" type="text" name="who" span="col-span-3" required />
-    <FormGroup
-      label="When"
-      type="date"
-      name="when"
-      span="col-span-3"
-      required
-    />
-    <FormGroup
-      label="Details"
-      type="textarea"
-      name="details"
+      name="fullname"
+      placeholder="e.g., Doe, John A."
       span="col-span-full"
+    />
+    <FormGroup
+      label="Document"
+      type="select"
+      :options="documentOptions"
+      name="document"
+      span="col-span-3"
+    />
+    <!-- <FormGroup label="Price" type="text" name="price" span="col-span-3" /> -->
+    <FormGroup
+      label="Purpose"
+      type="select"
+      :options="purposeOptions"
+      name="purpose"
+      span="col-span-3"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { useModalStore } from "~/stores/modal";
-const useModal = useModalStore();
+const documentOptions = ref();
+const purposeOptions = [
+  {
+    code: "Work",
+    name: "Work",
+  },
+  {
+    code: "School Requirement",
+    name: "School Requirement",
+  },
+  {
+    code: "Business",
+    name: "Business",
+  },
+  {
+    code: "Others",
+    name: "Others",
+  },
+];
 
-const { value: fieldValue } = useField("image");
-const config = useRuntimeConfig();
-const baseURL = config.public.backendURL;
-
-const open = ref(false);
-const image = ref();
-
-onMounted(() => {
-  if (fieldValue.value) {
-    image.value = baseURL + fieldValue.value;
-  }
+onMounted(async () => {
+  await useGetData("document/list").then((response) => {
+    documentOptions.value = response.map((item: any) => ({
+      code: item.id,
+      name: item.name,
+    }));
+  });
 });
-
-const openImageUploader = () => {
-  fieldValue.value = null;
-  open.value = !open.value;
-};
 </script>

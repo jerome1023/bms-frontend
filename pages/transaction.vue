@@ -33,11 +33,11 @@ onMounted(async () => {
     useDataTable.storeTableContent({
       title: "Transaction",
       columns: [
-        { field: "what", header: "What" },
-        { field: "where", header: "Where" },
-        { field: "who", header: "Who" },
-        { field: "when", header: "When" },
-        { field: "details", header: "Details" },
+        { field: "fullname", header: "Fullname" },
+        { field: "document_name", header: "Document" },
+        { field: "purpose", header: "Purpose" },
+        { field: "price", header: "Price" },
+        { field: "created_at", header: "Date" },
       ],
       actions: ["edit", "archive"],
       body: response ?? [],

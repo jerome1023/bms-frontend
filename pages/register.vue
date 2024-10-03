@@ -84,11 +84,11 @@ import { RegisterS } from "~/server/schema";
 const options = [
   {
     name: "Male",
-    code: "male",
+    code: "Male",
   },
   {
     name: "Female",
-    code: "female",
+    code: "Female",
   },
 ];
 

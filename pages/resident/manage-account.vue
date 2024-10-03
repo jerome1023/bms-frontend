@@ -1,30 +1,30 @@
 <template>
-    <DataTable :content="content" :event="openModal" />
-    <ModalForm/>
+    <!-- <Button
+    icon="pi pi-plus"
+    severity="info"
+    size="small"
+    @click="openModal"
+    label="Add"
+  /> -->
+  <DataTable />
+  <ModalForm />
 </template>
 
 <script setup lang="ts">
-import type { TTableContent } from '~/types';
-import { useModalStore } from '~/stores/modal'
+const useDataTable = useDataTableStore();
 
-const useModal = useModalStore()
-
-const content: TTableContent = {
-    head: ['Name', 'Position', 'Start Term', 'End Term', 'Status'],
-    body: [
-        {
-            name: 'Jerome',
-            position: 'Test',
-            start_term: '11/20/2023',
-            end_term: '11/20/2023',
-            status: 'Active',
-            action: ['view', 'edit', 'archive']
-        }
-    ]
-};
-
-const openModal = () => {
-    useModal.toggleModal(true)
-
-};
+onMounted(async () => {
+  await useGetData("users/list").then((response) => {
+    useDataTable.storeTableContent({
+      title: "Official",
+      columns: [
+        { field: "fullname", header: "Name" },
+        { field: "gender", header: "Gender" },
+        { field: "address", header: "Address" },
+      ],
+      actions: ['edit'],
+      body: response ?? [],
+    });
+  });
+});
 </script>

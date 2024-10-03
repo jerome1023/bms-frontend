@@ -1,4 +1,14 @@
 import type { TObjectLiteral } from "~/types";
+import {
+  OfficialForm,
+  AnnouncementForm,
+  BlotterForm,
+  DocumentForm,
+  SitioForm,
+  ResidentForm,
+  TransactionForm,
+  UserForm,
+} from "#components";
 
 export const useGetSubmissionDetails = (
   currentUrl: string,
@@ -29,6 +39,7 @@ export const useGetSubmissionDetails = (
           ? `sitio/update/${id}`
           : "",
       "resident/list": `resident/update/${id}`,
+      "resident/manage-account": `users/update/${id}`,
     };
     return endpointMap[currentUrl] || `${currentUrl}/update/${id}`;
   };
@@ -142,4 +153,27 @@ export const useManagementSubmissionDetails = (val: any, active: number) => {
     method: result.method || "POST",
     updatedValues: result.updatedValues || val,
   };
+};
+
+export const useGetCurrentForm = (currentUrl: string) => {
+  const useDataTable = useDataTableStore();
+
+  const getManagementForm = () => {
+    const activeTab = useDataTable.activeTabManagement;
+    return activeTab == 1 ? DocumentForm : activeTab == 2 ? SitioForm : null;
+  };
+
+  const currentForm: TObjectLiteral = {
+    "barangay-official": OfficialForm,
+    announcement: AnnouncementForm,
+    blotter: BlotterForm,
+    management: getManagementForm,
+    "resident/list": ResidentForm,
+    "resident/manage-account": UserForm,
+    transaction: TransactionForm,
+  };
+
+  return typeof currentForm[currentUrl] === "function"
+    ? currentForm[currentUrl]()
+    : currentForm[currentUrl];
 };
