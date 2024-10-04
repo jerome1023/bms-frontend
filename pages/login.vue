@@ -54,6 +54,14 @@
 import { useAuth } from "~/composables/auth";
 import { LoginS } from "~/server/schema";
 import { useUserStore } from "~/stores/user";
+import { configure } from "vee-validate";
+
+configure({
+  validateOnBlur: false,
+  validateOnChange: false,
+  validateOnInput: false,
+  validateOnModelUpdate: false,
+});
 
 const userStore = useUserStore();
 const alert = ref();

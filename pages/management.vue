@@ -1,5 +1,5 @@
 <template>
-  <TabView v-if="isReady" v-model:activeIndex="active">
+  <TabView v-model:activeIndex="active">
     <TabPanel v-for="(tab, index) in tabs" :key="tab.title" :header="tab.title">
       <Form
         @submit="submit"
@@ -52,8 +52,6 @@ const toast = useToast();
 const active = ref(0);
 
 const formData = reactive({
-  document: {} as TTableContent,
-  sitio: {} as TTableContent,
   initialValues: {
     0: useBarangayDetail.data,
     1: {},
@@ -61,52 +59,16 @@ const formData = reactive({
   } as TObjectLiteral,
 });
 
-const isReady = ref(false);
-
 const tabs = [
   { title: "Barangay Details", form: BarangayDetailsForm },
   { title: "Document", fieldname: "Add Document", form: DocumentForm },
   { title: "Sitio", fieldname: "Add Sitio", form: SitioForm },
 ];
 
-watch(active, (newValue) => {
-  useDataTable.storeTableContent(
-    active.value === 1
-      ? formData.document
-      : active.value === 2
-      ? formData.sitio
-      : { title: "", columns: [], actions: [], body: [] }
-  );
+watch(active, async (newValue) => {
+  useDataTable.reset();
+  useManagementList('management', newValue)
   useDataTable.updateActiveTab(newValue);
-  if (active.value === 0) {
-    useDataTable.reset();
-  }
-});
-
-onMounted(async () => {
-  const [documentResponse, sitioResponse] = await Promise.all([
-    useGetData("document/list"),
-    useGetData("sitio/list"),
-  ]);
-
-  formData.document = {
-    title: "Document",
-    columns: [
-      { field: "name", header: "Name" },
-      { field: "price", header: "Price" },
-    ],
-    actions: ["edit", "delete"],
-    body: documentResponse ?? [],
-  };
-
-  formData.sitio = {
-    title: "Sitio",
-    columns: [{ field: "name", header: "Name" }],
-    actions: ["edit", "delete"],
-    body: sitioResponse ?? [],
-  };
-
-  isReady.value = true;
 });
 
 const notification = (message: string) => {
@@ -118,7 +80,7 @@ const notification = (message: string) => {
   });
 };
 
-const notificationMessages: any = {
+const notificationMessages: ObjectLiteral = {
   success: {
     0: "Barangay details updated successfully",
     1: "Document added successfully",

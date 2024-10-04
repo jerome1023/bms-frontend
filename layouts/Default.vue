@@ -42,6 +42,6 @@ const dynamicWidth = computed(() => {
 });
 
 onMounted(() => {
-  userStore.getUserDetails();
+  // userStore.getUserDetails();
 });
 </script>

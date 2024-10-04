@@ -2,7 +2,7 @@
   <DataTable
     v-model:filters="filters"
     :value="useDataTable.tableContent.body"
-    paginator
+    :paginator="useDataTable.tableContent.body.length > 5 ? true : false"
     removableSort
     :rows="10"
     :rowsPerPageOptions="[5, 10, 20, 50]"
@@ -16,7 +16,7 @@
     dataKey="id"
     :loading="loading"
   >
-    <template v-if="!loading" #header>
+    <template v-if="!loading && useDataTable.tableContent.body.length > 5" #header>
       <div class="flex justify-end items-center gap-2 -mx-4">
         <Button
           class="hidden md:block"
@@ -147,7 +147,10 @@ currentUrl = currentUrl.startsWith("/")
 watch(
   () => useDataTable.tableContent,
   () => {
-    loading.value = false; // Set loading to false when data is available
+    loading.value = true;
+    if (useDataTable.tableContent.title) {
+      loading.value = false;
+    }
   }
 );
 
@@ -173,7 +176,7 @@ const openModal = async (data: any) => {
   useModal.toggleModal(true);
   useModal.mountForm({
     mode: "Edit",
-    title: "Edit Information",
+    title: `Edit ${useDataTable.tableContent.title}`,
     component: useGetCurrentForm(currentUrl),
     schema: {},
     data: data,

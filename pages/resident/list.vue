@@ -19,7 +19,7 @@ const useDataTable = useDataTableStore();
 const openModal = () => {
   useModal.mountForm({
     mode: "Create",
-    title: "Official Information",
+    title: "Resident Information",
     component: ResidentForm,
     schema: {},
     data: {},
@@ -30,7 +30,7 @@ const openModal = () => {
 onMounted(async () => {
   await useGetData("resident/list").then((response) => {
     useDataTable.storeTableContent({
-      title: "Official",
+      title: "Resident",
       columns: [
         { field: "fullname", header: "Name" },
         { field: "gender", header: "Gender" },

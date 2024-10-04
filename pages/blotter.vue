@@ -20,7 +20,7 @@
   const openModal = () => {
     useModal.mountForm({
       mode: "Create",
-      title: "Blotter",
+      title: "Blotter Information",
       component: BlotterForm,
       schema: {},
       data: {},

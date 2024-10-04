@@ -1,5 +1,5 @@
 <template>
-  <div v-if="userStore.user.role.name.toLowerCase() == 'administrator'">
+  <div v-if="userStore.user.role?.name.toLowerCase() == 'administrator'">
     <Button
       icon="pi pi-plus"
       severity="info"
@@ -14,8 +14,6 @@
 </template>
 
 <script setup lang="ts">
-// import { useUserStore } from "~/stores/user";
-// import { useModalStore } from "~/stores/modal";
 import { AnnouncementForm } from "#components";
 
 const userStore = useUserStore();
@@ -25,7 +23,7 @@ const useDataTable = useDataTableStore();
 const openModal = () => {
   useModal.mountForm({
     mode: "Create",
-    title: "Announcement",
+    title: "Announcement Information",
     component: AnnouncementForm,
     schema: {},
     data: {},

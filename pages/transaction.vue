@@ -39,7 +39,7 @@ onMounted(async () => {
         { field: "price", header: "Price" },
         { field: "created_at", header: "Date" },
       ],
-      actions: ["edit", "archive"],
+      actions: userStore.user.role?.name == 'Administrator' ? ["edit", "archive"] : [],
       body: response ?? [],
     });
   });
