@@ -31,6 +31,7 @@ const routeTitles:any = {
     '/barangay-official': 'Barangay Official',
     '/resident/list': 'Resident List',
     '/resident/manage-account': 'Resident Account',
+    '/request/new': 'New Request',
     '/request/pending': 'Pending Request',
     '/request/approved': 'Approved Request',
     '/request/disapproved': 'Disapproved Request',
@@ -38,6 +39,7 @@ const routeTitles:any = {
     '/announcement': 'Announcement',
     '/blotter': 'Blotter',
     '/archive': 'Archive',
+    '/edit-profile' : 'Edit Profile',
     '/management' : 'Management'
 };
 

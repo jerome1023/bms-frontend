@@ -16,7 +16,10 @@
     dataKey="id"
     :loading="loading"
   >
-    <template v-if="!loading && useDataTable.tableContent.body.length > 5" #header>
+    <template
+      v-if="!loading && useDataTable.tableContent.body.length > 5"
+      #header
+    >
       <div class="flex justify-end items-center gap-2 -mx-4">
         <Button
           class="hidden md:block"
@@ -50,7 +53,10 @@
     >
       <template v-if="col.field == 'status'" #body="slotProps">
         <Tag
-          :value="slotProps.data.status"
+          :value="
+            slotProps.data.status.charAt(0).toUpperCase() +
+            slotProps.data.status.slice(1)
+          "
           :severity="getSeverity(slotProps.data)"
         />
       </template>
@@ -74,7 +80,7 @@
             </Button>
 
             <Button
-              v-if="action === 'solve' && data.status == 'Unsolve'"
+              v-if="action === 'solve' && data.status == 'unsolve'"
               v-tooltip.top="'Solve'"
               @click="solve(data.id)"
               size="small"
@@ -105,6 +111,39 @@
             >
               <FontAwesomeIcon :icon="faTrashCan" />
             </Button>
+
+            <Button
+              v-if="action === 'approved'"
+              v-tooltip.top="'Approved'"
+              @click="remove(data.id)"
+              size="small"
+              severity="success"
+              outlined
+            >
+              <FontAwesomeIcon :icon="faThumbsUp" />
+            </Button>
+
+            <Button
+              v-if="action === 'disapproved'"
+              v-tooltip.top="'Disapproved'"
+              @click="remove(data.id)"
+              size="small"
+              severity="warning"
+              outlined
+            >
+              <FontAwesomeIcon :icon="faThumbsDown" />
+            </Button>
+
+            <Button
+              v-if="action === 'complete'"
+              v-tooltip.top="'Complete'"
+              @click="remove(data.id)"
+              size="small"
+              severity="success"
+              outlined
+            >
+              <FontAwesomeIcon :icon="faCircleCheck" />
+            </Button>
           </template>
         </div>
       </template>
@@ -125,6 +164,9 @@ import {
   faPencil,
   faHandshake,
   faTrashCan,
+  faThumbsUp,
+  faThumbsDown,
+  faCircleCheck
 } from "@fortawesome/free-solid-svg-icons";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
@@ -247,11 +289,16 @@ const remove = (id: string) => {
 
 const getSeverity: any = (data: any) => {
   switch (data.status) {
-    case "Solve":
+    case "solve":
+    case "approved":
       return "success";
 
-    case "Unsolve":
+    case "unsolve":
+    case "disapproved":
       return "danger";
+
+    case "pending":
+      return "warning";
 
     default:
       return null;

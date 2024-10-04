@@ -60,11 +60,12 @@ const getCurrentRoute = () => {
 
 const getListEndpoint = (currentUrl: string, activeTab: number) => {
   const endpointMap:TObjectLiteral<string> = {
-    management: activeTab === 1 ? "document" : activeTab === 2 ? "sitio" : "",
-    "resident/list": "resident",
-    "resident/manage-account": "users",
+    management: activeTab === 1 ? "document/list" : activeTab === 2 ? "sitio/list" : "",
+    "resident/list": "resident/list",
+    "resident/manage-account": "users/list",
+    "request/pending": "request/list/pending",
   };
-  return endpointMap[currentUrl] || currentUrl;
+  return endpointMap[currentUrl] || `${currentUrl}/list`;
 };
 
 const submit = async (values: Record<string, any>, actions: any) => {
@@ -98,7 +99,7 @@ const submit = async (values: Record<string, any>, actions: any) => {
 
       //add data to stores
       currentUrl = getListEndpoint(currentUrl, activeTab);
-      await useGetData(`${currentUrl}/list`).then((response) => {
+      await useGetData(currentUrl).then((response) => {
         useDataTable.updateBody(response);
       });
     } else {

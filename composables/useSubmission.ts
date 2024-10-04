@@ -8,6 +8,7 @@ import {
   ResidentForm,
   TransactionForm,
   UserForm,
+  NewRequestForm,
 } from "#components";
 
 export const useGetSubmissionDetails = (
@@ -40,6 +41,7 @@ export const useGetSubmissionDetails = (
           : "",
       "resident/list": `resident/update/${id}`,
       "resident/manage-account": `users/update/${id}`,
+      "request/pending": `request/update/${id}`,
     };
     return endpointMap[currentUrl] || `${currentUrl}/update/${id}`;
   };
@@ -171,6 +173,7 @@ export const useGetCurrentForm = (currentUrl: string) => {
     "resident/list": ResidentForm,
     "resident/manage-account": UserForm,
     transaction: TransactionForm,
+    'request/pending': NewRequestForm,
   };
 
   return typeof currentForm[currentUrl] === "function"

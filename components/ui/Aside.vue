@@ -11,7 +11,11 @@
       class="sticky top-0 z-50 bg-base-green h-16 flex items-center p-2 gap-2 mb-3"
     >
       <img
-        :src="useBarangayDetail.data.logo ? baseURL + useBarangayDetail.data.logo : logo"
+        :src="
+          useBarangayDetail.data.logo
+            ? baseURL + useBarangayDetail.data.logo
+            : logo
+        "
         class="h-9 w-9 rounded-full"
       />
       <p class="flex-1 text-white font-medium text-lg">
@@ -97,6 +101,7 @@ import {
   faBoxArchive,
   faCircleExclamation,
   faBullhorn,
+  faFileCirclePlus,
   faFileCircleXmark,
   faFileCircleCheck,
   faFileLines,
@@ -219,6 +224,13 @@ watch(
 );
 
 onMounted(async () => {
+  if (userStore.user.role?.name === "User") {
+    aside[3].section.unshift({
+      name: "New",
+      path: "/request/new",
+      icon: faFileCirclePlus,
+    });
+  }
   currentRoute.value = router.currentRoute.value.path;
   document.body.addEventListener("click", closeAsideOnClickOutside);
 });

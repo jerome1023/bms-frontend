@@ -80,7 +80,7 @@ const notification = (message: string) => {
   });
 };
 
-const notificationMessages: ObjectLiteral = {
+const notificationMessages: TObjectLiteral = {
   success: {
     0: "Barangay details updated successfully",
     1: "Document added successfully",
