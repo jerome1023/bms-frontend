@@ -115,7 +115,7 @@
             <Button
               v-if="action === 'approved'"
               v-tooltip.top="'Approved'"
-              @click="remove(data.id)"
+              @click="approved(data.id)"
               size="small"
               severity="success"
               outlined
@@ -126,7 +126,7 @@
             <Button
               v-if="action === 'disapproved'"
               v-tooltip.top="'Disapproved'"
-              @click="remove(data.id)"
+              @click="disapproved(data.id)"
               size="small"
               severity="warning"
               outlined
@@ -143,6 +143,17 @@
               outlined
             >
               <FontAwesomeIcon :icon="faCircleCheck" />
+            </Button>
+
+            <Button
+              v-if="action === 'restore'"
+              v-tooltip.top="'Restore'"
+              @click="restore(data.id)"
+              size="small"
+              severity="info"
+              outlined
+            >
+              <FontAwesomeIcon :icon="faRotateLeft" />
             </Button>
           </template>
         </div>
@@ -166,7 +177,9 @@ import {
   faTrashCan,
   faThumbsUp,
   faThumbsDown,
-  faCircleCheck
+  faCircleCheck,
+  faRotateLeft
+
 } from "@fortawesome/free-solid-svg-icons";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
@@ -244,43 +257,119 @@ const updateList = (id: string) => {
 
 const routeList: TObjectLiteral<string> = {
   "resident/list": "resident",
+  "request/pending": "request",
+  "request/approved": "request",
+  "request/disapproved": "request",
 };
 
-const archive = (id: string) => {
+const confirmAction = (
+  id: string,
+  action: string,
+  message: string,
+  endpoint: string,
+  successDetail: string,
+  acceptLabel: string,
+  acceptClass: string
+) => {
   confirm.require({
-    message: "Do you want to archive this record?",
+    message,
     header: "Confirmation",
     icon: "pi pi-info-circle",
     position: "top",
     rejectLabel: "Cancel",
-    acceptLabel: "Delete",
+    acceptLabel,
     rejectClass: "p-button-secondary p-button-outlined",
-    acceptClass: "p-button-danger",
+    acceptClass,
     accept: async () => {
       updateList(id);
-      await useFormSubmit(
-        `${routeList[currentUrl] || currentUrl}/archive/${id}`,
-        { archive_status: true },
-        "PUT"
-      ).then(async (response) => {
-        if (response.status) {
+      await useFormSubmit(endpoint, {}, "PUT")
+        .then(async (response) => {
           toast.add({
-            severity: "info",
-            summary: "Success",
-            detail: "Record archive successfully",
+            severity: response.status ? "success" : "error",
+            summary: response.status ? "Success" : "Error",
+            detail: response.status ? successDetail : "Something Went Wrong!",
             life: 3000,
           });
-        } else {
-          toast.add({
-            severity: "error",
-            summary: "Error",
-            detail: "Something Went Happen!",
-            life: 3000,
-          });
-        }
-      });
+        });
     },
   });
+};
+
+// const archive = (id: string) => {
+//   confirm.require({
+//     message: "Do you want to archive this record?",
+//     header: "Confirmation",
+//     icon: "pi pi-info-circle",
+//     position: "top",
+//     rejectLabel: "Cancel",
+//     acceptLabel: "Delete",
+//     rejectClass: "p-button-secondary p-button-outlined",
+//     acceptClass: "p-button-danger",
+//     accept: async () => {
+//       updateList(id);
+//       await useFormSubmit(
+//         `${routeList[currentUrl] || currentUrl}/archive/${id}`,
+//         {},
+//         "PUT"
+//       ).then(async (response) => {
+//         if (response.status) {
+//           toast.add({
+//             severity: "success",
+//             summary: "Success",
+//             detail: "Record archive successfully",
+//             life: 3000,
+//           });
+//         } else {
+//           toast.add({
+//             severity: "error",
+//             summary: "Error",
+//             detail: "Something Went Happen!",
+//             life: 3000,
+//           });
+//         }
+//       });
+//     },
+//   });
+// };
+
+const approved = (id: string) => {
+  confirmAction(
+    id,
+    "approved",
+    "Do you want to approve this request?",
+    `request/update-status/${id}/approved`,
+    "Request approved successfully",
+    "Approve",
+    "p-button-info"
+  );
+};
+
+const disapproved = (id: string) => {
+  confirmAction(
+    id,
+    "disapproved",
+    "Do you want to disapprove this request?",
+    `request/update-status/${id}/disapproved`,
+    "Request disapproved successfully",
+    "Disapprove",
+    "p-button-warning"
+  );
+};
+
+const archive = (id: string) => {
+  confirmAction(
+    id,
+    "archive",
+    "Do you want to archive this record?",
+    `${routeList[currentUrl] || currentUrl}/archive/${id}`,
+    "Record archived successfully",
+    "Archive",
+    "p-button-danger"
+  );
+};
+
+const restore = (id: string) => {
+  console.log(id);
 };
 
 const remove = (id: string) => {

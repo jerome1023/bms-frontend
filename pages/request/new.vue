@@ -1,6 +1,6 @@
 <template>
   <Form @submit="submit" v-slot="{ isSubmitting }">
-    <Fieldset legend="Add Request">
+    <Fieldset legend="Create Request">
       <div class="flex flex-col gap-2">
         <NewRequestForm />
         <Alert
@@ -46,7 +46,7 @@ const submit = async (values: any, actions: any) => {
       //     active.value === 1 ? "document/list" : "sitio/list"
       //   ).then((response) => {
       //     useDataTable.updateBody(response);
-      //     actions.resetForm();
+          actions.resetForm();
       //   });
       // }
     } else {

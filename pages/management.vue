@@ -67,7 +67,7 @@ const tabs = [
 
 watch(active, async (newValue) => {
   useDataTable.reset();
-  useManagementList('management', newValue)
+  useManageList('management', newValue)
   useDataTable.updateActiveTab(newValue);
 });
 

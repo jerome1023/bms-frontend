@@ -1,6 +1,6 @@
 import type { TTableColumn } from "~/types";
 
-export const useManagementList = async (page: string, tabIndex: number) => {
+export const useManageList = async (page: string, tabIndex: number) => {
     const useDataTable = useDataTableStore();
 
     let endpoint = "";
@@ -54,36 +54,33 @@ export const useManagementList = async (page: string, tabIndex: number) => {
                     ];
                     break;
                 case 2:
-                    endpoint = "";
+                    endpoint = "request/archive_list/pending";
                     title = "Pending Request";
                     columns = [
                         { field: "fullname", header: "Name" },
-                        { field: "gender", header: "Gender" },
-                        { field: "house_number", header: "House Number" },
-                        { field: "sitio_name", header: "Sitio" },
-                        { field: "voter_status", header: "Voter Status" },
+                        { field: "document_name", header: "Document" },
+                        { field: "purpose", header: "Purpose" },
+                        { field: "price", header: "Price" },
                     ];
                     break;
                 case 3:
-                    endpoint = "";
+                    endpoint = "request/archive_list/approved";
                     title = "Approved Request";
                     columns = [
                         { field: "fullname", header: "Name" },
-                        { field: "gender", header: "Gender" },
-                        { field: "house_number", header: "House Number" },
-                        { field: "sitio_name", header: "Sitio" },
-                        { field: "voter_status", header: "Voter Status" },
+                        { field: "document_name", header: "Document" },
+                        { field: "purpose", header: "Purpose" },
+                        { field: "price", header: "Price" },
                     ];
                     break;
                 case 4:
-                    endpoint = "";
+                    endpoint = "request/archive_list/disapproved";
                     title = "Disapproved Request";
                     columns = [
                         { field: "fullname", header: "Name" },
-                        { field: "gender", header: "Gender" },
-                        { field: "house_number", header: "House Number" },
-                        { field: "sitio_name", header: "Sitio" },
-                        { field: "voter_status", header: "Voter Status" },
+                        { field: "document_name", header: "Document" },
+                        { field: "purpose", header: "Purpose" },
+                        { field: "price", header: "Price" },
                     ];
                     break;
                 case 5:

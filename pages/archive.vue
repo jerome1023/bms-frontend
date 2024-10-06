@@ -22,11 +22,11 @@ const tabs = ref([
 
 watch(active, async (newValue) => {
   useDataTable.reset();
-  useManagementList("archive", newValue);
+  useManageList("archive", newValue);
   useDataTable.updateActiveTab(newValue);
 });
 
 onMounted(() => {
-  useManagementList("archive", 0);
+  useManageList("archive", 0);
 });
 </script>

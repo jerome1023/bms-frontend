@@ -59,14 +59,14 @@ const purposeOptions = [
 ];
 
 onMounted(async () => {
-  await useGetData("document/list").then((response) => {
-    documentOptions.value = response.map((item: any) => ({
+  useGetData("sitio/list").then((response) => {
+    sitioOptions.value = response.map((item: any) => ({
       code: item.id,
       name: item.name,
     }));
   });
-  await useGetData("sitio/list").then((response) => {
-    sitioOptions.value = response.map((item: any) => ({
+  useGetData("document/list").then((response) => {
+    documentOptions.value = response.map((item: any) => ({
       code: item.id,
       name: item.name,
     }));
