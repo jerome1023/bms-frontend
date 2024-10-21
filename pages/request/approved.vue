@@ -16,6 +16,7 @@
           { field: "purpose", header: "Purpose" },
           { field: "price", header: "Price" },
           { field: "status", header: "Status" },
+          { field: "date", header: "Approved Date" }
         ],
         actions: userStore.user.role?.name === 'Administrator' ? ['complete', 'archive'] : [],
         body: response ?? [],

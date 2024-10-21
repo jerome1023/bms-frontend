@@ -82,7 +82,7 @@
             <Button
               v-if="action === 'solve' && data.status == 'unsolve'"
               v-tooltip.top="'Solve'"
-              @click="solve(data.id)"
+              @click="actionButton(data.id, action)"
               size="small"
               severity="info"
               outlined
@@ -104,7 +104,7 @@
             <Button
               v-if="action === 'delete'"
               v-tooltip.top="'Delete'"
-              @click="remove(data.id)"
+              @click="actionButton(data.id, action)"
               size="small"
               severity="danger"
               outlined
@@ -115,7 +115,7 @@
             <Button
               v-if="action === 'approved'"
               v-tooltip.top="'Approved'"
-              @click="approved(data.id)"
+              @click="actionButton(data.id, action)"
               size="small"
               severity="info"
               outlined
@@ -126,7 +126,7 @@
             <Button
               v-if="action === 'disapproved'"
               v-tooltip.top="'Disapproved'"
-              @click="disapproved(data.id)"
+              @click="actionButton(data.id, action)"
               size="small"
               severity="warning"
               outlined
@@ -137,7 +137,7 @@
             <Button
               v-if="action === 'complete'"
               v-tooltip.top="'Complete'"
-              @click="remove(data.id)"
+              @click="actionButton(data.id, action)"
               size="small"
               severity="success"
               outlined
@@ -242,60 +242,78 @@ const updateList = (id: string) => {
   );
 };
 
-const routeList: TObjectLiteral<any> = {
+const routeList: TObjectLiteral = {
   "resident/list": "resident",
   "request/pending": "request",
   "request/approved": "request",
   "request/disapproved": "request",
-  "archive": () => {
-    console.log(useDataTable.activeTabManagement)
-  }
 };
 
-const confirmAction = (
-  id: string,
-  action: string,
-  message: string,
-  endpoint: string,
-  acceptClass: string,
-  body?: object
-) => {
+const confirmAction = (details: TObjectLiteral) => {
   confirm.require({
-    message,
+    message: details.message,
     header: "Confirmation",
     icon: "pi pi-info-circle",
     position: "top",
     rejectLabel: "Cancel",
     acceptLabel: "Proceed",
     rejectClass: "p-button-secondary p-button-outlined",
-    acceptClass,
+    acceptClass: details.acceptClass,
     accept: async () => {
-      if (action === "disapproved") {
+      // if (details.action === "disapproved") {
+      //   useModal.toggleModal(true);
+      //   useModal.mountForm({
+      //     mode: "Disapproved",
+      //     title: "Disapproved Request",
+      //     component: useGetCurrentForm(currentUrl),
+      //     schema: {},
+      //     data: { id: details.id },
+      //   });
+      // } else if (details.action === "blotter") {
+      //   useModal.toggleModal(true);
+      //   useModal.mountForm({
+      //     mode: "Solve",
+      //     title: "Solve Blotter",
+      //     component: useGetCurrentForm(`${currentUrl}/solve`),
+      //     schema: {},
+      //     data: { id: details.id },
+      //   });
+      // }
+
+      if (["disapproved", "blotter"].includes(details.action)) {
+        const modalConfig: TObjectLiteral = {
+          disapproved: {
+            mode: "Disapproved",
+            title: "Disapproved Request",
+            component: useGetCurrentForm(currentUrl),
+            schema: {},
+          },
+          blotter: {
+            mode: "Solve",
+            title: "Solve Blotter",
+            component: useGetCurrentForm(`${currentUrl}/solve`),
+            schema: {},
+          },
+        };
+
         useModal.toggleModal(true);
         useModal.mountForm({
-          mode: "Disapproved",
-          title: "Disapproved Request",
-          component: useGetCurrentForm(currentUrl),
-          schema: {},
-          data: { id: id },
+          ...modalConfig[details.action],
+          data: { id: details.id },
         });
-      } else if (action === "blotter") {
-        useModal.toggleModal(true);
-        useModal.mountForm({
-          mode: "Solve",
-          title: "Solve Blotter",
-          component: useGetCurrentForm(`${currentUrl}/solve`),
-          schema: {},
-          data: { id: id },
-        });
-      }
-      else {
-        await useFormSubmit(endpoint, body ?? {}, "PUT").then(async (response) => {
-          updateList(id);
+      } else {
+        await useFormSubmit(
+          details.endpoint,
+          details.body ?? {},
+          details.method ?? "PUT"
+        ).then(async (response) => {
+          updateList(details.id);
           toast.add({
             severity: response.status ? "success" : "error",
             summary: response.status ? "Success" : "Error",
-            detail: response.status ? response.message : "Something Went Wrong!",
+            detail: response.status
+              ? response.message
+              : "Something Went Wrong!",
             life: 3000,
           });
         });
@@ -304,59 +322,73 @@ const confirmAction = (
   });
 };
 
-const solve = (id: string) => {
-  confirmAction(
-    id,
-    "blotter",
-    "Are you sure you want to solve this blotter?",
-    "",
-    "p-button-info"
-  );
+const archivePageActiveTab: TObjectLiteral<string> = {
+  0: "barangay-official",
+  1: "resident",
+  2: "request",
+  3: "request",
+  4: "transaction",
+  5: "announcement",
+  6: "blotter",
 };
 
-const approved = (id: string) => {
-  confirmAction(
-    id,
-    "approved",
-    "Are you sure you want to approve this request?",
-    `request/update-status/${id}/approved`,
-    "p-button-info"
-  );
-};
+const actionButton = (id: string, action: string) => {
+  const details: TObjectLiteral = {
+    solve: {
+      id: id,
+      action: "blotter",
+      message: "Are you sure you want to solve this blotter?",
+      acceptClass: "p-button-info",
+    },
+    approved: {
+      id: id,
+      action: "approved",
+      message: "Are you sure you want to approve this request?",
+      endpoint: `request/update-status/${id}/approved`,
+      acceptClass: "p-button-info",
+    },
+    disapproved: {
+      id: id,
+      action: "disapproved",
+      message: "Are you sure you want to disapproved this request?",
+      acceptClass: "p-button-warning",
+    },
+    complete: {
+      id: id,
+      action: "complete",
+      message: "Are you sure you want to complete this request?",
+      acceptClass: "p-button-info",
+    },
+    delete: {
+      id: id,
+      action: "delete",
+      message: "Are you sure you want to permanently delete this record?",
+      acceptClass: "p-button-danger",
+      endpoint: `${
+        archivePageActiveTab[useDataTable.activeTabManagement.toString()]
+      }/delete/${id}`,
+      method: "DELETE",
+    },
+  };
 
-const disapproved = (id: string) => {
-  confirmAction(
-    id,
-    "disapproved",
-    "Are you sure you want to disapprove this request?",
-    "",
-    "p-button-warning"
-  );
+  return confirmAction(details[action]);
 };
 
 const archive_status = (id: string, action: string) => {
-  const archivePageActiveTab : TObjectLiteral<string> = {
-    0 : 'barangay-official',
-    1 : 'resident',
-    2 : 'request',
-    3 : 'request',
-    4 : 'transaction',
-    5 : 'announcement',
-    6 : 'blotter',
-  }
+  const url =
+    action === "archive"
+      ? routeList[currentUrl] || currentUrl
+      : archivePageActiveTab[useDataTable.activeTabManagement.toString()];
 
-  const url = action === 'archive' ? routeList[currentUrl] || currentUrl : archivePageActiveTab[useDataTable.activeTabManagement.toString()]
-  confirmAction(
-    id,
-    action,
-    `Are you sure you want to ${action} this record?`,
-    `${url}/archive_status/${id}/${action == 'archive' ? true : false}`,
-    "p-button-danger"
-  );
-};
-
-const remove = (id: string) => {
-  console.log(id);
+  return confirmAction({
+    id: id,
+    action: action,
+    message: `Are you sure you want to ${action} this record?`,
+    endpoint: `${url}/archive_status/${id}/${
+      action == "archive" ? true : false
+    }`,
+    acceptClass: "p-button-danger",
+  });
 };
 
 const getSeverity: any = (data: any) => {

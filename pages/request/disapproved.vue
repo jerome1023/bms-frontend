@@ -16,6 +16,8 @@
           { field: "purpose", header: "Purpose" },
           { field: "price", header: "Price" },
           { field: "status", header: "Status" },
+          { field: "reason", header: "Disapproved Reason" },
+          { field: "date", header: "Disapproved Date" }
         ],
         actions: userStore.user.role?.name === 'Administrator' ? ['archive'] : [],
         body: response ?? [],
