@@ -1,5 +1,5 @@
 <template>
-  <Field :name="name" v-model="selected">
+  <Field v-slot="{ errors }" :name="name" v-model="selected">
     <Dropdown
       v-model="selected"
       :options="options"
@@ -9,6 +9,7 @@
       checkmark
       :highlightOnSelect="true"
       class="w-full md:w-14rem"
+      :invalid="errors[0] ? true : false"
     ></Dropdown>
   </Field>
 </template>

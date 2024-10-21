@@ -1,11 +1,12 @@
 <template>
-  <Field v-slot="{ field }" :name="name">
+  <Field v-slot="{ field, errors }" :name="name">
     <InputText
       v-bind="field"
       v-model="field.value"
       :placeholder="placeholder || label"
       type="text"
       class="w-full"
+      :invalid="errors[0] ? true : false"
     />
   </Field>
 </template>

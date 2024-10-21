@@ -1,5 +1,5 @@
 <template>
-  <Field v-slot="{ field }" :name="name">
+  <Field v-slot="{ field, errors }" :name="name">
     <Password
       v-bind="field"
       v-model="field.value"
@@ -8,6 +8,7 @@
       toggleMask
       inputClass="w-full"
       style="width: 100%"
+      :invalid="errors[0] ? true : false"
     />
   </Field>
 </template>

@@ -69,91 +69,14 @@
             :key="action + index"
           >
             <Button
-              v-if="action === 'edit'"
-              v-tooltip.top="'Edit'"
-              @click="openModal(data)"
+              v-if="shouldDisplayButton(action, data)"
+              v-tooltip.top="getTooltip(action)"
+              @click="handleAction(action, data)"
               size="small"
-              severity="success"
+              :severity="getActionSeverity(action)"
               outlined
             >
-              <FontAwesomeIcon :icon="faPencil" />
-            </Button>
-
-            <Button
-              v-if="action === 'solve' && data.status == 'unsolve'"
-              v-tooltip.top="'Solve'"
-              @click="actionButton(data.id, action)"
-              size="small"
-              severity="info"
-              outlined
-            >
-              <FontAwesomeIcon :icon="faHandshake" />
-            </Button>
-
-            <Button
-              v-if="action === 'archive'"
-              v-tooltip.top="'Archive'"
-              @click="archive_status(data.id, action)"
-              size="small"
-              severity="danger"
-              outlined
-            >
-              <FontAwesomeIcon :icon="faBoxArchive" />
-            </Button>
-
-            <Button
-              v-if="action === 'delete'"
-              v-tooltip.top="'Delete'"
-              @click="actionButton(data.id, action)"
-              size="small"
-              severity="danger"
-              outlined
-            >
-              <FontAwesomeIcon :icon="faTrashCan" />
-            </Button>
-
-            <Button
-              v-if="action === 'approved'"
-              v-tooltip.top="'Approved'"
-              @click="actionButton(data.id, action)"
-              size="small"
-              severity="info"
-              outlined
-            >
-              <FontAwesomeIcon :icon="faThumbsUp" />
-            </Button>
-
-            <Button
-              v-if="action === 'disapproved'"
-              v-tooltip.top="'Disapproved'"
-              @click="actionButton(data.id, action)"
-              size="small"
-              severity="warning"
-              outlined
-            >
-              <FontAwesomeIcon :icon="faThumbsDown" />
-            </Button>
-
-            <Button
-              v-if="action === 'complete'"
-              v-tooltip.top="'Complete'"
-              @click="actionButton(data.id, action)"
-              size="small"
-              severity="success"
-              outlined
-            >
-              <FontAwesomeIcon :icon="faCircleCheck" />
-            </Button>
-
-            <Button
-              v-if="action === 'restore'"
-              v-tooltip.top="'Restore'"
-              @click="archive_status(data.id, action)"
-              size="small"
-              severity="info"
-              outlined
-            >
-              <FontAwesomeIcon :icon="faRotateLeft" />
+              <FontAwesomeIcon :icon="getIcon(action)" />
             </Button>
           </template>
         </div>
@@ -250,37 +173,18 @@ const routeList: TObjectLiteral = {
 };
 
 const confirmAction = (details: TObjectLiteral) => {
+  const { id, action, message, acceptClass, endpoint, method, body } = details;
   confirm.require({
-    message: details.message,
+    message: message,
     header: "Confirmation",
     icon: "pi pi-info-circle",
     position: "top",
     rejectLabel: "Cancel",
     acceptLabel: "Proceed",
     rejectClass: "p-button-secondary p-button-outlined",
-    acceptClass: details.acceptClass,
+    acceptClass: acceptClass,
     accept: async () => {
-      // if (details.action === "disapproved") {
-      //   useModal.toggleModal(true);
-      //   useModal.mountForm({
-      //     mode: "Disapproved",
-      //     title: "Disapproved Request",
-      //     component: useGetCurrentForm(currentUrl),
-      //     schema: {},
-      //     data: { id: details.id },
-      //   });
-      // } else if (details.action === "blotter") {
-      //   useModal.toggleModal(true);
-      //   useModal.mountForm({
-      //     mode: "Solve",
-      //     title: "Solve Blotter",
-      //     component: useGetCurrentForm(`${currentUrl}/solve`),
-      //     schema: {},
-      //     data: { id: details.id },
-      //   });
-      // }
-
-      if (["disapproved", "blotter"].includes(details.action)) {
+      if (["disapproved", "blotter"].includes(action)) {
         const modalConfig: TObjectLiteral = {
           disapproved: {
             mode: "Disapproved",
@@ -298,25 +202,23 @@ const confirmAction = (details: TObjectLiteral) => {
 
         useModal.toggleModal(true);
         useModal.mountForm({
-          ...modalConfig[details.action],
-          data: { id: details.id },
+          ...modalConfig[action],
+          data: { id: id },
         });
       } else {
-        await useFormSubmit(
-          details.endpoint,
-          details.body ?? {},
-          details.method ?? "PUT"
-        ).then(async (response) => {
-          updateList(details.id);
-          toast.add({
-            severity: response.status ? "success" : "error",
-            summary: response.status ? "Success" : "Error",
-            detail: response.status
-              ? response.message
-              : "Something Went Wrong!",
-            life: 3000,
-          });
-        });
+        await useFormSubmit(endpoint, body ?? {}, method ?? "PUT").then(
+          async (response) => {
+            updateList(id);
+            toast.add({
+              severity: response.status ? "success" : "error",
+              summary: response.status ? "Success" : "Error",
+              detail: response.status
+                ? response.message
+                : "Something Went Wrong!",
+              life: 3000,
+            });
+          }
+        );
       }
     },
   });
@@ -345,7 +247,7 @@ const actionButton = (id: string, action: string) => {
       action: "approved",
       message: "Are you sure you want to approve this request?",
       endpoint: `request/update-status/${id}/approved`,
-      acceptClass: "p-button-info",
+      acceptClass: "p-button-success",
     },
     disapproved: {
       id: id,
@@ -357,7 +259,8 @@ const actionButton = (id: string, action: string) => {
       id: id,
       action: "complete",
       message: "Are you sure you want to complete this request?",
-      acceptClass: "p-button-info",
+      endpoint: `request/complete/${id}`,
+      acceptClass: "p-button-success",
     },
     delete: {
       id: id,
@@ -374,20 +277,23 @@ const actionButton = (id: string, action: string) => {
   return confirmAction(details[action]);
 };
 
-const archive_status = (id: string, action: string) => {
-  const url =
-    action === "archive"
-      ? routeList[currentUrl] || currentUrl
-      : archivePageActiveTab[useDataTable.activeTabManagement.toString()];
+const archive_status = (id: string, action: "archive" | "restore") => {
+  let url = routeList[currentUrl] || currentUrl;
+  let endpointStatus = true;
+  let acceptClass = "p-button-danger";
+
+  if (action === "restore") {
+    url = archivePageActiveTab[useDataTable.activeTabManagement.toString()];
+    endpointStatus = false;
+    acceptClass = "p-button-info";
+  }
 
   return confirmAction({
     id: id,
     action: action,
     message: `Are you sure you want to ${action} this record?`,
-    endpoint: `${url}/archive_status/${id}/${
-      action == "archive" ? true : false
-    }`,
-    acceptClass: "p-button-danger",
+    endpoint: `${url}/archive_status/${id}/${endpointStatus}`,
+    acceptClass: acceptClass,
   });
 };
 
@@ -407,5 +313,85 @@ const getSeverity: any = (data: any) => {
     default:
       return null;
   }
+};
+
+const actionsConfig: TObjectLiteral = {
+  edit: {
+    icon: faPencil,
+    tooltip: "Edit",
+    severity: "success",
+    condition: () => true,
+    handler: (data: any) => openModal(data),
+  },
+  solve: {
+    icon: faHandshake,
+    tooltip: "Solve",
+    severity: "info",
+    condition: (data: any) => data.status === "unsolve",
+    handler: (data: any) => actionButton(data.id, "solve"),
+  },
+  archive: {
+    icon: faBoxArchive,
+    tooltip: "Archive",
+    severity: "danger",
+    condition: () => true,
+    handler: (data: any) => archive_status(data.id, "archive"),
+  },
+  delete: {
+    icon: faTrashCan,
+    tooltip: "Delete",
+    severity: "danger",
+    condition: () => true,
+    handler: (data: any) => actionButton(data.id, "delete"),
+  },
+  approved: {
+    icon: faThumbsUp,
+    tooltip: "Approved",
+    severity: "success",
+    condition: () => true,
+    handler: (data: any) => actionButton(data.id, "approved"),
+  },
+  disapproved: {
+    icon: faThumbsDown,
+    tooltip: "Disapproved",
+    severity: "warning",
+    condition: () => true,
+    handler: (data: any) => actionButton(data.id, "disapproved"),
+  },
+  complete: {
+    icon: faCircleCheck,
+    tooltip: "Complete",
+    severity: "success",
+    condition: () => true,
+    handler: (data: any) => actionButton(data.id, "complete"),
+  },
+  restore: {
+    icon: faRotateLeft,
+    tooltip: "Restore",
+    severity: "info",
+    condition: () => true,
+    handler: (data: any) => archive_status(data.id, "restore"),
+  },
+};
+
+const getIcon = (action: string) => {
+  return actionsConfig[action].icon;
+};
+
+const getTooltip = (action: string) => {
+  return actionsConfig[action].tooltip;
+};
+
+const getActionSeverity = (action: string) => {
+  return actionsConfig[action].severity;
+};
+
+const shouldDisplayButton = (action: string, data: any) => {
+  return actionsConfig[action]?.condition(data);
+};
+
+const handleAction = (action: string, data: any) => {
+  const handler = actionsConfig[action]?.handler;
+  if (handler) handler(data);
 };
 </script>

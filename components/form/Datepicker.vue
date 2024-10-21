@@ -1,5 +1,5 @@
 <template>
-  <Field v-slot="{ field }" :name="name">
+  <Field v-slot="{ field, errors }" :name="name">
     <Calendar
       v-bind="field"
       v-model="field.value"
@@ -11,6 +11,7 @@
       dateFormat="yy-mm-dd"
       :showTime="name==='when' ? true : false"
       hourFormat="12"
+      :invalid="errors[0] ? true : false"
     />
   </Field>
 </template>
