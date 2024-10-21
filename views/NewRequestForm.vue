@@ -29,17 +29,26 @@
       name="purpose"
       span="col-span-3"
     />
-    <FormGroup v-if="purposeValue == 'Business'" label="Income" type="text" name="income" span="col-span-3" />
+    <FormGroup
+      v-if="purposeValue == 'Business' && documentOptions?.find((item:any) => item.code === documentValue)?.name.includes('Business Clearance')"
+      label="Income"
+      type="text"
+      name="income"
+      span="col-span-3"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { useField } from "vee-validate/";
-const { value: purposeValue } = useField('purpose');
+import type { TOptions } from "~/types";
+const { value: purposeValue } = useField("purpose");
+const { value: documentValue } = useField("document");
 
-const documentOptions = ref();
-const sitioOptions = ref();
-const purposeOptions = [
+const documentOptions = ref<TOptions>();
+const sitioOptions = ref<TOptions>();
+
+const purposeOptions: TOptions = [
   {
     code: "Work",
     name: "Work",

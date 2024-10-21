@@ -32,23 +32,12 @@ const alert = ref<TAlert>({
 });
 const submit = async (values: any, actions: any) => {
   await useFormSubmit("request/create", values).then((response) => {
-    console.log(response);
     alert.value = {
       type: response.alert.type,
       title: response.alert.title,
     };
     if (response.status) {
-      // notification(notificationMessages.success[active.value]);
-      // if (active.value === 0) {
-      //   useBarangayDetail.mountDetails();
-      // } else {
-      //   await useGetData(
-      //     active.value === 1 ? "document/list" : "sitio/list"
-      //   ).then((response) => {
-      //     useDataTable.updateBody(response);
           actions.resetForm();
-      //   });
-      // }
     } else {
       response.errors ? actions.setErrors(response.errors) : null;
     }
