@@ -93,14 +93,11 @@ const submit = async (values: Record<string, any>, actions: any) => {
     };
 
     if (response.status) {
-      setTimeout(() => {
-        closeModal();
-      }, 650);
-
       //add data to stores
       currentUrl = getListEndpoint(currentUrl, activeTab);
       await useGetData(currentUrl).then((response) => {
         useDataTable.updateBody(response);
+        closeModal();
       });
     } else {
       response.errors ? actions.setErrors(response.errors) : null;

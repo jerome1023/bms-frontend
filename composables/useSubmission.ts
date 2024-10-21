@@ -9,6 +9,8 @@ import {
   TransactionForm,
   UserForm,
   NewRequestForm,
+  SolveBlotterForm, 
+  DisapprovedForm
 } from "#components";
 
 export const useGetSubmissionDetails = (
@@ -50,12 +52,14 @@ export const useGetSubmissionDetails = (
     create: getCreateEndpoint(currentUrl),
     edit: getEditEndpoint(currentUrl, id, activeTab),
     solve: `${currentUrl}/solve/${id}`,
+    disapproved: `request/update-status/${id}/disapproved`
   };
 
   const methodMap: TObjectLiteral<string> = {
     create: "POST",
     edit: "PUT",
     solve: "PUT",
+    disapproved: "PUT"
   };
 
   if (!useModal.open) return null; // In case modal is not open
@@ -159,6 +163,7 @@ export const useManagementSubmissionDetails = (val: any, active: number) => {
 
 export const useGetCurrentForm = (currentUrl: string) => {
   const useDataTable = useDataTableStore();
+  const userRole = useUserStore().user.role.name;
 
   const getManagementForm = () => {
     const activeTab = useDataTable.activeTabManagement;
@@ -169,11 +174,12 @@ export const useGetCurrentForm = (currentUrl: string) => {
     "barangay-official": OfficialForm,
     announcement: AnnouncementForm,
     blotter: BlotterForm,
+    "blotter/solve": SolveBlotterForm,
     management: getManagementForm,
     "resident/list": ResidentForm,
     "resident/manage-account": UserForm,
     transaction: TransactionForm,
-    'request/pending': NewRequestForm,
+    'request/pending': userRole === 'Administrator' ? DisapprovedForm : NewRequestForm,
   };
 
   return typeof currentForm[currentUrl] === "function"

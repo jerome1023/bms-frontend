@@ -93,7 +93,7 @@
             <Button
               v-if="action === 'archive'"
               v-tooltip.top="'Archive'"
-              @click="archive(data.id)"
+              @click="archive_status(data.id, action)"
               size="small"
               severity="danger"
               outlined
@@ -117,7 +117,7 @@
               v-tooltip.top="'Approved'"
               @click="approved(data.id)"
               size="small"
-              severity="success"
+              severity="info"
               outlined
             >
               <FontAwesomeIcon :icon="faThumbsUp" />
@@ -148,7 +148,7 @@
             <Button
               v-if="action === 'restore'"
               v-tooltip.top="'Restore'"
-              @click="restore(data.id)"
+              @click="archive_status(data.id, action)"
               size="small"
               severity="info"
               outlined
@@ -168,7 +168,6 @@ import { FilterMatchMode } from "primevue/api";
 import { useWindowSize } from "@vueuse/core";
 import { useModalStore } from "~/stores/modal";
 import { useDataTableStore } from "~/stores/datatable";
-import { SolveBlotterForm } from "#components";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
   faBoxArchive,
@@ -178,8 +177,7 @@ import {
   faThumbsUp,
   faThumbsDown,
   faCircleCheck,
-  faRotateLeft
-
+  faRotateLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
@@ -238,28 +236,20 @@ const openModal = async (data: any) => {
   });
 };
 
-const solve = (id: string) => {
-  useModal.toggleModal(true);
-  useModal.mountForm({
-    mode: "Solve",
-    title: "Solve Blotter",
-    component: SolveBlotterForm,
-    schema: {},
-    data: { id: id },
-  });
-};
-
 const updateList = (id: string) => {
   useDataTable.updateBody(
     useDataTable.tableContent.body.filter((item) => item.id !== id)
   );
 };
 
-const routeList: TObjectLiteral<string> = {
+const routeList: TObjectLiteral<any> = {
   "resident/list": "resident",
   "request/pending": "request",
   "request/approved": "request",
   "request/disapproved": "request",
+  "archive": () => {
+    console.log(useDataTable.activeTabManagement)
+  }
 };
 
 const confirmAction = (
@@ -267,9 +257,8 @@ const confirmAction = (
   action: string,
   message: string,
   endpoint: string,
-  successDetail: string,
-  acceptLabel: string,
-  acceptClass: string
+  acceptClass: string,
+  body?: object
 ) => {
   confirm.require({
     message,
@@ -277,69 +266,60 @@ const confirmAction = (
     icon: "pi pi-info-circle",
     position: "top",
     rejectLabel: "Cancel",
-    acceptLabel,
+    acceptLabel: "Proceed",
     rejectClass: "p-button-secondary p-button-outlined",
     acceptClass,
     accept: async () => {
-      updateList(id);
-      await useFormSubmit(endpoint, {}, "PUT")
-        .then(async (response) => {
+      if (action === "disapproved") {
+        useModal.toggleModal(true);
+        useModal.mountForm({
+          mode: "Disapproved",
+          title: "Disapproved Request",
+          component: useGetCurrentForm(currentUrl),
+          schema: {},
+          data: { id: id },
+        });
+      } else if (action === "blotter") {
+        useModal.toggleModal(true);
+        useModal.mountForm({
+          mode: "Solve",
+          title: "Solve Blotter",
+          component: useGetCurrentForm(`${currentUrl}/solve`),
+          schema: {},
+          data: { id: id },
+        });
+      }
+      else {
+        await useFormSubmit(endpoint, body ?? {}, "PUT").then(async (response) => {
+          updateList(id);
           toast.add({
             severity: response.status ? "success" : "error",
             summary: response.status ? "Success" : "Error",
-            detail: response.status ? successDetail : "Something Went Wrong!",
+            detail: response.status ? response.message : "Something Went Wrong!",
             life: 3000,
           });
         });
+      }
     },
   });
 };
 
-// const archive = (id: string) => {
-//   confirm.require({
-//     message: "Do you want to archive this record?",
-//     header: "Confirmation",
-//     icon: "pi pi-info-circle",
-//     position: "top",
-//     rejectLabel: "Cancel",
-//     acceptLabel: "Delete",
-//     rejectClass: "p-button-secondary p-button-outlined",
-//     acceptClass: "p-button-danger",
-//     accept: async () => {
-//       updateList(id);
-//       await useFormSubmit(
-//         `${routeList[currentUrl] || currentUrl}/archive/${id}`,
-//         {},
-//         "PUT"
-//       ).then(async (response) => {
-//         if (response.status) {
-//           toast.add({
-//             severity: "success",
-//             summary: "Success",
-//             detail: "Record archive successfully",
-//             life: 3000,
-//           });
-//         } else {
-//           toast.add({
-//             severity: "error",
-//             summary: "Error",
-//             detail: "Something Went Happen!",
-//             life: 3000,
-//           });
-//         }
-//       });
-//     },
-//   });
-// };
+const solve = (id: string) => {
+  confirmAction(
+    id,
+    "blotter",
+    "Are you sure you want to solve this blotter?",
+    "",
+    "p-button-info"
+  );
+};
 
 const approved = (id: string) => {
   confirmAction(
     id,
     "approved",
-    "Do you want to approve this request?",
+    "Are you sure you want to approve this request?",
     `request/update-status/${id}/approved`,
-    "Request approved successfully",
-    "Approve",
     "p-button-info"
   );
 };
@@ -348,28 +328,31 @@ const disapproved = (id: string) => {
   confirmAction(
     id,
     "disapproved",
-    "Do you want to disapprove this request?",
-    `request/update-status/${id}/disapproved`,
-    "Request disapproved successfully",
-    "Disapprove",
+    "Are you sure you want to disapprove this request?",
+    "",
     "p-button-warning"
   );
 };
 
-const archive = (id: string) => {
+const archive_status = (id: string, action: string) => {
+  const archivePageActiveTab : TObjectLiteral<string> = {
+    0 : 'barangay-official',
+    1 : 'resident',
+    2 : 'request',
+    3 : 'request',
+    4 : 'transaction',
+    5 : 'announcement',
+    6 : 'blotter',
+  }
+
+  const url = action === 'archive' ? routeList[currentUrl] || currentUrl : archivePageActiveTab[useDataTable.activeTabManagement.toString()]
   confirmAction(
     id,
-    "archive",
-    "Do you want to archive this record?",
-    `${routeList[currentUrl] || currentUrl}/archive/${id}`,
-    "Record archived successfully",
-    "Archive",
+    action,
+    `Are you sure you want to ${action} this record?`,
+    `${url}/archive_status/${id}/${action == 'archive' ? true : false}`,
     "p-button-danger"
   );
-};
-
-const restore = (id: string) => {
-  console.log(id);
 };
 
 const remove = (id: string) => {

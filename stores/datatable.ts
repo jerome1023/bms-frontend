@@ -27,12 +27,13 @@ export const useDataTableStore = defineStore({
     },
     
     reset() {
-      this.tableContent = {
-        title: "",
-        columns: [],
-        actions: [],
-        body: [],
-      };
+      // this.tableContent = {
+      //   title: "",
+      //   columns: [],
+      //   actions: [],
+      //   body: [],
+      // };
+      this.$reset();
     },
   },
 });

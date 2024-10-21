@@ -2,14 +2,12 @@
   <aside
     class="aside-container absolute md:relative h-screen bg-base-green min-w-[260px] overflow-auto z-50"
   >
-    <FontAwesomeIcon
-      @click="toggleSidebar"
-      :icon="faXmark"
-      class="h-5 w-5 md:hidden absolute text-white top-3 right-2"
-    />
     <div
       class="sticky top-0 z-50 bg-base-green h-16 flex items-center p-2 gap-2 mb-3"
     >
+      <div class="h-5 w-5 md:hidden absolute text-white top-3 right-2">
+        <FontAwesomeIcon @click="toggleSidebar" :icon="faXmark" />
+      </div>
       <img
         :src="
           useBarangayDetail.data.logo
@@ -225,7 +223,7 @@ watch(
 
 onMounted(async () => {
   if (userStore.user.role?.name === "User") {
-    aside[3].section.unshift({
+    aside[3].section?.unshift({
       name: "New",
       path: "/request/new",
       icon: faFileCirclePlus,

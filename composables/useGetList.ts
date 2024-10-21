@@ -53,17 +53,17 @@ export const useManageList = async (page: string, tabIndex: number) => {
                         { field: "voter_status", header: "Voter Status" },
                     ];
                     break;
+                // case 2:
+                //     endpoint = "request/archive_list/pending";
+                //     title = "Pending Request";
+                //     columns = [
+                //         { field: "fullname", header: "Name" },
+                //         { field: "document_name", header: "Document" },
+                //         { field: "purpose", header: "Purpose" },
+                //         { field: "price", header: "Price" },
+                //     ];
+                //     break;
                 case 2:
-                    endpoint = "request/archive_list/pending";
-                    title = "Pending Request";
-                    columns = [
-                        { field: "fullname", header: "Name" },
-                        { field: "document_name", header: "Document" },
-                        { field: "purpose", header: "Purpose" },
-                        { field: "price", header: "Price" },
-                    ];
-                    break;
-                case 3:
                     endpoint = "request/archive_list/approved";
                     title = "Approved Request";
                     columns = [
@@ -73,7 +73,7 @@ export const useManageList = async (page: string, tabIndex: number) => {
                         { field: "price", header: "Price" },
                     ];
                     break;
-                case 4:
+                case 3:
                     endpoint = "request/archive_list/disapproved";
                     title = "Disapproved Request";
                     columns = [
@@ -83,7 +83,7 @@ export const useManageList = async (page: string, tabIndex: number) => {
                         { field: "price", header: "Price" },
                     ];
                     break;
-                case 5:
+                case 4:
                     endpoint = "transaction/archive_list";
                     title = "Transaction";
                     columns = [
@@ -94,7 +94,7 @@ export const useManageList = async (page: string, tabIndex: number) => {
                         { field: "created_at", header: "Date" },
                     ];
                     break;
-                case 6:
+                case 5:
                     endpoint = "announcement/archive_list";
                     title = "Announcement";
                     columns = [
@@ -105,7 +105,7 @@ export const useManageList = async (page: string, tabIndex: number) => {
                         { field: "details", header: "Details" },
                     ];
                     break;
-                case 7:
+                case 6:
                     endpoint = "blotter/archive_list";
                     title = "Blotter";
                     columns = [

@@ -6,7 +6,7 @@
       <FontAwesomeIcon
         @click="toggleSidebar"
         :icon="faBars"
-        class="bar-selector h-4 w-4 text-base-gray"
+        class="bar-selector h-4 w-4 text-base-gray cursor-pointer"
       />
       <p class="font-semibold text-sm md:text-xl">{{ title }}</p>
     </div>
