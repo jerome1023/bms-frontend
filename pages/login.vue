@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center items-center h-screen">
+  <div class="flex justify-center items-center min-h-screen">
     <div
       class="lg:h-auto w-full max-w-md bg-base-gray-200 p-10 rounded-lg shadow-lg m-2"
     >
