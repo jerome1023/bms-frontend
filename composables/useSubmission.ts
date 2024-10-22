@@ -180,6 +180,7 @@ export const useGetCurrentForm = (currentUrl: string) => {
     "resident/manage-account": UserForm,
     transaction: TransactionForm,
     'request/pending': userRole === 'Administrator' ? DisapprovedForm : NewRequestForm,
+    'request/pending/view': NewRequestForm
   };
 
   return typeof currentForm[currentUrl] === "function"

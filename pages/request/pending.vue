@@ -18,7 +18,7 @@
           { field: "price", header: "Price" },
           { field: "status", header: "Status" },
         ],
-        actions: userStore.user.role?.name === 'User' ? ['edit', 'delete'] : ['approved', 'disapproved'],
+        actions: userStore.user.role?.name === 'User' ? ['edit', 'delete'] : ['view', 'approved', 'disapproved'],
         body: response ?? [],
       });
     });

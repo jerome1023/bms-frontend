@@ -101,6 +101,7 @@ import {
   faThumbsDown,
   faCircleCheck,
   faRotateLeft,
+  faEye
 } from "@fortawesome/free-solid-svg-icons";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
@@ -148,12 +149,12 @@ const currentPageReportTemplate = computed(() => {
     : "Showing {first} to {last} of {totalRecords}";
 });
 
-const openModal = async (data: any) => {
+const openModal = async (data: any, action?: string) => {
   useModal.toggleModal(true);
   useModal.mountForm({
-    mode: "Edit",
-    title: `Edit ${useDataTable.tableContent.title}`,
-    component: useGetCurrentForm(currentUrl),
+    mode: action ? "View" : "Edit",
+    title: action ? "Request Info" : `Edit ${useDataTable.tableContent.title}`,
+    component: useGetCurrentForm(action ? `${currentUrl}/view` : currentUrl),
     schema: {},
     data: data,
   });
@@ -371,6 +372,13 @@ const actionsConfig: TObjectLiteral = {
     severity: "info",
     condition: () => true,
     handler: (data: any) => archive_status(data.id, "restore"),
+  },
+  view: {
+    icon: faEye,
+    tooltip: "View",
+    severity: "info",
+    condition: () => true,
+    handler: (data: any) => openModal(data, 'view'),
   },
 };
 
