@@ -16,7 +16,7 @@
       >
         <div class="text-right">
           <p class="hidden md:block font-semibold text-md">
-            {{userStore.user.firstname}} {{ userStore.user.lastname }}
+            {{ userStore.user.firstname }} {{ userStore.user.lastname }}
           </p>
           <p
             v-if="userStore.user.role?.name != 'User'"
@@ -85,7 +85,9 @@ import {
 import { Menu, MenuItem, MenuButton, MenuItems } from "@headlessui/vue";
 import { toggleAside } from "~/composables/globalRef";
 import { useUserStore } from "~/stores/user";
-import image from "~/assets/image/profile/no picture male.jpg";
+import maleAvatar from "~/assets/image/profile/no picture male.jpg";
+import femaleAvatar from "~/assets/image/profile/no picture female.jpg";
+import adminAvatar from "~/assets/image/profile/admin.png";
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -106,18 +108,20 @@ const menuItems = [
 ];
 
 const userDetails = () => {
-  userData.value.image = image;
   title.value = findTitleByRoute();
 };
 
 onMounted(async () => {
   userDetails();
   if (userStore.user.role?.name === "Administrator") {
+    userData.value.image = adminAvatar;
     menuItems.splice(1, 0, {
       path: "/management",
       name: "Management",
       icon: faCogs,
     });
+  } else {
+    userData.value.image = userStore.user.gender == 'Male' ? maleAvatar : femaleAvatar;
   }
 });
 

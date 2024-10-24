@@ -13,7 +13,7 @@
           <h1 class="text-2xl sm:text-4xl">Create an account</h1>
           <h3 class="sm:text-lg">
             Already have an account?
-            <a href="/login" class="underline text-blue-100">Login</a>
+            <NuxtLink to="/login" class="underline text-blue-100">Login</NuxtLink>
           </h3>
         </div>
         <Alert
@@ -28,18 +28,21 @@
             type="text"
             name="firstname"
             span="col-span-3"
+            required
           />
           <FormGroup
             label="Lastname"
             type="text"
             name="lastname"
             span="col-span-3"
+            required
           />
           <FormGroup
             label="Address"
             type="text"
             name="address"
             span="col-span-full"
+            required
           />
           <FormGroup
             label="Gender"
@@ -47,14 +50,16 @@
             :options="options"
             name="gender"
             span="col-span-3"
+            required
           />
-          <FormGroup label="Email" type="text" name="email" span="col-span-3" />
+          <FormGroup label="Email" type="text" name="email" span="col-span-3" required/>
           <FormGroup
             label="Password"
             type="password"
             name="password"
             placeholder="Password"
             span="col-span-3"
+            required
           />
           <FormGroup
             label="Confirm Password"
@@ -62,11 +67,12 @@
             placeholder="Confirm Password"
             name="confirm_password"
             span="col-span-3"
+            required
           />
         </div>
         <div class="mt-5">
           <Button
-            label="Login"
+            label="Register"
             :loading="isSubmitting"
             class="w-full bg-base-green hover:bg-green-700"
             type="submit"

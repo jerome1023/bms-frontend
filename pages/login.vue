@@ -41,9 +41,9 @@
             type="submit"
           />
         </div>
-        <h3 class="sm:text-lg">
+        <h3 class="sm:text-lg mt-2">
           Don't have an account?
-          <a href="/register" class="underline text-blue-100">Register Here</a>
+          <NuxtLink to="/register" class="underline text-blue-100">Register Here</NuxtLink>
         </h3>
       </Form>
     </div>

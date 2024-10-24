@@ -6,6 +6,7 @@
       name="fullname"
       placeholder="e.g., Doe, John A."
       span="col-span-full"
+      required
     />
     <FormGroup
       label="Document"
@@ -13,14 +14,15 @@
       :options="documentOptions"
       name="document"
       span="col-span-3"
+      required
     />
-    <!-- <FormGroup label="Price" type="text" name="price" span="col-span-3" /> -->
     <FormGroup
       label="Purpose"
       type="select"
       :options="purposeOptions"
       name="purpose"
       span="col-span-3"
+      required
     />
   </div>
 </template>

@@ -5,6 +5,7 @@
       type="text"
       name="name"
       span="col-span-2"
+      required
     />
     <div
       v-if="!open.logo && picture.logo"

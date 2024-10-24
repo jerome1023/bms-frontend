@@ -4,7 +4,8 @@
       label="Sitio Name"
       type="text"
       name="name"
-      span="col-span-3  "
+      span="col-span-3"
+      required
     />
   </div>
 </template>

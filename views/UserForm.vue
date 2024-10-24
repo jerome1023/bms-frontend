@@ -5,13 +5,15 @@
       type="text"
       name="firstname"
       span="col-span-3"
+      required
     />
-    <FormGroup label="Lastname" type="text" name="lastname" span="col-span-3" />
+    <FormGroup label="Lastname" type="text" name="lastname" span="col-span-3" required/>
     <FormGroup
       label="Address"
       type="text"
       name="address"
       span="col-span-full"
+      required
     />
     <FormGroup
       label="Gender"
@@ -19,8 +21,9 @@
       :options="options"
       name="gender"
       span="col-span-3"
+      required
     />
-    <FormGroup label="Email" type="text" name="email" span="col-span-3" />
+    <FormGroup label="Email" type="text" name="email" span="col-span-3" required/>
     <FormGroup
       label="Password"
       type="password"
