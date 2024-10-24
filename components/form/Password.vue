@@ -3,7 +3,7 @@
     <Password
       v-bind="field"
       v-model="field.value"
-      :placeholder="placeholder"
+      :placeholder="placeholder || label"
       :feedback="false"
       toggleMask
       inputClass="w-full"
@@ -20,6 +20,7 @@ import { Field } from "vee-validate/";
 defineProps<{
   name: string;
   placeholder?: string;
+  label?: string
 }>();
 </script>
 

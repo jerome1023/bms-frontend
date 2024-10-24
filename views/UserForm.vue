@@ -7,8 +7,15 @@
       span="col-span-3"
       required
     />
-    <FormGroup label="Lastname" type="text" name="lastname" span="col-span-3" required/>
     <FormGroup
+      label="Lastname"
+      type="text"
+      name="lastname"
+      span="col-span-3"
+      required
+    />
+    <FormGroup
+      v-if="isUserRole"
       label="Address"
       type="text"
       name="address"
@@ -16,6 +23,7 @@
       required
     />
     <FormGroup
+      v-if="isUserRole"
       label="Gender"
       type="select"
       :options="options"
@@ -23,18 +31,22 @@
       span="col-span-3"
       required
     />
-    <FormGroup label="Email" type="text" name="email" span="col-span-3" required/>
     <FormGroup
-      label="Password"
+      label="Email"
+      type="text"
+      name="email"
+      :span="isUserRole ? 'col-span-3' : 'col-span-full'"
+      required
+    />
+    <FormGroup
+      label="Change Password"
       type="password"
       name="password"
-      placeholder="Password"
       span="col-span-3"
     />
     <FormGroup
       label="Confirm Password"
       type="password"
-      placeholder="Confirm Password"
       name="confirm_password"
       span="col-span-3"
     />
@@ -42,6 +54,9 @@
 </template>
 
 <script setup lang="ts">
+const userStore = useUserStore();
+const isUserRole = computed(() => userStore.user.role?.name == "User");
+
 const options = [
   {
     name: "Male",

@@ -5,7 +5,7 @@
     >
       <Form
         :validation-schema="RegisterS"
-        v-slot="{isSubmitting}"
+        v-slot="{ isSubmitting }"
         @submit="register"
         :initial-values="{ role: 'User' }"
       >
@@ -13,13 +13,15 @@
           <h1 class="text-2xl sm:text-4xl">Create an account</h1>
           <h3 class="sm:text-lg">
             Already have an account?
-            <NuxtLink to="/login" class="underline text-blue-100">Login</NuxtLink>
+            <NuxtLink to="/login" class="underline text-blue-100"
+              >Login</NuxtLink
+            >
           </h3>
         </div>
         <Alert
-          v-if="status.alert.isShow"
-          :type="status.alert.type"
-          :title="status.alert.message"
+          v-if="alert.isShow"
+          :type="alert.type"
+          :title="alert.message"
           parent-class="col-span-full"
         />
         <div class="sm:grid grid-cols-6 gap-x-3">
@@ -52,19 +54,23 @@
             span="col-span-3"
             required
           />
-          <FormGroup label="Email" type="text" name="email" span="col-span-3" required/>
+          <FormGroup
+            label="Email"
+            type="text"
+            name="email"
+            span="col-span-3"
+            required
+          />
           <FormGroup
             label="Password"
             type="password"
             name="password"
-            placeholder="Password"
             span="col-span-3"
             required
           />
           <FormGroup
             label="Confirm Password"
             type="password"
-            placeholder="Confirm Password"
             name="confirm_password"
             span="col-span-3"
             required
@@ -98,36 +104,40 @@ const options = [
   },
 ];
 
-const status = ref({
-  alert: {
+const alert = ref({
+  isShow: false,
+  type: "info",
+  message: "",
+});
+
+const resetAlert = () => {
+  alert.value = {
     isShow: false,
     type: "info",
     message: "",
-  },
-  loading: false,
-});
+  };
+};
 
-const register = async (value: any, { resetForm }: any) => {
+const register = async (value: any, actions: any) => {
   const { confirm_password, ...formData } = value;
-  status.value.loading = true;
+  resetAlert()
   try {
     const response = (await useAuth({ ...formData }, "register")) as any;
     const { message, errors, status_code } = response;
+
+    alert.value = {
+      isShow: true,
+      type: status_code === 201 ? "success" : "danger",
+      message: status_code === 201 ? "Successfully Registered" : message,
+    };
+
     if (status_code === 201) {
-      status.value.alert.isShow = true;
-      status.value.alert.type = "success";
-      status.value.alert.message = "Successfully Registered";
-      resetForm();
+      actions.resetForm();
     } else {
-      if (errors.email) {
-        status.value.alert.isShow = true;
-        status.value.alert.type = "danger";
-        status.value.alert.message = errors.email[0];
-      }
+      errors ? actions.setErrors(response.errors) : null;
     }
   } catch (error: any) {
     useNuxtApp().$toast.error(error.message);
   }
-  status.value.loading = false;
 };
 </script>
