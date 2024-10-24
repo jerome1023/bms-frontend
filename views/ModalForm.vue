@@ -19,12 +19,13 @@
       />
       <div class="mt-5 flex gap-3 justify-end">
         <Button
-          label="Cancel"
+          :label="useModal.form.mode == 'View' ? 'Close' : 'Cancel'"
           size="small"
           severity="secondary"
           @click="closeModal()"
         />
         <Button
+          v-if="useModal.form.mode != 'View'"
           type="submit"
           :loading="isSubmitting"
           label="Save"
@@ -38,8 +39,6 @@
 
 <script setup lang="ts">
 import type { TAlert, TObjectLiteral } from "~/types";
-import { useModalStore } from "~/stores/modal";
-import { useDataTableStore } from "~/stores/datatable";
 import { useRoute } from "vue-router";
 
 const alert = ref<TAlert>({

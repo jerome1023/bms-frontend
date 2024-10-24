@@ -10,7 +10,8 @@ import {
   UserForm,
   NewRequestForm,
   SolveBlotterForm, 
-  DisapprovedForm
+  DisapprovedForm,
+  ViewRequestForm
 } from "#components";
 
 export const useGetSubmissionDetails = (
@@ -180,7 +181,7 @@ export const useGetCurrentForm = (currentUrl: string) => {
     "resident/manage-account": UserForm,
     transaction: TransactionForm,
     'request/pending': userRole === 'Administrator' ? DisapprovedForm : NewRequestForm,
-    'request/pending/view': NewRequestForm
+    'request/pending/view': ViewRequestForm
   };
 
   return typeof currentForm[currentUrl] === "function"
