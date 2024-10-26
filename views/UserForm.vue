@@ -15,7 +15,7 @@
       required
     />
     <FormGroup
-      v-if="isUserRole"
+      v-if="isShow"
       label="Address"
       type="text"
       name="address"
@@ -23,7 +23,7 @@
       required
     />
     <FormGroup
-      v-if="isUserRole"
+      v-if="isShow"
       label="Gender"
       type="select"
       :options="options"
@@ -35,7 +35,7 @@
       label="Email"
       type="text"
       name="email"
-      :span="isUserRole ? 'col-span-3' : 'col-span-full'"
+      :span="isShow ? 'col-span-3' : 'col-span-full'"
       required
     />
     <FormGroup
@@ -54,8 +54,10 @@
 </template>
 
 <script setup lang="ts">
+const route = useRoute();
 const userStore = useUserStore();
-const isUserRole = computed(() => userStore.user.role?.name == "User");
+const isShow = computed(() => {
+  return userStore.user.role?.name == "User" || route.fullPath == '/resident/manage-account'}); 
 
 const options = [
   {

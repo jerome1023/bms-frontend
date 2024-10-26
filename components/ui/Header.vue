@@ -25,7 +25,7 @@
             {{ userStore.user.role?.name }}
           </p>
         </div>
-        <img class="h-9 w-9 rounded-full" :src="userData.image" alt="" />
+        <img class="h-9 w-9 rounded-full object-cover object-top" :src="userStore.user.image ? baseURL + userStore.user.image : image" alt="Profile" />
         <FontAwesomeIcon
           :icon="faChevronDown"
           :class="[
@@ -92,7 +92,9 @@ import adminAvatar from "~/assets/image/profile/admin.png";
 const userStore = useUserStore();
 const router = useRouter();
 const title = ref();
-const userData: any = ref({});
+const image: any = ref();
+const config = useRuntimeConfig();
+const baseURL = config.public.backendURL;
 
 const toggleSidebar = () => {
   toggleAside.value = !toggleAside.value;
@@ -107,28 +109,29 @@ const menuItems = [
   },
 ];
 
-const userDetails = () => {
+const titleHeader = () => {
   title.value = findTitleByRoute();
 };
 
 onMounted(async () => {
-  userDetails();
+  titleHeader();
   if (userStore.user.role?.name === "Administrator") {
-    userData.value.image = adminAvatar;
+    image.value = adminAvatar;
     menuItems.splice(1, 0, {
       path: "/management",
       name: "Management",
       icon: faCogs,
     });
   } else {
-    userData.value.image = userStore.user.gender == 'Male' ? maleAvatar : femaleAvatar;
+    image.value =
+      userStore.user.gender == "Male" ? maleAvatar : femaleAvatar;
   }
 });
 
 watch(
   () => router.currentRoute.value.path,
   () => {
-    userDetails();
+    titleHeader();
   }
 );
 </script>

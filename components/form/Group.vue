@@ -37,6 +37,7 @@
       <FormUpload
         v-if="type === 'image'"
         :name="name"
+        :circle="circle"
       />
 
       <ErrorMessage v-slot="{ message }" :name="name">
@@ -58,5 +59,6 @@ defineProps<{
   span: string;
   placeholder?: string;
   required?: boolean
+  circle?: boolean
 }>();
 </script>

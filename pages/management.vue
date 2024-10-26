@@ -43,7 +43,7 @@
 <script setup lang="ts">
 import { BarangayDetailsForm, DocumentForm, SitioForm } from "#components";
 import { useBarangayDetailStore } from "~/stores/details";
-import type { TObjectLiteral, TTableContent } from "~/types";
+import type { TObjectLiteral } from "~/types";
 
 const useDataTable = useDataTableStore();
 const useBarangayDetail = useBarangayDetailStore();
@@ -67,7 +67,7 @@ const tabs = [
 
 watch(active, async (newValue) => {
   useDataTable.reset();
-  useManageList('management', newValue)
+  useManageList("management", newValue);
   useDataTable.updateActiveTab(newValue);
 });
 
@@ -96,9 +96,9 @@ const submit = async (values: any, actions: any) => {
   await useFormSubmit(endpoint, updatedValues, method).then(
     async (response) => {
       if (response.status) {
-        notification(notificationMessages.success[active.value]);
         if (active.value === 0) {
-          useBarangayDetail.mountDetails();
+          await useBarangayDetail.mountDetails();
+          actions.resetForm({ values: response.data });
         } else {
           await useGetData(
             active.value === 1 ? "document/list" : "sitio/list"
@@ -107,6 +107,7 @@ const submit = async (values: any, actions: any) => {
             actions.resetForm();
           });
         }
+        notification(notificationMessages.success[active.value]);
       } else {
         actions.setErrors(response.errors);
       }

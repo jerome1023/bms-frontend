@@ -1,8 +1,8 @@
 <template>
   <Form
     @submit="submit"
-    :initial-values="userStore.user"
-    v-slot="{ isSubmitting }"
+    :initial-values="initialVal"
+    v-slot="{ isSubmitting, setFieldValue }"
   >
     <Fieldset legend="Profile Information">
       <div class="flex flex-col">
@@ -12,10 +12,10 @@
         >
           <img
             :src="image"
-            class="max-w-[18rem] max-h-60 md:max-w-lg md:max-h-64 m-auto object-scale-down"
+            class="h-56 w-56 md:h-72 md:w-72 m-auto object-cover rounded-full object-top"
           />
           <Button
-            @click="openImageUploader"
+            @click="openImageUploader(), setFieldValue('image', null)"
             icon="pi pi-upload"
             label="Upload New Photo"
             severity="info"
@@ -27,6 +27,7 @@
           label="Upload Image"
           type="image"
           name="image"
+          :circle=true
           span="col-span-full"
           :class="[open || !image ? 'block' : 'hidden']"
         />
@@ -45,25 +46,32 @@
 </template>
 <script setup lang="ts">
 const userStore = useUserStore();
-const { value: fieldValue } = useField("image");
 const config = useRuntimeConfig();
 const baseURL = config.public.backendURL;
+const toast = useToast();
 
+const initialVal = userStore.user;
 const open = ref(false);
 const image = ref();
 
 onMounted(() => {
-  if (fieldValue.value) {
-    image.value = baseURL + fieldValue.value;
+  if (userStore.user.image) {
+    image.value = baseURL + userStore.user.image;
   }
 });
 
+watch(
+  () => userStore.user.image,
+  (newImage) => {
+    image.value = newImage ? baseURL + newImage : null;
+  }
+);
+
 const openImageUploader = () => {
-  fieldValue.value = null;
   open.value = !open.value;
 };
 
-const submit = async (values: any) => {
+const submit = async (values: any, actions: any) => {
   const {
     id,
     fullname,
@@ -74,12 +82,32 @@ const submit = async (values: any) => {
     updated_at,
     ...rest
   } = values;
+  let updatedImage = image_base64 || undefined;
+  if (userStore.user.image === image) {
+    updatedImage = image;
+  }
   await useFormSubmit(
-    `users/update/${id}`,
-    { image: image_base64, ...rest },
+    "users/update-profile",
+    { image: updatedImage, ...rest },
     "PUT"
-  ).then((response) => {
-    console.log(response);
+  ).then(async (response) => {
+    if (response.status) {
+      await userStore.getUserDetails();
+      toast.add({
+        severity: "success",
+        summary: "Success",
+        detail: response.message,
+        life: 3000,
+      });
+      if (updatedImage) {
+        open.value = false;
+      }
+      actions.resetForm({
+        values: response.data,
+      });
+    } else {
+      actions.setErrors(response.errors);
+    }
   });
 };
 </script>

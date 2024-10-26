@@ -14,7 +14,7 @@
             ? baseURL + useBarangayDetail.data.logo
             : logo
         "
-        class="h-9 w-9 rounded-full"
+        class="h-9 w-9 rounded-full object-cover"
       />
       <p class="flex-1 text-white font-medium text-lg">
         {{ useBarangayDetail.data.name }}
