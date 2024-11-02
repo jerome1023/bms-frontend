@@ -26,7 +26,7 @@ export type TForm = {
   title: string;
   component: ComponentPublicInstance | any;
   schema: object;
-  data: object
+  data: object;
 };
 
 export type TResponse = {
@@ -45,3 +45,10 @@ export type TFormResponse = TResponse & {
 export type TObjectLiteral<T = any> = {
   [key: string | number]: T;
 };
+
+export type TDashboardList = {
+  label: string;
+  value: number;
+  icon: any;
+  href: string;
+}[];

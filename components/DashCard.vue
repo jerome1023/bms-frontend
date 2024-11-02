@@ -1,17 +1,17 @@
 <template>
-  <div class="bg-base-gray-300 p-5 rounded-md">
+  <div :class="['p-5 rounded-md', color == 'green' ? 'bg-base-green' : 'bg-base-gray-300']">
     <NuxtLink
       v-if="content"
       :to="content.href"
       class="flex gap-5 justify-between cursor-pointer"
     >
       <div>
-        <p class="font-bold text-2xl">{{ content.value }}</p>
-        <p class="text-base-gray text-sm">
+        <p class="font-bold text-3xl">{{ content.value }}</p>
+        <p class="text-base-gray">
           {{ content.value > 1 ? content.label + "s" : content.label }}
         </p>
       </div>
-      <FontAwesomeIcon :icon="content.icon" size="lg" class="text-base-green" />
+      <FontAwesomeIcon :icon="content.icon" size="xl" class="text-base-green" />
     </NuxtLink>
     <div v-else>
       <slot />
@@ -24,5 +24,6 @@ import { faCoins } from "@fortawesome/free-solid-svg-icons";
 
 defineProps<{
   content?: any;
+  color?: string
 }>();
 </script>
