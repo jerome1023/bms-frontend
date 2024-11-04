@@ -11,27 +11,27 @@
     v-else
     class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
   >
-    <DashCard v-for="item in list" :content="item" />
+    <DashboardCard v-for="item in list" :content="item" />
     <Form
       @submit="searchDocs"
       v-slot="{ isSubmitting }"
       :initialValues="docs_initial"
     >
-      <DashCard>
+      <DashboardCard>
         <div class="flex gap-5 justify-between">
           <p class="font-bold text-3xl">
             ₱{{ document?.revenue ?? 0 }} ({{ document?.count ?? 0 }})
           </p>
           <FontAwesomeIcon :icon="faCoins" size="xl" class="text-base-green" />
         </div>
-        <div class="w-44">
+        <div class="w-[11.5rem]">
           <Field v-slot="{ field }" name="document">
             <select
               v-bind="field"
               class="rounded-sm border border-base-gray px-1 py-[2px] text-sm focus:ring-0 ring-0 text-base-gray cursor-pointer w-full"
             >
               <option
-                v-for="doc in documentList"
+                v-for="doc in document.list"
                 :key="doc.code"
                 :value="doc.code"
               >
@@ -39,63 +39,31 @@
               </option>
             </select>
           </Field>
-          <div class="flex mt-1 gap-x-[7px]">
-            <Field v-slot="{ field }" name="year_month">
-              <input
-                v-bind="field"
-                type="month"
-                class="px-1 text-xs border border-base-gray rounded-sm text-base-gray cursor-pointer w-[8.5rem]"
-              />
-            </Field>
-            <button
-              type="submit"
-              class="rounded-sm border border-base-gray text-base-gray px-2 py-1 bg-white flex items-center"
-            >
-              <ProgressSpinner
-                v-if="isSubmitting"
-                style="width: 15px; height: 15px"
-                strokeWidth="4"
-              />
-              <FontAwesomeIcon v-else :icon="faSearch" size="sm" />
-            </button>
+          <div class="flex mt-1 gap-x-[7px] justify-between">
+            <DashboardYearMonthPicker name="year_month" />
+            <DashboardSearchButton :isSubmitting="isSubmitting" />
           </div>
         </div>
-      </DashCard>
+      </DashboardCard>
     </Form>
     <Form
       @submit="searchRevenue"
       v-slot="{ isSubmitting }"
       :initialValues="revenue_initial"
     >
-      <DashCard color="green">
+      <DashboardCard color="green">
         <div class="flex gap-5 justify-between text-white">
           <div>
-            <p class="font-bold text-3xl">₱{{ revenue || 0 }}</p>
+            <p class="font-bold text-3xl">₱{{ total_revenue || 0 }}</p>
             <p>Revenue</p>
           </div>
           <FontAwesomeIcon :icon="faCoins" size="xl" />
         </div>
-        <div class="flex gap-x-[7px] mt-1">
-          <Field v-slot="{ field }" name="year_month">
-            <input
-              v-bind="field"
-              type="month"
-              class="px-1 text-xs border border-base-gray rounded-sm text-base-gray w-[8.5rem]"
-            />
-          </Field>
-          <button
-            type="submit"
-            class="rounded-sm border border-base-gray px-2 text-base-gray bg-white"
-          >
-            <ProgressSpinner
-              v-if="isSubmitting"
-              style="width: 15px; height: 15px"
-              strokeWidth="4"
-            />
-            <FontAwesomeIcon v-else :icon="faSearch" size="sm" />
-          </button>
+        <div class="flex justify-between gap-x-[7px] mt-1 w-[11.5rem]">
+          <DashboardYearMonthPicker name="year_month" />
+          <DashboardSearchButton :isSubmitting="isSubmitting" />
         </div>
-      </DashCard>
+      </DashboardCard>
     </Form>
   </div>
 </template>
@@ -108,17 +76,23 @@ import {
   faFileCircleCheck,
   faCircleExclamation,
   faCoins,
-  faSearch,
 } from "@fortawesome/free-solid-svg-icons";
-import type { TDashboardList, TObjectLiteral, TOptions } from "~/types";
+import type {
+  TDashboardDocument,
+  TDashboardList,
+  TObjectLiteral,
+} from "~/types";
 
 const pending = ref(true);
 const list = ref<TDashboardList>();
-const documentList = ref<TOptions>();
 const docs_initial = ref<TObjectLiteral>();
 const revenue_initial = ref<TObjectLiteral>();
-const document = ref<TObjectLiteral>();
-const revenue = ref<number>();
+const document = ref<TDashboardDocument>({
+  list: [],
+  revenue: 0,
+  count: 0,
+});
+const total_revenue = ref<number>();
 
 onMounted(async () => {
   useGetData("dashboard/list").then((response) => {
@@ -148,11 +122,10 @@ onMounted(async () => {
         href: "blotter",
       },
     ];
-    documentList.value = response.document_list;
 
     const dateToday = new Date().toISOString().slice(0, 7);
     docs_initial.value = {
-      document: response.document_list[0].code,
+      document: response.docs.list[0].code,
       year_month: dateToday,
     };
     revenue_initial.value = {
@@ -160,27 +133,26 @@ onMounted(async () => {
     };
 
     document.value = {
+      list: response.docs.list,
       revenue: response.docs.revenue,
       count: response.docs.count,
     };
-    revenue.value = response.revenue;
+    total_revenue.value = response.total_revenue;
 
     pending.value = false;
   });
 });
 
-const searchDocs = async(values: any) => {
+const searchDocs = async (values: any) => {
   await useFormSubmit("dashboard/search", values).then((response) => {
-    document.value = {
-      revenue: response.data.docs_revenue,
-      count: response.data.docs_count,
-    };
+    document.value.revenue = response.data.docs.revenue;
+    document.value.count = response.data.docs.count;
   });
 };
 
-const searchRevenue = async(values: any) => {
+const searchRevenue = async (values: any) => {
   await useFormSubmit("dashboard/search", values).then((response) => {
-    revenue.value = response.data.revenue;
+    total_revenue.value = response.data.revenue;
   });
 };
 </script>

@@ -1,6 +1,6 @@
 export type TOptions = {
-  name: String;
-  code: String;
+  name: string;
+  code: string;
 }[];
 
 export type TAlert = {
@@ -52,3 +52,9 @@ export type TDashboardList = {
   icon: any;
   href: string;
 }[];
+
+export type TDashboardDocument = {
+  list : TOptions;
+  revenue : number;
+  count : number
+}
