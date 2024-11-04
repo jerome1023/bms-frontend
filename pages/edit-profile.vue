@@ -10,10 +10,17 @@
           v-if="!open && image"
           class="col-span-full flex flex-col justify-center gap-3 mb-3"
         >
-          <img
+          <!-- <img
             :src="image"
             class="h-56 w-56 md:h-72 md:w-72 m-auto object-cover rounded-full object-top"
-          />
+          /> -->
+          <div class="flex justify-center m-auto">
+            <Image
+              :src="image"
+              imageClass="w-56 h-56 md:h-72 md:w-72 object-cover object-top rounded-full"
+              preview
+            />
+          </div>
           <Button
             @click="openImageUploader(), setFieldValue('image', null)"
             icon="pi pi-upload"
@@ -27,7 +34,7 @@
           label="Upload Image"
           type="image"
           name="image"
-          :circle=true
+          :circle="true"
           span="col-span-full"
           :class="[open || !image ? 'block' : 'hidden']"
         />

@@ -9,12 +9,19 @@
     />
     <div
       v-if="!open.logo && picture.logo"
-      class="col-span-2 flex flex-col justify-center gap-3 mb-3 "
+      class="col-span-2 flex flex-col justify-center gap-3 mb-3"
     >
-    <img
+      <!-- <img
             :src="picture.logo"
             class="h-56 w-56 md:h-60 md:w-60 m-auto object-cover rounded-full"
-          />
+          /> -->
+      <div class="flex justify-center m-auto">
+        <Image
+          :src="picture.logo"
+          imageClass="w-56 h-56 md:h-60 md:w-60 object-cover rounded-full"
+          preview
+        />
+      </div>
       <Button
         @click="openImageUploader('logo')"
         icon="pi pi-upload"
@@ -36,10 +43,17 @@
       v-if="!open.image && picture.image"
       class="col-span-2 flex flex-col justify-center gap-3 mb-3"
     >
-      <img
+      <!-- <img
         :src="picture.image"
         class="max-w-full max-h-60 md:max-h-64 m-auto object-scale-down"
-      />
+      /> -->
+      <div class="flex justify-center m-auto">
+        <Image
+          :src="picture.image"
+          imageClass="max-w-full max-h-60 md:max-h-64 object-scale-down"
+          preview
+        />
+      </div>
       <Button
         @click="openImageUploader('image')"
         icon="pi pi-upload"
@@ -76,15 +90,21 @@ const picture = ref({
   logo: "",
 });
 
-watch(()=>barangayDetail.data.logo, (newLogo)=>{
-  picture.value.logo = newLogo ? baseURL + newLogo : '';
-  open.value.logo = false
-})
+watch(
+  () => barangayDetail.data.logo,
+  (newLogo) => {
+    picture.value.logo = newLogo ? baseURL + newLogo : "";
+    open.value.logo = false;
+  }
+);
 
-watch(()=>barangayDetail.data.image, (newImage)=>{
-  picture.value.image = newImage ? baseURL + newImage : '';
-  open.value.image = false
-})
+watch(
+  () => barangayDetail.data.image,
+  (newImage) => {
+    picture.value.image = newImage ? baseURL + newImage : "";
+    open.value.image = false;
+  }
+);
 
 onMounted(() => {
   if (imageFieldValue.value) {

@@ -20,7 +20,6 @@
 </template>
 <script setup lang="ts">
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faCoins } from "@fortawesome/free-solid-svg-icons";
 
 defineProps<{
   content?: any;

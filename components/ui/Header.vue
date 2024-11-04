@@ -25,7 +25,11 @@
             {{ userStore.user.role?.name }}
           </p>
         </div>
-        <img class="h-9 w-9 rounded-full object-cover object-top" :src="userStore.user.image ? baseURL + userStore.user.image : image" alt="Profile" />
+        <img
+          class="h-9 w-9 rounded-full object-cover object-top"
+          :src="userStore.user.image ? baseURL + userStore.user.image : image"
+          alt="Profile"
+        />
         <FontAwesomeIcon
           :icon="faChevronDown"
           :class="[
@@ -51,13 +55,14 @@
           <MenuItem
             v-for="(menu, index) in menuItems"
             :key="index"
-            v-slot="{ active }"
+            v-slot="{ active, close }"
           >
-            <a
-              :href="menu.path"
+            <NuxtLink
+              :to="menu.path"
+              @mouseup="close"
               :class="[
-                active ? 'bg-neutral-light-500' : '',
-                'flex items-center gap-4 px-1 mx-3 py-2 text-sm rounded-md cursor-pointer',
+                active ? 'bg-base-gray-200' : '',
+                'flex items-center gap-4 px-2 mx-3 py-2 text-sm rounded-md cursor-pointer',
                 { 'text-error-400': menu.name.toLowerCase() == 'sign out' },
               ]"
               @click="menu.function ? menu.function() : null"
@@ -65,7 +70,7 @@
               <FontAwesomeIcon :icon="menu.icon" class="h-4 w-4" />{{
                 menu.name
               }}
-            </a>
+            </NuxtLink>
           </MenuItem>
         </MenuItems>
       </transition>
@@ -123,8 +128,7 @@ onMounted(async () => {
       icon: faCogs,
     });
   } else {
-    image.value =
-      userStore.user.gender == "Male" ? maleAvatar : femaleAvatar;
+    image.value = userStore.user.gender == "Male" ? maleAvatar : femaleAvatar;
   }
 });
 
