@@ -2,11 +2,6 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
 
 export default{
-  purge: {
-    safelist: [
-      {pattern: /(bg|text)-alert./},
-    ]
-  },
   content: [
     "./components/**/*.{js,vue,ts}",
     "./layouts/**/*.vue",
@@ -15,6 +10,11 @@ export default{
     "./plugins/**/*.{js,ts}",
     "./app.vue",
     "./error.vue",
+  ],
+  safelist: [
+    {
+      pattern: /(bg|text)-alert./
+    },
   ],
   theme: {
     colors:{
