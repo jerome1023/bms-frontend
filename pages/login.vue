@@ -43,7 +43,9 @@
         </div>
         <h3 class="sm:text-lg mt-2">
           Don't have an account?
-          <NuxtLink to="/register" class="underline text-blue-100">Register Here</NuxtLink>
+          <NuxtLink to="/register" class="underline text-blue-100"
+            >Register Here</NuxtLink
+          >
         </h3>
       </Form>
     </div>

@@ -120,7 +120,7 @@ const resetAlert = () => {
 
 const register = async (value: any, actions: any) => {
   const { confirm_password, ...formData } = value;
-  resetAlert()
+  resetAlert();
   try {
     const response = (await useAuth({ ...formData }, "register")) as any;
     const { message, errors, status_code } = response;

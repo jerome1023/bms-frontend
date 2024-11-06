@@ -12,7 +12,6 @@ const active = ref(0);
 const tabs = ref([
   { title: "Barangay Official" },
   { title: "Resident List" },
-  // { title: "Pending Request" },
   { title: "Approved Request" },
   { title: "Disapproved Request" },
   { title: "Transaction" },

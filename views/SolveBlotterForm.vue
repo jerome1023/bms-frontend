@@ -17,6 +17,6 @@
       type="textarea"
       name="witness"
       span="col-span-full"
-    /> 
+    />
   </div>
 </template>

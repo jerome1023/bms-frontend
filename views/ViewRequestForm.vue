@@ -8,26 +8,19 @@
       span="col-span-3"
     />
     <FormGroup label="Age" type="text" name="age" span="col-span-3" />
-    <FormGroup
-      label="Sitio"
-      type="text"
-      name="sitio_name"
-      span="col-span-3"
-    />
+    <FormGroup label="Sitio" type="text" name="sitio_name" span="col-span-3" />
     <FormGroup
       label="Document"
       type="text"
       name="document_name"
       span="col-span-3"
     />
+    <FormGroup label="Purpose" type="text" name="purpose" span="col-span-3" />
     <FormGroup
-      label="Purpose"
-      type="text"
-      name="purpose"
-      span="col-span-3"
-    />
-    <FormGroup
-      v-if="purposeValue == 'Business' && documentNameValue.includes('Business Clearance')"
+      v-if="
+        purposeValue == 'Business' &&
+        documentNameValue.includes('Business Clearance')
+      "
       label="Income"
       type="text"
       name="income"

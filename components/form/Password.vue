@@ -20,7 +20,7 @@ import { Field } from "vee-validate/";
 defineProps<{
   name: string;
   placeholder?: string;
-  label?: string
+  label?: string;
 }>();
 </script>
 

@@ -18,9 +18,8 @@ export const RegisterS = toTypedSchema(
       confirm_password: zod.string().min(1, { message: "Required" }),
       role: zod.string().min(1, { message: "Required" }),
     })
-    // Add a refinement to ensure password and confirm_password match
     .refine((data) => data.password === data.confirm_password, {
       message: "Passwords do not match",
-      path: ["confirm_password"], // This will assign the error to the `confirm_password` field
+      path: ["confirm_password"],
     })
 );

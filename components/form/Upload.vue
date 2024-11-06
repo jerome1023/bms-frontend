@@ -7,7 +7,12 @@
         <img
           :src="base64"
           alt="Selected Image"
-          :class="['my-3', circle ? 'rounded-full h-40 w-40 object-cover object-top' : 'max-w-full max-h-40 object-scale-down']"
+          :class="[
+            'my-3',
+            circle
+              ? 'rounded-full h-40 w-40 object-cover object-top'
+              : 'max-w-full max-h-40 object-scale-down',
+          ]"
         />
         <p class="mt-2">{{ value.name }}</p>
         <i
@@ -49,7 +54,7 @@ import { ref } from "vue";
 
 const props = defineProps<{
   name: string;
-  circle: boolean
+  circle?: boolean;
 }>();
 
 const fileInput = ref<HTMLInputElement | null>(null);

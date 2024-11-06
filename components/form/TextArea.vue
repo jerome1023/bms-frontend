@@ -4,7 +4,8 @@
       v-bind="field"
       v-model="field.value"
       :placeholder="label || placeholder"
-      autoResize rows="3"
+      autoResize
+      rows="3"
       class="w-full"
       :invalid="errors[0] ? true : false"
     />

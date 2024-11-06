@@ -15,7 +15,7 @@ onMounted(async () => {
         { field: "gender", header: "Gender" },
         { field: "address", header: "Address" },
       ],
-      actions: ['edit'],
+      actions: ["edit"],
       body: response ?? [],
     });
   });

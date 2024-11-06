@@ -72,6 +72,5 @@
       span="col-span-3"
       required
     />
-    
   </div>
 </template>

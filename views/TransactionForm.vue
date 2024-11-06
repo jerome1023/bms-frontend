@@ -28,7 +28,9 @@
 </template>
 
 <script setup lang="ts">
-const documentOptions = ref();
+import type { TOptions } from '~/types';
+
+const documentOptions = ref<TOptions>();
 const purposeOptions = [
   {
     code: "Work",

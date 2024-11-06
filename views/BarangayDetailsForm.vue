@@ -11,10 +11,6 @@
       v-if="!open.logo && picture.logo"
       class="col-span-2 flex flex-col justify-center gap-3 mb-3"
     >
-      <!-- <img
-            :src="picture.logo"
-            class="h-56 w-56 md:h-60 md:w-60 m-auto object-cover rounded-full"
-          /> -->
       <div class="flex justify-center m-auto">
         <Image
           :src="picture.logo"
@@ -43,10 +39,6 @@
       v-if="!open.image && picture.image"
       class="col-span-2 flex flex-col justify-center gap-3 mb-3"
     >
-      <!-- <img
-        :src="picture.image"
-        class="max-w-full max-h-60 md:max-h-64 m-auto object-scale-down"
-      /> -->
       <div class="flex justify-center m-auto">
         <Image
           :src="picture.image"

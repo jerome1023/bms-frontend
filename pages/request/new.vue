@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import type { TAlert } from '~/types';
+import type { TAlert } from "~/types";
 
 const alert = ref<TAlert>({
   type: "info",
@@ -37,7 +37,7 @@ const submit = async (values: any, actions: any) => {
       title: response.alert.title,
     };
     if (response.status) {
-          actions.resetForm();
+      actions.resetForm();
     } else {
       response.errors ? actions.setErrors(response.errors) : null;
     }

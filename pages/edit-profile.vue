@@ -10,10 +10,6 @@
           v-if="!open && image"
           class="col-span-full flex flex-col justify-center gap-3 mb-3"
         >
-          <!-- <img
-            :src="image"
-            class="h-56 w-56 md:h-72 md:w-72 m-auto object-cover rounded-full object-top"
-          /> -->
           <div class="flex justify-center m-auto">
             <Image
               :src="image"
