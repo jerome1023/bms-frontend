@@ -1,9 +1,8 @@
 const router = useRouter()
-const isMd = window.matchMedia('(max-width: 768px)').matches;
 
 export const toggleAside = ref(true);
-
 const updateToggleAside = () => {
+    const isMd = window.matchMedia('(max-width: 768px)').matches;
     toggleAside.value = !isMd;
 }
 
@@ -18,6 +17,7 @@ watch(
     })
 
 export const closeAsideOnClickOutside = (event: any) => {
+    const isMd = window.matchMedia('(max-width: 768px)').matches;
     const asideElement = document.querySelector('.aside-container');
     const barElement = document.querySelector('.bar-selector');
 
@@ -26,31 +26,24 @@ export const closeAsideOnClickOutside = (event: any) => {
     }
 };
 
+const routeTitles:any = {
+    '/dashboard': 'Dashboard',
+    '/barangay-official': 'Barangay Official',
+    '/resident/list': 'Resident List',
+    '/resident/manage-account': 'Resident Account',
+    '/request/new': 'New Request',
+    '/request/pending': 'Pending Request',
+    '/request/approved': 'Approved Request',
+    '/request/disapproved': 'Disapproved Request',
+    '/transaction': 'Transaction',
+    '/announcement': 'Announcement',
+    '/blotter': 'Blotter',
+    '/archive': 'Archive',
+    '/edit-profile' : 'Edit Profile',
+    '/management' : 'Management'
+};
+
 export const findTitleByRoute = () => {
-    switch (router.currentRoute.value.path) {
-        case '/dashboard':
-            return 'Dashboard';
-        case '/barangay-official':
-            return 'Barangay Official';
-        case '/resident/list':
-            return 'Resident List';
-        case '/resident/manage-account':
-            return 'Resident Account';
-        case '/request/pending':
-            return 'Pending Request';
-        case '/request/approved':
-            return 'Approved Request';
-        case '/request/disapproved':
-            return 'Disapproved Request';
-        case '/transaction':
-            return 'Transaction';
-        case '/announcement':
-            return 'Announcement';
-        case '/blotter':
-            return 'Blotter';
-        case '/archive':
-            return 'Archive';
-        default:
-            return 'Unknown';
-    }
-}
+    const currentPath = router.currentRoute.value.path;
+    return routeTitles[currentPath] || 'Unknown';
+};

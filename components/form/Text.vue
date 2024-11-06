@@ -1,17 +1,24 @@
 <template>
-  <Field v-slot="{field}" :name="name">
-    <div class="rounded-md border-0 overflow-hidden py-2 px-3 flex shadow-sm ring-1 ring-inset ring-base-green gap-3">
-      <input v-bind="field" :id="name" type="text" :placeholder="placeholder ?? label" :name="name" class="outline-none w-full rounded bg-transparent"/>
-    </div>
+  <Field v-slot="{ field, errors }" :name="name">
+    <InputText
+      v-bind="field"
+      v-model="field.value"
+      :placeholder="placeholder || label"
+      type="text"
+      class="w-full"
+      :invalid="errors[0] ? true : false"
+      :disabled="useModal.form.mode === 'View' ? true : false"
+    />
   </Field>
-  </template>
-  
-  <script setup lang="ts">
-  import { Field } from 'vee-validate'
-  defineProps<{
-      label: string
-      name: string
-      placeholder?: string
-  }>()
-  </script>
-  
+</template>
+
+<script setup lang="ts">
+import { Field } from "vee-validate";
+defineProps<{
+  label: string;
+  name: string;
+  placeholder?: string;
+}>();
+
+const useModal = useModalStore();
+</script>

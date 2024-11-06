@@ -1,0 +1,77 @@
+<template>
+  <div class="sm:grid grid-cols-6 gap-x-3">
+    <FormGroup
+      label="Complainant"
+      type="text"
+      name="complainant"
+      span="col-span-3"
+      required
+    />
+    <FormGroup
+      label="Age"
+      type="text"
+      name="complainant_age"
+      span="col-span-3"
+      required
+    />
+    <FormGroup
+      label="Address"
+      type="text"
+      name="complainant_address"
+      span="col-span-3"
+      required
+    />
+    <FormGroup
+      label="Contact Number"
+      type="text"
+      name="complainant_contact_number"
+      span="col-span-3"
+      required
+    />
+    <Divider class="col-span-full" />
+    <FormGroup
+      label="Complainee"
+      type="text"
+      name="complainee"
+      span="col-span-3"
+      required
+    />
+    <FormGroup
+      label="Age"
+      type="text"
+      name="complainee_age"
+      span="col-span-3"
+      required
+    />
+    <FormGroup
+      label="Address"
+      type="text"
+      name="complainee_address"
+      span="col-span-3"
+      required
+    />
+    <FormGroup
+      label="Contact Number"
+      type="text"
+      name="complainee_contact_number"
+      span="col-span-3"
+      required
+    />
+    <Divider class="col-span-full" />
+    <FormGroup
+      label="Date"
+      type="date"
+      name="date"
+      span="col-span-3"
+      required
+    />
+    <FormGroup
+      label="Complain"
+      type="text"
+      name="complain"
+      span="col-span-3"
+      required
+    />
+    
+  </div>
+</template>

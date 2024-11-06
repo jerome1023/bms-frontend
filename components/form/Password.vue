@@ -1,29 +1,32 @@
 <template>
-    <div class="w-full rounded-md border-0 overflow-hidden py-2 px-3 flex shadow-sm ring-1 ring-inset ring-base-green">
-        <Field as="input" :type="isShow ? 'text' : 'password'"  :placeholder="placeholder" :id="name" :name="name" class="text-black flex-1 p-0 bg-transparent placeholder:text-base-gray-light focus:ring-0 sm:text-base sm:leading-6 ring-0 border-0 focus:outline-none" />
-
-        <EyeIcon v-if="isShow" class="w-5 mr-2 cursor-pointer" @click="isShow = !isShow" />
-        <EyeSlashIcon v-else class="w-5 mr-2 cursor-pointer" @click="isShow = !isShow"  />
-    </div>
+  <Field v-slot="{ field, errors }" :name="name">
+    <Password
+      v-bind="field"
+      v-model="field.value"
+      :placeholder="placeholder || label"
+      :feedback="false"
+      toggleMask
+      inputClass="w-full"
+      style="width: 100%"
+      :invalid="errors[0] ? true : false"
+    />
+  </Field>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import {Field} from 'vee-validate/'
-import { EyeIcon, EyeSlashIcon } from "@heroicons/vue/24/solid"
-
-const isShow = ref<boolean>(false)
+import Password from "primevue/password";
+import { Field } from "vee-validate/";
 
 defineProps<{
-  name: string
-  placeholder?: string
-}>()
+  name: string;
+  placeholder?: string;
+  label?: string
+}>();
 </script>
 
 <style>
-input[type=password]::-ms-reveal,
-input[type=password]::-ms-clear
-{
-    display: none;
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
 }
 </style>

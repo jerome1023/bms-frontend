@@ -1,14 +1,27 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+// @tailwind base;
+// @tailwind components;
+// @tailwind utilities;
+@layer tailwind-base, primevue, tailwind-utilities;
 
-@layer components {
+@layer tailwind-base {
+    @tailwind base;
+  }
+
+  @layer tailwind-utilities {
+    @tailwind utilities;
+    @tailwind variants;
+  } 
+
+@layer tailwind-components {
+    ::-webkit-scrollbar{
+        display: none;
+    }
     input:-webkit-autofill,
     input:-webkit-autofill:-focus {
         transition: background-color 0s 600000s, color 0s 600000s;
     }
     .btn {
-        @apply text-white bg-base-green block py-2 rounded-md px-8 font-semibold text-lg hover:bg-green-700;
+        @apply text-white bg-base-green block py-2 rounded-md px-4 md:px-8 font-semibold text-sm md:text-lg hover:bg-green-700;
         
         &.btn-gray {
             @apply bg-base-gray-light hover:bg-base-gray;
