@@ -226,12 +226,9 @@ const voterOptions = <TOptions>[
   },
 ];
 
-onMounted(async () => {
-  await useGetData("sitio/list").then((response) => {
-    sitioOptions.value = response.map((item: any) => ({
-      code: item.id,
-      name: item.name,
-    }));
+onMounted(() => {
+  useFetchOption("sitio/list").then((response) => {
+    sitioOptions.value = response;
   });
 });
 </script>

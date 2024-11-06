@@ -6,6 +6,7 @@
       name="fullname"
       placeholder="e.g., Doe, John A."
       span="col-span-3"
+      required
     />
     <FormGroup label="Age" type="text" name="age" span="col-span-3" />
     <FormGroup
@@ -14,6 +15,7 @@
       :options="sitioOptions"
       name="sitio"
       span="col-span-3"
+      required
     />
     <FormGroup
       label="Document"
@@ -21,6 +23,7 @@
       :options="documentOptions"
       name="document"
       span="col-span-3"
+      required
     />
     <FormGroup
       label="Purpose"
@@ -28,6 +31,7 @@
       :options="purposeOptions"
       name="purpose"
       span="col-span-3"
+      required
     />
     <FormGroup
       v-if="purposeValue == 'Business' && documentOptions?.find((item:any) => item.code === documentValue)?.name.includes('Business Clearance')"
@@ -35,6 +39,7 @@
       type="text"
       name="income"
       span="col-span-3"
+      required
     />
   </div>
 </template>
@@ -67,18 +72,12 @@ const purposeOptions: TOptions = [
   },
 ];
 
-onMounted(async () => {
-  useGetData("sitio/list").then((response) => {
-    sitioOptions.value = response.map((item: any) => ({
-      code: item.id,
-      name: item.name,
-    }));
+onMounted(() => {
+  useFetchOption("sitio/list").then((response) => {
+    sitioOptions.value = response;
   });
-  useGetData("document/list").then((response) => {
-    documentOptions.value = response.map((item: any) => ({
-      code: item.id,
-      name: item.name,
-    }));
+  useFetchOption("document/list").then((response) => {
+    documentOptions.value = response;
   });
 });
 </script>

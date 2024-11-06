@@ -4,5 +4,6 @@
     type="textarea"
     name="reason"
     span=""
+    required
   />
 </template>
