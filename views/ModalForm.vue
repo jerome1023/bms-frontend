@@ -58,8 +58,9 @@ const getCurrentRoute = () => {
 };
 
 const getListEndpoint = (currentUrl: string, activeTab: number) => {
-  const endpointMap:TObjectLiteral<string> = {
-    management: activeTab === 1 ? "document/list" : activeTab === 2 ? "sitio/list" : "",
+  const endpointMap: TObjectLiteral<string> = {
+    management:
+      activeTab === 1 ? "document/list" : activeTab === 2 ? "sitio/list" : "",
     "resident/list": "resident/list",
     "resident/manage-account": "users/list",
     "request/pending": "request/list/pending",

@@ -54,12 +54,18 @@
 </template>
 
 <script setup lang="ts">
+import type { TOptions } from '~/types';
+
 const route = useRoute();
 const userStore = useUserStore();
 const isShow = computed(() => {
-  return userStore.user.role?.name == "User" || route.fullPath == '/resident/manage-account'}); 
+  return (
+    userStore.user.role?.name == "User" ||
+    route.fullPath == "/resident/manage-account"
+  );
+});
 
-const options = [
+const options: TOptions = [
   {
     name: "Male",
     code: "Male",

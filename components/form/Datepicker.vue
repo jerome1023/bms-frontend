@@ -9,7 +9,7 @@
       iconDisplay="input"
       :inputId="name"
       dateFormat="yy-mm-dd"
-      :showTime="name==='when' ? true : false"
+      :showTime="name === 'when' ? true : false"
       hourFormat="12"
       :invalid="errors[0] ? true : false"
     />
@@ -23,5 +23,4 @@ defineProps<{
   name: string;
   placeholder?: string;
 }>();
-
 </script>

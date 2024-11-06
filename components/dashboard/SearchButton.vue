@@ -16,6 +16,6 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 defineProps<{
-    isSubmitting : boolean
-}>()
+  isSubmitting: boolean;
+}>();
 </script>

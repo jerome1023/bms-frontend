@@ -1,5 +1,10 @@
 <template>
-  <div :class="['p-5 rounded-md', color == 'green' ? 'bg-base-green' : 'bg-base-gray-300']">
+  <div
+    :class="[
+      'p-5 rounded-md',
+      color == 'green' ? 'bg-base-green' : 'bg-base-gray-300',
+    ]"
+  >
     <NuxtLink
       v-if="content"
       :to="content.href"
@@ -23,6 +28,6 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 defineProps<{
   content?: any;
-  color?: string
+  color?: string;
 }>();
 </script>

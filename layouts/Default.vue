@@ -21,10 +21,6 @@ import { useUserStore } from "~/stores/user";
 const userStore = useUserStore();
 const mounted = computed(() => Object.keys(userStore.user).length > 0);
 
-// const dynamicWidth = computed(() => ({
-//     width: toggleAside.value ? 'calc(100vw - 260px)' : '100vw'
-// }));
-
 const dynamicWidth = computed(() => {
   const screenWidth = window.innerWidth;
   if (screenWidth < 768) {
@@ -39,9 +35,5 @@ const dynamicWidth = computed(() => {
       width: toggleAside.value ? "calc(100vw - 260px)" : "100vw",
     };
   }
-});
-
-onMounted(() => {
-  // userStore.getUserDetails();
 });
 </script>

@@ -1,7 +1,8 @@
 <template>
   <div :class="span">
     <label :for="name" class="sm:text-md font-medium flex gap-1">
-      {{ label }} <p v-if="required" class="text-error-300">*</p>
+      {{ label }}
+      <p v-if="required" class="text-error-300">*</p>
     </label>
     <div class="mt-1 mb-2">
       <FormText
@@ -34,11 +35,7 @@
         :name="name"
         :placeholder="placeholder"
       />
-      <FormUpload
-        v-if="type === 'image'"
-        :name="name"
-        :circle="circle"
-      />
+      <FormUpload v-if="type === 'image'" :name="name" :circle="circle" />
 
       <ErrorMessage v-slot="{ message }" :name="name">
         <span class="text-sm text-alert-danger-text">{{ message }}</span>
@@ -58,7 +55,7 @@ defineProps<{
   options?: TOptions;
   span: string;
   placeholder?: string;
-  required?: boolean
-  circle?: boolean
+  required?: boolean;
+  circle?: boolean;
 }>();
 </script>

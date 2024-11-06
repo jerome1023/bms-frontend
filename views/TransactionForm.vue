@@ -28,7 +28,9 @@
 </template>
 
 <script setup lang="ts">
-const documentOptions = ref();
+import type { TOptions } from "~/types";
+
+const documentOptions = ref<TOptions>();
 const purposeOptions = [
   {
     code: "Work",
@@ -48,12 +50,9 @@ const purposeOptions = [
   },
 ];
 
-onMounted(async () => {
-  await useGetData("document/list").then((response) => {
-    documentOptions.value = response.map((item: any) => ({
-      code: item.id,
-      name: item.name,
-    }));
+onMounted(() => {
+  useFetchOption("document/list").then((response) => {
+    documentOptions.value = response;
   });
 });
 </script>

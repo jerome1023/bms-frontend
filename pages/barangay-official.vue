@@ -38,7 +38,7 @@ onMounted(async () => {
         { field: "start_term", header: "Start Term" },
         { field: "end_term", header: "End Term" },
       ],
-      actions: ['edit', 'archive'],
+      actions: ["edit", "archive"],
       body: response ?? [],
     });
   });

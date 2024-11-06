@@ -3,29 +3,28 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   runtimeConfig: {
     public: {
-      backendURL: process.env.NUXT_PUBLIC_BACKEND_URL
-    }
+      backendURL: process.env.NUXT_PUBLIC_BACKEND_URL,
+    },
   },
   components: [
-    '~/components',
+    "~/components",
     {
-      path: '~/views',
-    }
+      path: "~/views",
+    },
   ],
-  modules:['@vee-validate/nuxt', '@pinia/nuxt', 'nuxt-primevue'],
+  modules: ["@vee-validate/nuxt", "@pinia/nuxt", "nuxt-primevue"],
   primevue: {
-    // cssLayerOrder: 'tailwind-base, primevue, tailwind-utilities',
     components: {
-      include: '*'
-  }
+      include: "*",
+    },
   },
   pinia: {
-    storesDirs: ['./stores/**', './custom-folder/stores/**'],
+    storesDirs: ["./stores/**", "./custom-folder/stores/**"],
   },
   css: [
-    '~/assets/scss/global.scss',
-    'primevue/resources/themes/aura-light-green/theme.css',
-    'primeicons/primeicons.css'
+    "~/assets/scss/global.scss",
+    "primevue/resources/themes/aura-light-green/theme.css",
+    "primeicons/primeicons.css",
   ],
   postcss: {
     plugins: {
@@ -33,4 +32,4 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-})
+});

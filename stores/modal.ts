@@ -23,13 +23,7 @@ export const useModalStore = defineStore({
     },
 
     resetFormData() {
-      this.form = {
-        mode: "",
-        title: "",
-        component: null,
-        schema: {},
-        data: {},
-      } as TForm;
+      this.$reset();
     },
   },
 });

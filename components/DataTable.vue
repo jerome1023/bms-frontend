@@ -101,7 +101,7 @@ import {
   faThumbsDown,
   faCircleCheck,
   faRotateLeft,
-  faEye
+  faEye,
 } from "@fortawesome/free-solid-svg-icons";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
@@ -378,7 +378,7 @@ const actionsConfig: TObjectLiteral = {
     tooltip: "View",
     severity: "info",
     condition: () => true,
-    handler: (data: any) => openModal(data, 'view'),
+    handler: (data: any) => openModal(data, "view"),
   },
 };
 

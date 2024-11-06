@@ -9,8 +9,9 @@
 
 <script setup lang="ts">
 import { useBarangayDetailStore } from "./stores/details";
+type LayoutKey = "auth" | "default";
 
-const layout = ref("auth");
+const layout = ref<LayoutKey>("auth");
 const isLoading = ref();
 
 const checkLocalStorage = () => {
@@ -32,10 +33,6 @@ watch(
 
 const useBarangayDetail = useBarangayDetailStore();
 onMounted(async () => {
-  // useGetData("barangay_details/list").then((response) => {
-  //   useBarangayDetail.storeDetails(response);
-  // checkLocalStorage();
-  // });
   await useBarangayDetail.mountDetails().then(() => {
     checkLocalStorage();
   });

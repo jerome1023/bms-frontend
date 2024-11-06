@@ -54,7 +54,7 @@ export type TDashboardList = {
 }[];
 
 export type TDashboardDocument = {
-  list : TOptions;
-  revenue : number;
-  count : number
-}
+  list: TOptions;
+  revenue: number;
+  count: number;
+};

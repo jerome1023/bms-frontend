@@ -9,9 +9,9 @@ import {
   TransactionForm,
   UserForm,
   NewRequestForm,
-  SolveBlotterForm, 
+  SolveBlotterForm,
   DisapprovedForm,
-  ViewRequestForm
+  ViewRequestForm,
 } from "#components";
 
 export const useGetSubmissionDetails = (
@@ -53,14 +53,14 @@ export const useGetSubmissionDetails = (
     create: getCreateEndpoint(currentUrl),
     edit: getEditEndpoint(currentUrl, id, activeTab),
     solve: `${currentUrl}/solve/${id}`,
-    disapproved: `request/update-status/${id}/disapproved`
+    disapproved: `request/update-status/${id}/disapproved`,
   };
 
   const methodMap: TObjectLiteral<string> = {
     create: "POST",
     edit: "PUT",
     solve: "PUT",
-    disapproved: "PUT"
+    disapproved: "PUT",
   };
 
   if (!useModal.open) return null; // In case modal is not open
@@ -112,7 +112,6 @@ export const useNewValueFormat = (
     }),
   };
 
-  // Return formatted values based on currentUrl or fallback to original val
   return formatMap[currentUrl] ? formatMap[currentUrl](val) : val;
 };
 
@@ -180,8 +179,9 @@ export const useGetCurrentForm = (currentUrl: string) => {
     "resident/list": ResidentForm,
     "resident/manage-account": UserForm,
     transaction: TransactionForm,
-    'request/pending': userRole === 'Administrator' ? DisapprovedForm : NewRequestForm,
-    'request/pending/view': ViewRequestForm
+    "request/pending":
+      userRole === "Administrator" ? DisapprovedForm : NewRequestForm,
+    "request/pending/view": ViewRequestForm,
   };
 
   return typeof currentForm[currentUrl] === "function"

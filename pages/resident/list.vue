@@ -1,5 +1,5 @@
 <template>
-    <Button
+  <Button
     icon="pi pi-plus"
     severity="info"
     size="small"
@@ -38,7 +38,7 @@ onMounted(async () => {
         { field: "sitio_name", header: "Sitio" },
         { field: "voter_status", header: "Voter Status" },
       ],
-      actions: ['edit', 'archive'],
+      actions: ["edit", "archive"],
       body: response ?? [],
     });
   });
