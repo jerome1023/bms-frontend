@@ -153,7 +153,7 @@ const currentPageReportTemplate = computed(() => {
 const openModal = async (data: any, action?: string) => {
   useModal.toggleModal(true);
 
-  const mode = action === "view" ? "View" : "Edit";
+  const mode = action === "view" || action === "details" ? "View" : "Edit";
   const title = action
     ? action === "view"
       ? "Request Info"
@@ -188,14 +188,14 @@ const routeList: TObjectLiteral = {
 const confirmAction = (details: TObjectLiteral) => {
   const { id, action, message, acceptClass, endpoint, method, body } = details;
   confirm.require({
-    message: message,
+    message,
     header: "Confirmation",
     icon: "pi pi-info-circle",
     position: "top",
     rejectLabel: "Cancel",
     acceptLabel: "Proceed",
     rejectClass: "p-button-secondary p-button-outlined",
-    acceptClass: acceptClass,
+    acceptClass,
     accept: async () => {
       if (["disapproved", "blotter"].includes(action)) {
         const modalConfig: TObjectLiteral = {
@@ -216,7 +216,7 @@ const confirmAction = (details: TObjectLiteral) => {
         useModal.toggleModal(true);
         useModal.mountForm({
           ...modalConfig[action],
-          data: { id: id },
+          data: { id },
         });
       } else {
         await useFormSubmit(endpoint, body ?? {}, method ?? "PUT").then(
@@ -250,33 +250,33 @@ const archivePageActiveTab: TObjectLiteral<string> = {
 const actionButton = (id: string, action: string) => {
   const details: TObjectLiteral = {
     solve: {
-      id: id,
+      id,
       action: "blotter",
       message: "Are you sure you want to solve this blotter?",
       acceptClass: "p-button-info",
     },
     approved: {
-      id: id,
+      id,
       action: "approved",
       message: "Are you sure you want to approve this request?",
       endpoint: `request/update-status/${id}/approved`,
       acceptClass: "p-button-success",
     },
     disapproved: {
-      id: id,
+      id,
       action: "disapproved",
       message: "Are you sure you want to disapproved this request?",
       acceptClass: "p-button-warning",
     },
     complete: {
-      id: id,
+      id,
       action: "complete",
       message: "Are you sure you want to complete this request?",
       endpoint: `request/complete/${id}`,
       acceptClass: "p-button-success",
     },
     delete: {
-      id: id,
+      id,
       action: "delete",
       message: "Are you sure you want to permanently delete this record?",
       acceptClass: "p-button-danger",
@@ -302,8 +302,8 @@ const archive_status = (id: string, action: "archive" | "restore") => {
   }
 
   return confirmAction({
-    id: id,
-    action: action,
+    id,
+    action,
     message: `Are you sure you want to ${action} this record?`,
     endpoint: `${url}/archive_status/${id}/${endpointStatus}`,
     acceptClass: acceptClass,

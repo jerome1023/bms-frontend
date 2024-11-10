@@ -23,12 +23,13 @@
 </template>
 
 <script setup lang="ts">
-import type { TOptions } from '~/types';
+import type { TOptions } from "~/types";
 
 const officialOPtions = ref<TOptions>();
-onMounted(()=>{
+
+onMounted(() => {
   useFetchOption("barangay-official/list").then((response) => {
     officialOPtions.value = response;
   });
-})
+});
 </script>
