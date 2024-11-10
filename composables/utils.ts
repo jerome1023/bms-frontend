@@ -40,6 +40,10 @@ export const useFetchOption = async (path: string): Promise<any> => {
 
   return response.data.map((item: any) => ({
     code: item.id,
-    name: item.name,
+    name:
+      item.name ??
+      (item.position !== "Kalihim" && item.position !== "Ingat Yaman"
+        ? "Hon. "
+        : "") + `${item.firstname} ${item.middlename} ${item.lastname}`,
   }));
 };

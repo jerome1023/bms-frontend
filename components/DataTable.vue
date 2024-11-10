@@ -96,6 +96,7 @@ import {
   faBoxArchive,
   faPencil,
   faHandshake,
+  faRectangleList,
   faTrashCan,
   faThumbsUp,
   faThumbsDown,
@@ -151,12 +152,23 @@ const currentPageReportTemplate = computed(() => {
 
 const openModal = async (data: any, action?: string) => {
   useModal.toggleModal(true);
+
+  const mode = action === "view" ? "View" : "Edit";
+  const title = action
+    ? action === "view"
+      ? "Request Info"
+      : "Solve Blotter Details"
+    : `Edit ${useDataTable.tableContent.title}`;
+  const component = useGetCurrentForm(
+    action ? currentUrl + (action === "view" ? "/view" : "/solve") : currentUrl
+  );
+
   useModal.mountForm({
-    mode: action ? "View" : "Edit",
-    title: action ? "Request Info" : `Edit ${useDataTable.tableContent.title}`,
-    component: useGetCurrentForm(action ? `${currentUrl}/view` : currentUrl),
+    mode,
+    title,
+    component,
     schema: {},
-    data: data,
+    data,
   });
 };
 
@@ -330,6 +342,13 @@ const actionsConfig: TObjectLiteral = {
     severity: "info",
     condition: (data: any) => data.status === "unsolve",
     handler: (data: any) => actionButton(data.id, "solve"),
+  },
+  "solve-details": {
+    icon: faRectangleList,
+    tooltip: "Solve Details",
+    severity: "primary",
+    condition: (data: any) => data.status === "solve",
+    handler: (data: any) => openModal(data, "details"),
   },
   archive: {
     icon: faBoxArchive,
