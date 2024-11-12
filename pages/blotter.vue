@@ -13,7 +13,6 @@
 <script setup lang="ts">
 import { BlotterForm } from "#components";
 
-const userStore = useUserStore();
 const useModal = useModalStore();
 const useDataTable = useDataTableStore();
 
@@ -39,7 +38,7 @@ onMounted(async () => {
         { field: "date", header: "Date" },
         { field: "status", header: "Status" },
       ],
-      actions: ["edit", "solve", "archive"],
+      actions: ["edit", "solve", "solve-details", "archive"],
       body: response ?? [],
     });
   });
