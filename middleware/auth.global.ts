@@ -31,7 +31,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
         "/request/disapproved",
         "/transaction",
         "/edit-profile",
-        "/management",
       ],
     };
 
