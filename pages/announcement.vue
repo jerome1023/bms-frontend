@@ -12,6 +12,7 @@
   </div>
   <div v-else class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
     <div
+      v-if="announcementDetails.length != 0"
       v-for="(details, index) in announcementDetails"
       class="col-span-1 w-full rounded-lg shadow-xl p-5 bg-base-gray-300 mb-auto"
     >
@@ -38,6 +39,7 @@
         {{ showMore[index] ? "View Less" : "View More" }}
       </p>
     </div>
+    <div v-else>No Announcement.</div>
   </div>
 </template>
 
