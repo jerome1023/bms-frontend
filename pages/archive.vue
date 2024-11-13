@@ -29,3 +29,9 @@ onMounted(() => {
   useManageList("archive", 0);
 });
 </script>
+
+<style scoped>
+::v-deep .p-tabview-panels {
+  padding: 0;
+}
+</style>

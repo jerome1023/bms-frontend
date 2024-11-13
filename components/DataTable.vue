@@ -15,6 +15,7 @@
     :currentPageReportTemplate="currentPageReportTemplate"
     dataKey="id"
     :loading="loading"
+    class="mt-2"
   >
     <template
       v-if="!loading && useDataTable.tableContent.body.length > 5"
