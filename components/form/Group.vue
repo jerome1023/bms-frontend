@@ -37,6 +37,8 @@
       />
       <FormUpload v-if="type === 'image'" :name="name" :circle="circle" />
 
+      <FormReadonly v-if="type === 'readonly'" :name="name"/>
+
       <ErrorMessage v-slot="{ message }" :name="name">
         <span class="text-sm text-alert-danger-text">{{ message }}</span>
       </ErrorMessage>

@@ -1,6 +1,7 @@
 <template>
   <div class="sm:grid grid-cols-6 gap-x-3">
     <FormGroup
+      v-if="isNotViewMode"
       label="Namagitan"
       type="select"
       name="namagitan"
@@ -8,14 +9,21 @@
       span="col-span-full"
     />
     <FormGroup
+      v-else
+      label="Namagitan"
+      type="readonly"
+      name="namagitan_name"
+      span="col-span-full"
+    />
+    <FormGroup
       label="Agreement"
-      type="textarea"
+      :type="isNotViewMode ? 'textarea' : 'readonly'"
       name="agreement"
       span="col-span-full"
     />
     <FormGroup
       label="Witness"
-      type="textarea"
+      :type="isNotViewMode ? 'textarea' : 'readonly'"
       name="witness"
       span="col-span-full"
     />
@@ -26,10 +34,14 @@
 import type { TOptions } from "~/types";
 
 const officialOPtions = ref<TOptions>();
+const useModal = useModalStore();
+
+const isNotViewMode = useModal.form.mode != "View";
 
 onMounted(() => {
-  useFetchOption("barangay-official/list").then((response) => {
-    officialOPtions.value = response;
-  });
+  if (isNotViewMode)
+    useFetchOption("barangay-official/list").then((response) => {
+      officialOPtions.value = response;
+    });
 });
 </script>
