@@ -1,6 +1,14 @@
 <template>
   <Form @submit="submit" v-slot="{ isSubmitting }">
     <Fieldset legend="Create Request">
+      <Message severity="info" :closable="false">
+        <b>For Business Clearance Income Range: </b>
+        <b>Business Clearance (A)</b> - Income up to 50,000;
+        <b>Business Clearance (B)</b> - Income 50,000 - 100,000;
+        <b>Business Clearance (C)</b> - Income 100,000 - 500,000;
+        <b>Business Clearance (D)</b> - Income 500,000 and up.
+      </Message>
+
       <div class="flex flex-col gap-2">
         <NewRequestForm />
         <Alert

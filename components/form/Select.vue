@@ -30,6 +30,8 @@ const { value: fieldValue } = useField(props.name);
 const selected = ref();
 
 onMounted(() => {
-  selected.value = fieldValue.value;
+  if (fieldValue) {
+    selected.value = fieldValue.value;
+  }
 });
 </script>

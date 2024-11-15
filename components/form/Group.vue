@@ -36,8 +36,13 @@
         :placeholder="placeholder"
       />
       <FormUpload v-if="type === 'image'" :name="name" :circle="circle" />
-
       <FormReadonly v-if="type === 'readonly'" :name="name"/>
+      <FormNumber
+        v-if="type === 'number'"
+        :label="label"
+        :name="name"
+        :placeholder="placeholder"
+      />
 
       <ErrorMessage v-slot="{ message }" :name="name">
         <span class="text-sm text-alert-danger-text">{{ message }}</span>

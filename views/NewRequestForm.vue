@@ -36,7 +36,7 @@
     <FormGroup
       v-if="purposeValue == 'Business' && documentOptions?.find((item:any) => item.code === documentValue)?.name.includes('Business Clearance')"
       label="Income"
-      type="text"
+      type="number"
       name="income"
       span="col-span-3"
       required
