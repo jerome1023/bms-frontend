@@ -31,7 +31,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-::v-deep .p-tabview-panels {
+:deep(.p-tabview-panels) {
   padding: 0;
 }
 </style>

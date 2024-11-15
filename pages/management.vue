@@ -117,7 +117,7 @@ const submit = async (values: any, actions: any) => {
 </script>
 
 <style scoped>
-::v-deep .p-tabview-panels {
+:deep(.p-tabview-panels) {
   padding-left: 0;
   padding-right: 0;
 }
