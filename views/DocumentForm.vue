@@ -9,7 +9,7 @@
     />
     <FormGroup
       label="Price"
-      type="text"
+      type="number"
       name="price"
       span="col-span-3"
       required
