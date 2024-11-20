@@ -10,7 +10,6 @@
       :highlightOnSelect="true"
       class="w-full md:w-14rem"
       :invalid="errors[0] ? true : false"
-      :disabled="useModal.form.mode === 'View' ? true : false"
     ></Dropdown>
   </Field>
 </template>
@@ -29,9 +28,10 @@ const props = defineProps<{
 
 const { value: fieldValue } = useField(props.name);
 const selected = ref();
-const useModal = useModalStore();
 
 onMounted(() => {
-  selected.value = fieldValue.value;
+  if (fieldValue) {
+    selected.value = fieldValue.value;
+  }
 });
 </script>

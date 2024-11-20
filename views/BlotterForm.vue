@@ -9,8 +9,9 @@
     />
     <FormGroup
       label="Age"
-      type="text"
+      type="number"
       name="complainant_age"
+      :enableLimits="{ min: 0, max: 150 }"
       span="col-span-3"
       required
     />
@@ -23,8 +24,9 @@
     />
     <FormGroup
       label="Contact Number"
-      type="text"
+      type="phone"
       name="complainant_contact_number"
+      placeholder="0912-345-6789"
       span="col-span-3"
       required
     />
@@ -38,8 +40,9 @@
     />
     <FormGroup
       label="Age"
-      type="text"
+      type="number"
       name="complainee_age"
+      :enableLimits="{ min: 0, max: 150 }"
       span="col-span-3"
       required
     />
@@ -52,8 +55,9 @@
     />
     <FormGroup
       label="Contact Number"
-      type="text"
+      type="phone"
       name="complainee_contact_number"
+      placeholder="0912-345-6789"
       span="col-span-3"
       required
     />

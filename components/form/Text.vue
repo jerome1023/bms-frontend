@@ -7,7 +7,6 @@
       type="text"
       class="w-full"
       :invalid="errors[0] ? true : false"
-      :disabled="useModal.form.mode === 'View' ? true : false"
     />
   </Field>
 </template>
@@ -19,6 +18,4 @@ defineProps<{
   name: string;
   placeholder?: string;
 }>();
-
-const useModal = useModalStore();
 </script>

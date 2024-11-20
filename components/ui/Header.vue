@@ -1,4 +1,7 @@
 <template>
+  <Head>
+    <Title>{{ title }}</Title>
+  </Head>
   <header
     class="bg-white w-full flex justify-between px-3 md:px-5 shadow-md h-14 md:h-16"
   >

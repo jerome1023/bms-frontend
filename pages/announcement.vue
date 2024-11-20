@@ -10,33 +10,45 @@
     <DataTable />
     <ModalForm />
   </div>
-  <div v-else class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-    <div
-      v-for="(details, index) in announcementDetails"
-      class="col-span-1 w-full rounded-lg shadow-xl p-5 bg-base-gray-300 mb-auto"
-    >
-      <div class="flex justify-center mb-3">
-        <Image
-          :src="imageToDisplay(details.image)"
-          imageClass="h-40 md:h-44 object-cover"
-          preview
-        />
-      </div>
-      <div v-if="!showMore[index]" class="text-center font-semibold text-lg">
-        {{ details.what }}
-      </div>
-      <div v-else v-for="key in keyName" class="flex">
-        <p class="w-[6rem]">
-          {{ key.charAt(0).toUpperCase() + key.slice(1) }}:
-        </p>
-        <p class="w-full font-semibold">{{ details[key] }}</p>
-      </div>
-      <p
-        class="underline text-green-500 text-center cursor-pointer"
-        @click="showMore[index] = !showMore[index]"
+  <div v-else class="h-full">
+    <div v-if="pending" class="h-full w-full flex items-center justify-center">
+      <ProgressSpinner
+        style="width: 100px; height: 100px"
+        strokeWidth="4"
+        animationDuration="1s"
+        aria-label="Custom ProgressSpinner"
+      />
+    </div>
+    <div v-else class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+      <div
+        v-if="announcementDetails.length != 0"
+        v-for="(details, index) in announcementDetails"
+        class="col-span-1 w-full rounded-lg shadow-xl p-5 bg-base-gray-300 mb-auto"
       >
-        {{ showMore[index] ? "View Less" : "View More" }}
-      </p>
+        <div class="flex justify-center mb-3">
+          <Image
+            :src="imageToDisplay(details.image)"
+            imageClass="h-40 md:h-44 object-cover"
+            preview
+          />
+        </div>
+        <div v-if="!showMore[index]" class="text-center font-semibold text-lg">
+          {{ details.what }}
+        </div>
+        <div v-else v-for="key in keyName" class="flex">
+          <p class="w-[6rem]">
+            {{ key.charAt(0).toUpperCase() + key.slice(1) }}:
+          </p>
+          <p class="w-full font-semibold">{{ details[key] }}</p>
+        </div>
+        <p
+          class="underline text-green-500 text-center cursor-pointer"
+          @click="showMore[index] = !showMore[index]"
+        >
+          {{ showMore[index] ? "View Less" : "View More" }}
+        </p>
+      </div>
+      <div v-else>No Announcement.</div>
     </div>
   </div>
 </template>
@@ -53,6 +65,8 @@ const useBarangayDetail = useBarangayDetailStore();
 const userRole = userStore.user.role?.name;
 const config = useRuntimeConfig();
 const baseURL = config.public.backendURL;
+
+const pending = ref(true);
 
 interface AnnouncementDetails {
   what: string;
@@ -109,6 +123,7 @@ onMounted(async () => {
     } else {
       announcementDetails.value = response;
     }
+    pending.value = false;
   });
 });
 </script>
