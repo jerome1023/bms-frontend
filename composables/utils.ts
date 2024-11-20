@@ -38,12 +38,18 @@ export const useFetchOption = async (path: string): Promise<any> => {
     },
   })) as TResponse;
 
-  return response.data.map((item: any) => ({
-    code: item.id,
-    name:
+  return response.data.map((item: any) => {
+    const prefix = ["Kalihim", "Ingat Yaman"].includes(item.position)
+      ? ""
+      : "Hon. ";
+
+    const name =
       item.name ??
-      (item.position !== "Kalihim" && item.position !== "Ingat Yaman"
-        ? "Hon. "
-        : "") + `${item.firstname} ${item.middlename} ${item.lastname}`,
-  }));
+      `${prefix}${item.firstname} ${item.middlename} ${item.lastname}`;
+
+    return {
+      code: item.id,
+      name,
+    };
+  });
 };
