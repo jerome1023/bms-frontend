@@ -118,6 +118,7 @@ watch(
   () => useModal.open,
   (newValue) => {
     if (!newValue) {
+      resetAlert();
       setTimeout(() => {
         useModal.resetFormData();
       }, 200);
