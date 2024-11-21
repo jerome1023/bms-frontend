@@ -2,7 +2,7 @@
   <DataTable
     v-model:filters="filters"
     :value="useDataTable.tableContent.body"
-    :paginator="useDataTable.tableContent.body.length > 5 ? true : false"
+    :paginator="isLargeTable"
     removableSort
     :rows="10"
     :rowsPerPageOptions="[5, 10, 20, 50]"
@@ -18,7 +18,7 @@
     class="mt-2"
   >
     <template
-      v-if="!loading && useDataTable.tableContent.body.length > 5"
+      v-if="!loading && isLargeTable"
       #header
     >
       <div class="flex justify-end items-center gap-2 -mx-4">
@@ -50,7 +50,7 @@
       :key="col.field"
       :field="col.field"
       :header="col.header"
-      sortable
+      :sortable="isLargeTable"
     >
       <template v-if="col.field == 'status'" #body="slotProps">
         <Tag
@@ -117,6 +117,7 @@ const toast = useToast();
 const loading = ref(true);
 const filters = ref();
 const windowSize = useWindowSize();
+const isLargeTable = computed(()=>useDataTable.tableContent.body.length > 5)
 
 let currentUrl = route.fullPath;
 currentUrl = currentUrl.startsWith("/")
